@@ -1,0 +1,98 @@
+---
+import '../styles/global.css';
+import { isletme } from '../data/isletme';
+import Bekliyor from '../components/Bekliyor.astro';
+
+interface Props { baslik: string; aciklama: string; sayfaOlayi?: string }
+const { baslik, aciklama, sayfaOlayi } = Astro.props;
+
+// Restaurant JSON-LD: yalnızca doğrulanmış alanlar girer (CLAUDE.md, brif §5).
+const a = isletme.adres;
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: isletme.ad,
+  sameAs: [isletme.instagram.url],
+  hasMenu: '/menu',
+};
+if (a.sokak.dogrulandi) {
+  jsonLd.address = {
+    '@type': 'PostalAddress',
+    streetAddress: `${a.sokak.deger}, ${a.mekan}`,
+    postalCode: a.postaKodu,
+    addressLocality: a.ilce,
+    addressRegion: a.il,
+    addressCountry: 'TR',
+  };
+}
+if (isletme.telefon.dogrulandi && isletme.telefon.deger) jsonLd.telephone = isletme.telefon.deger;
+---
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{baslik}</title>
+    <meta name="description" content={aciklama} />
+    {!isletme.yayinda && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:title" content={baslik} />
+    <meta property="og:description" content={aciklama} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="theme-color" content="#0b3d2e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body data-sayfa-olayi={sayfaOlayi}>
+    <a class="atla" href="#icerik">İçeriğe geç</a>
+    <header class="ust">
+      <div class="kap ust-ic">
+        <a href="/" class="logo" aria-label="Müjgan ana sayfa">Müjgan</a>
+        <nav aria-label="Ana menü">
+          <a href="/menu" data-olay="menu_goruntule">Menü</a>
+          <a href="/#ulasim">Ulaşım</a>
+          <a href="/#iletisim" class="dugme kucuk" data-olay="rezervasyon_tikla">Rezervasyon</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="icerik"><slot /></main>
+
+    <footer class="alt">
+      <div class="kap alt-ic">
+        <div>
+          <p class="logo">Müjgan</p>
+          <p>{a.sokak.deger}, {a.mekan}<br />{a.postaKodu} {a.ilce}/{a.il}</p>
+          {!a.sokak.dogrulandi && <p><Bekliyor ne={a.sokak.bekleyen} /></p>}
+        </div>
+        <div>
+          <p class="etiket">İletişim</p>
+          <p>Telefon: {isletme.telefon.deger ?? <Bekliyor ne={isletme.telefon.bekleyen} />}</p>
+          <p><a href={isletme.instagram.url} rel="noopener" data-olay="instagram_tikla">@{isletme.instagram.kullanici}</a></p>
+        </div>
+        <div>
+          <p class="etiket">Saatler</p>
+          <p>Öğle: {isletme.saatler.ogle.deger ?? <Bekliyor ne={isletme.saatler.ogle.bekleyen} />}</p>
+          <p>Akşam: {isletme.saatler.aksam.deger ?? <Bekliyor ne={isletme.saatler.aksam.bekleyen} />}</p>
+        </div>
+      </div>
+      <div class="kap alt-son">
+        <a href="/kvkk">KVKK aydınlatma metni</a>
+        <span>© {new Date().getFullYear()} Müjgan</span>
+      </div>
+    </footer>
+
+    <script>
+      // Tıklama ölçümü: ölçüm aracı henüz seçilmedi, olaylar dataLayer'a yazılır.
+      // Not: tıklama gerçekleşmiş ziyaret/rezervasyon sayılmaz.
+      const w = window as unknown as { dataLayer: object[] };
+      w.dataLayer = w.dataLayer || [];
+      const gonder = (olay: string, ek: object = {}) => w.dataLayer.push({ event: olay, ...ek });
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest<HTMLElement>('[data-olay]');
+        if (el) gonder(el.dataset.olay!, el.dataset.platform ? { platform: el.dataset.platform } : {});
+      });
+      const sayfa = document.body.dataset.sayfaOlayi;
+      if (sayfa) gonder(sayfa);
+    </script>
+  </body>
+</html>

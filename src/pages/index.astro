@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import Bekliyor from '../components/Bekliyor.astro';
+import Deger from '../components/Deger.astro';
+import Foto from '../components/Foto.astro';
+import { isletme, tamAdres } from '../data/isletme';
+
+const s = isletme.saatler;
+const siparisVar = isletme.siparisPlatformlari.length > 0;
+---
+<Base
+  baslik="Müjgan — Beysupark, Çayyolu"
+  aciklama="Müjgan artık Beysupark AVM'de, Çayyolu. Öğle ve akşam yemeği, küçük sahnede etkinlikler, paket servis."
+>
+  <!-- 1. Kahraman: alkol öne çıkarılmaz (CLAUDE.md, kırmızı çizgiler) -->
+  <section class="kahraman">
+    <div class="kap kahraman-ic">
+      <p class="ust-baslik">Beysupark AVM · Çayyolu</p>
+      <h1>Müjgan</h1>
+      <p class="giris">Öğle ve akşam yemeği, küçük bir sahne, tanıdık bir masa. Müjgan'ın yeni adresi Beysupark.</p>
+      <div class="dugmeler">
+        <a href="#iletisim" class="dugme" data-olay="rezervasyon_tikla">Rezervasyon</a>
+        <a href="#ulasim" class="dugme ikincil" data-olay="yol_tarifi_tikla">Yol tarifi</a>
+        <a href="#siparis" class="dugme ikincil" data-olay="siparis_platform_tikla">Paket sipariş</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Taşındık — metin taslak, Deniz/Tolga onayı bekliyor -->
+  <section class="bolum" id="tasindik">
+    <div class="kap iki-kolon">
+      <div>
+        <p class="ust-baslik">Taşındık</p>
+        <h2>100. Yıl'dan Beysupark'a</h2>
+        <p>Müjgan, Ankara 100. Yıl'daki ilk yerinden Çayyolu'na, Beysupark AVM'ye taşındı. Yeni mekânda öğle ve akşam servisi, yaklaşık 30 yemeklik bir menü ve küçük bir sahne var.</p>
+        <p><Bekliyor ne="taşınma hikâyesi: korunanlar / yenilikler, Tolga onayı" /></p>
+      </div>
+      <Foto ne="yeni mekân, iç alan" />
+    </div>
+  </section>
+
+  <!-- 3. Öğle & akşam -->
+  <section class="bolum koyu" id="saatler">
+    <div class="kap">
+      <p class="ust-baslik">Öğle & akşam</p>
+      <h2>Günün iki hâli</h2>
+      <div class="kartlar">
+        <article class="kart">
+          <h3>Öğle</h3>
+          <p>Gün ortası için ayrı öğle tabakları.</p>
+          <p class="saat"><Deger alan={s.ogle} /></p>
+          <p><Bekliyor ne="gel-al var mı?" /></p>
+        </article>
+        <article class="kart">
+          <h3>Akşam</h3>
+          <p>Akşam yemeği, şarap menüsü ve bazı akşamlar küçük sahnede etkinlik.</p>
+          <p class="saat"><Deger alan={s.aksam} /></p>
+          <p>Mutfak kapanış: <Deger alan={s.mutfakKapanis} /></p>
+        </article>
+      </div>
+      <p class="kucuk-not">Kapalı gün: <Deger alan={s.kapaliGun} /></p>
+    </div>
+  </section>
+
+  <!-- 4. Menü -->
+  <section class="bolum" id="menu">
+    <div class="kap">
+      <p class="ust-baslik">Menü</p>
+      <h2>Yaklaşık 30 yemek, öğleye ayrı seçenekler</h2>
+      <p>Başlangıçlar, ana yemekler, öğle tabakları ve tatlılar. Tam menü ve fiyatlar menü sayfasında.</p>
+      <div class="foto-izgara">
+        <Foto ne="öne çıkan yemek 1" oran="1 / 1" />
+        <Foto ne="öne çıkan yemek 2" oran="1 / 1" />
+        <Foto ne="öne çıkan yemek 3" oran="1 / 1" />
+      </div>
+      <a href="/menu" class="dugme" data-olay="menu_goruntule">Menüyü gör</a>
+    </div>
+  </section>
+
+  <!-- 5. Etkinlikler: program yoksa bölüm hiç gösterilmez (brif §3) -->
+  {isletme.etkinlikler.length > 0 && (
+    <section class="bolum koyu" id="etkinlikler">
+      <div class="kap">
+        <p class="ust-baslik">Etkinlikler</p>
+        <h2>Küçük sahnede</h2>
+        <ul class="etkinlik-liste">
+          {isletme.etkinlikler.map((e) => (
+            <li><span class="tarih">{e.tarih}</span><strong>{e.baslik}</strong>{e.aciklama && <span>{e.aciklama}</span>}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- 6. Grup & özel organizasyon — form yok (KVKK metni hukuki kontrolden geçmeden) -->
+  <section class="bolum" id="grup">
+    <div class="kap iki-kolon">
+      <Foto ne="sahne alanı" />
+      <div>
+        <p class="ust-baslik">Grup & özel organizasyon</p>
+        <h2>Kalabalık geliyorsanız</h2>
+        <p>Doğum günü, ekip yemeği ya da küçük bir kutlama için bize yazın. Sahne alanı yaklaşık 25–30 kişi oturmalı, 50–60 kişi ayakta ağırlar.</p>
+        <p>Talepler için: <Deger alan={isletme.grupIletisim} /></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Ulaşım — harita pini kesinleşmedi, gömülü harita yok -->
+  <section class="bolum koyu" id="ulasim">
+    <div class="kap iki-kolon">
+      <div>
+        <p class="ust-baslik">Ulaşım</p>
+        <h2>Beysupark AVM, Çayyolu</h2>
+        <p class="adres">{tamAdres()}</p>
+        {!isletme.adres.sokak.dogrulandi && <p><Bekliyor ne="resmî adres, birim no ve harita pini" /></p>}
+        <p>AVM içinde giriş: <Deger alan={isletme.girisTarifi} /></p>
+        <p>Otopark: <Deger alan={isletme.otopark} /></p>
+        {isletme.haritaLinki.deger
+          ? <a href={isletme.haritaLinki.deger} class="dugme" rel="noopener" data-olay="yol_tarifi_tikla">Haritada aç</a>
+          : <p><Bekliyor ne={isletme.haritaLinki.bekleyen} /></p>}
+      </div>
+      <div class="harita-yer" aria-hidden="true"><span>Harita<br /><small>pin kesinleşince eklenecek</small></span></div>
+    </div>
+  </section>
+
+  <!-- 8. Rezervasyon / iletişim & paket sipariş -->
+  <section class="bolum" id="iletisim">
+    <div class="kap kartlar">
+      <article class="kart acik">
+        <p class="ust-baslik">Rezervasyon</p>
+        <h2>Masanızı ayırın</h2>
+        <p><Deger alan={isletme.rezervasyon} /></p>
+        <p>Telefon: {isletme.telefon.deger
+          ? <a href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a>
+          : <Bekliyor ne={isletme.telefon.bekleyen} />}</p>
+        <p>WhatsApp: {isletme.whatsapp.deger
+          ? <a href={`https://wa.me/${isletme.whatsapp.deger.replace(/\D/g, '')}`} rel="noopener" data-olay="whatsapp_tikla">Mesaj gönder</a>
+          : <Bekliyor ne={isletme.whatsapp.bekleyen} />}</p>
+      </article>
+      <article class="kart acik" id="siparis">
+        <p class="ust-baslik">Paket sipariş</p>
+        <h2>Eve, ofise</h2>
+        {siparisVar
+          ? <div class="dugmeler">{isletme.siparisPlatformlari.map((p) => (
+              <a href={p.url} class="dugme ikincil" rel="noopener" data-olay="siparis_platform_tikla" data-platform={p.ad}>{p.ad}</a>
+            ))}</div>
+          : <p><Bekliyor ne="paket servis platformları ve saatleri" /></p>}
+      </article>
+    </div>
+  </section>
+</Base>

@@ -4,7 +4,8 @@ Yanıt geldikçe işaretle ve yanına tarih + kaynak yaz.
 
 ## Deniz'in kararı
 
-- [ ] Teknik yığın: A (statik), B (statik + CMS/Sheets) veya C (site kurucu)?
+- [x] Teknik yığın: **A — Astro statik**, menü `src/data/menu.ts` dosyasında (15 Ekim 2026, Deniz)
+- [x] Görsel yön: logo/fotoğraf gelene kadar geçici nötr tasarım (15 Ekim 2026, Deniz)
 - [ ] Alan adı: hangisi, kimin adına, kim satın alacak?
 - [ ] Görsel kimlik: mevcut Müjgan kimliği mi kullanılacak, yenilenecek mi?
 - [ ] Site sadece Türkçe mi?
@@ -22,3 +23,13 @@ Yanıt geldikçe işaretle ve yanına tarih + kaynak yaz.
 - [ ] Logo dosyası ve gerçek fotoğraflar ne zaman gelir?
 - [ ] Otopark ve AVM giriş/çıkış saatleri
 - [ ] Grup/özel organizasyon talepleri kime gidecek?
+- [ ] Öğle servisinde gel-al var mı?
+- [ ] Alerjen bilgilendirme metni (menü sayfası altı)
+- [ ] Taşınma hikâyesi taslağı onayı: korunanlar / yenilikler neler?
+
+## Yayın öncesi kontrol
+
+- [ ] Sitede `[DOLDURULACAK` kalmadı (`grep -r DOLDURULACAK dist/`)
+- [ ] `src/data/isletme.ts` → `yayinda: true` (şu an noindex)
+- [ ] Alan adı seçilince `astro.config.mjs` içine `site` eklenecek
+- [ ] Ölçüm aracı seçimi (olaylar şimdilik `dataLayer`'a yazılıyor)

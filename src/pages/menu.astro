@@ -1,0 +1,45 @@
+---
+// QR menü sayfası: mobilde hızlı, kategori bazlı, fiyatlı.
+import Base from '../layouts/Base.astro';
+import Bekliyor from '../components/Bekliyor.astro';
+import { menu, fiyatYaz } from '../data/menu';
+---
+<Base
+  baslik="Menü — Müjgan, Beysupark"
+  aciklama="Müjgan menüsü: başlangıçlar, ana yemekler, öğle seçenekleri, tatlılar ve içecekler."
+  sayfaOlayi="menu_goruntule"
+>
+  <section class="bolum menu-sayfa">
+    <div class="kap">
+      <p class="ust-baslik">Müjgan · Beysupark</p>
+      <h1>Menü</h1>
+
+      <nav class="kategori-nav" aria-label="Menü kategorileri">
+        {menu.map((k) => <a href={`#${k.id}`}>{k.baslik}</a>)}
+      </nav>
+
+      {menu.map((k) => (
+        <section class="kategori" id={k.id}>
+          <h2>{k.baslik}</h2>
+          {k.not && <p class="kucuk-not">{k.not}</p>}
+          {k.kalemler.length === 0
+            ? <p><Bekliyor ne={`${k.baslik.toLocaleLowerCase('tr')} kalemleri ve fiyatları`} /></p>
+            : <ul class="kalemler">
+                {k.kalemler.map((m) => (
+                  <li>
+                    <div class="kalem-ust">
+                      <span class="kalem-ad">{m.ad}{m.ogle && <span class="rozet">Öğle</span>}</span>
+                      <span class="fiyat">{m.fiyat === null ? <Bekliyor ne="fiyat" /> : fiyatYaz(m.fiyat)}</span>
+                    </div>
+                    {m.aciklama && <p>{m.aciklama}</p>}
+                    {m.icerik && <p class="kucuk-not">{m.icerik}</p>}
+                  </li>
+                ))}
+              </ul>}
+        </section>
+      ))}
+
+      <p class="kucuk-not">Alerjen bilgisi için lütfen servis ekibine sorun. <Bekliyor ne="alerjen bilgilendirme metni, işletme onayı" /></p>
+    </div>
+  </section>
+</Base>
