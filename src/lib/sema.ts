@@ -1,5 +1,5 @@
 // JSON-LD (schema.org) üreticileri. Doğrulanmamış alan girmez (CLAUDE.md).
-import { isletme } from '../data/isletme';
+import { isletme, telUluslararasi } from '../data/isletme';
 import { menu } from '../data/menu';
 import { etkinlikler } from '../data/program';
 import { ana } from './icerik';
@@ -27,7 +27,7 @@ export const isletmeSema = () => {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     opens: isletme.saatler.acilis, closes: isletme.saatler.kapanis }];
-  if (isletme.telefon) d.telephone = isletme.telefon;
+  if (isletme.telefon) d.telephone = telUluslararasi(isletme.telefon);
   return d;
 };
 

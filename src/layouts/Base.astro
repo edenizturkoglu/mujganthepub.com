@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { isletme, rezervasyon } from '../data/isletme';
+import { isletme, rezervasyon, telUluslararasi } from '../data/isletme';
 import { hafta } from '../data/program';
 import { seo as seoTum, ozelSayfalar, type Seo } from '../lib/icerik';
 import Logo from '../components/Logo.astro';
@@ -89,7 +89,7 @@ const ekMenu = ozelSayfalar.filter((p) => p.menudeGoster);
           <b>{isletme.tamAd}</b><br />
           {isletme.adres.sokak}, {isletme.adres.mekan}<br />
           {isletme.adres.postaKodu} {isletme.adres.ilce} / {isletme.adres.il} · Her gün {isletme.saatler.acik}
-          {isletme.telefon && <><br /><a href={`tel:${isletme.telefon.replace(/\s/g, '')}`} data-olay="telefon_tikla">{isletme.telefon}</a></>}
+          {isletme.telefon && <><br /><a href={`tel:${telUluslararasi(isletme.telefon)}`} data-olay="telefon_tikla">{isletme.telefon}</a></>}
         </address>
       </div>
     </footer>

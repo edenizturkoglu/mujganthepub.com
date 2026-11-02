@@ -16,6 +16,8 @@ export const waNumara = (n: string) => {
   else if (d.length === 10 && d.startsWith('5')) d = '90' + d;    // 5xx… → 905xx…
   return d;
 };
+/** Arama bağlantısı ve yapısal veri için: "+905360499699". */
+export const telUluslararasi = (n: string) => '+' + waNumara(n);
 const WA_MESAJ = 'Merhaba, rezervasyon yapmak istiyorum.';
 
 /** Rezervasyon kanalı: WhatsApp girilene kadar Instagram mesajı. */
