@@ -155,6 +155,111 @@
   "ozel": {
     "ust": "Özel gün",
     "baslik": "Etkinliğini Müjgân'da yap",
-    "metin": "Doğum günü, ekip yemeği, mezuniyet buluşması. Sahne önünü ve menüyü grubuna göre ayarlayalım."
+    "metin": "Kutlama, buluşma, ekip yemeği. Ne kutladığını ve kaç kişi olduğunuzu yaz; masanı, sahne önünü ve menüyü birlikte ayarlayalım.",
+    "olgular": [
+      {
+        "deger": "~300",
+        "etiket": "kişilik mekân"
+      },
+      {
+        "deger": "25–30",
+        "etiket": "kişi sahne önünde, oturarak"
+      },
+      {
+        "deger": "50–60",
+        "etiket": "kişi sahne önünde, ayakta"
+      },
+      {
+        "deger": "10.30–01.00",
+        "etiket": "her gün açık, mutfak dahil"
+      }
+    ],
+    "turler": [
+      {
+        "id": "dogum-gunu",
+        "baslik": "Doğum günü",
+        "metin": "Uzun bir masa, ortada paylaşmalık tabaklar, etrafında en sevdiklerin. Perşembeye denk gelirse karaoke, hafta sonuna denk gelirse sahnede canlı müzik de kutlamaya katılır.",
+        "gorsel": {
+          "src": "/img/dsc06717.jpg",
+          "alt": "Müjgân'da gülümseyen bir misafir",
+          "konum": "50% 25%",
+          "w": 733,
+          "h": 1100
+        }
+      },
+      {
+        "id": "ekip-yemegi",
+        "baslik": "Ekip yemeği",
+        "metin": "Öğlen toplantı sonrası ya da akşam iş çıkışı. Bowl'dan burgere, pizzadan ızgaraya herkesin kendine bir şey bulduğu bir menü; kalabalık masalar için yer düzenini önceden ayarlayalım.",
+        "gorsel": {
+          "src": "/img/hgp-5962.jpg",
+          "alt": "Müjgân'da yemek ve içeceklerle dolu bir masa",
+          "w": 1100,
+          "h": 733
+        }
+      },
+      {
+        "id": "mezuniyet",
+        "baslik": "Mezuniyet buluşması",
+        "metin": "Diplomayı aldın, sıra kutlamada. Sınıfça, bölümce ya da yıllar sonra yeniden: 100. Yıl günlerinden tanıyanlar Müjgân'ın yeni adresinde buluşsun.",
+        "gorsel": {
+          "src": "/img/hgp-6015.jpg",
+          "alt": "Müjgân'da kadeh kaldıran iki misafir",
+          "w": 2000,
+          "h": 1333
+        }
+      },
+      {
+        "id": "nikah-sonrasi",
+        "baslik": "Nikâh sonrası kutlama",
+        "metin": "Nikâhtan çıkıp yakın çevrenle aynı sofrada buluşmak için. Hafta sonu akşamları sahnede canlı müzik var; tarihi ve kişi sayısını yaz, gerisini birlikte planlayalım.",
+        "gorsel": {
+          "src": "/img/dsc06657.jpg",
+          "alt": "Müjgân sahnesinde canlı müzik yapan grup",
+          "konum": "50% 30%",
+          "w": 1067,
+          "h": 1600
+        }
+      },
+      {
+        "id": "veda-hosgeldin",
+        "baslik": "Veda ya da hoş geldin",
+        "metin": "Ekipten ayrılan biri için son bir masa ya da yeni gelen biri için ilk akşam. Perşembe karaoke, tanışmanın en hızlı yolu.",
+        "gorsel": {
+          "src": "/img/hgp-6041.jpg",
+          "alt": "Müjgân'da paylaşılan tabaklar ve içecekler",
+          "w": 2000,
+          "h": 1333
+        }
+      },
+      {
+        "id": "yil-sonu",
+        "baslik": "Yıl sonu kutlaması",
+        "metin": "Şirketinin, ekibinin ya da arkadaş grubunun yıl sonu buluşması için Aralık'taki tarihini erkenden ayırt; masa düzenini ve menüyü grubuna göre konuşalım.",
+        "gorsel": {
+          "src": "/img/dsc06578.jpg",
+          "alt": "Müjgân'da akşam saatlerinde misafirler",
+          "w": 733,
+          "h": 1100
+        }
+      }
+    ],
+    "adimlar": {
+      "baslik": "Nasıl ilerliyor?",
+      "liste": [
+        {
+          "baslik": "Yaz",
+          "metin": "WhatsApp'tan tarih, saat, kişi sayısı ve ne kutladığını yaz."
+        },
+        {
+          "baslik": "Planlayalım",
+          "metin": "Masa düzenini, sahne önünü ve menüyü birlikte belirleyelim."
+        },
+        {
+          "baslik": "Gel, kutla",
+          "metin": "Masan hazır, mutfak açık. Gerisi Müjgân'da."
+        }
+      ]
+    }
   }
 }

@@ -52,6 +52,53 @@
       "link": "/etkinlikler/"
     }
   },
+  "anlar": {
+    "ust": "Sana göre Müjgân",
+    "baslik": "Hangi saatte gelirsen gel",
+    "metin": "Antrenmandan, toplantıdan ya da alışverişten çıkıp uğrayanlar için.",
+    "kartlar": [
+      {
+        "ikon": "spor",
+        "saat": "Öğle ve akşam",
+        "baslik": "Spor çıkışı",
+        "metin": "Grilled Halloumi Bowl, Izgara Tavuk, Somon Izgara: tek tabakta, doyurucu.",
+        "link": {
+          "etiket": "Bowl ve ızgaralar →",
+          "url": "/menu/#bowls"
+        }
+      },
+      {
+        "ikon": "laptop",
+        "saat": "10.30'dan itibaren",
+        "baslik": "Laptopla gelenler",
+        "metin": "Evden çıkıp başka bir masada çalışmak isteyenlere: sabah 10.30'da açığız, mutfak gün boyu açık. Öğlen bir tost ya da bowl, akşamüstü kısa bir mola.",
+        "link": {
+          "etiket": "Menüye bak →",
+          "url": "/menu/"
+        }
+      },
+      {
+        "ikon": "bag",
+        "saat": "Gün boyu",
+        "baslik": "Alışveriş molası",
+        "metin": "Beysupark AVM'nin içindeyiz. Torbaları bırak, bir sepet Crispy Chicken ya da Truffle Parmesan Fries'la soluklan.",
+        "link": {
+          "etiket": "Paylaşmalıklar →",
+          "url": "/menu/#paylasmalik"
+        }
+      },
+      {
+        "ikon": "is",
+        "saat": "Hafta içi akşam",
+        "baslik": "İş çıkışı",
+        "metin": "Mesai bitti, akşam yeni başlıyor: paylaşmalık tabaklar, ekip muhabbeti, perşembe karaoke.",
+        "link": {
+          "etiket": "Haftanın programı →",
+          "url": "/etkinlikler/"
+        }
+      }
+    ]
+  },
   "ritim": {
     "ust": "Haftanın ritmi",
     "baslik": "Her akşamın bir bahanesi var",
@@ -99,7 +146,8 @@
   "grup": {
     "ust": "Grup ve kutlama",
     "baslik": "Doğum günü, ekip yemeği, veda",
-    "metin": "Kalabalık geliyorsanız önceden yazın; masanızı, sahne önünü ve menüyü birlikte ayarlayalım."
+    "metin": "Doğum günü, ekip yemeği, mezuniyet, nikâh sonrası kutlama. Kalabalık geliyorsanız önceden yazın; masanızı, sahne önünü ve menüyü birlikte ayarlayalım.",
+    "link": "Özel gün seçenekleri →"
   },
   "instagram": {
     "baslik": "Müjgân'da bir akşam",
@@ -163,7 +211,7 @@
       },
       {
         "soru": "Nasıl rezervasyon yapabilirim?",
-        "cevap": "Instagram'dan @mujganthepub hesabımıza mesaj atman yeterli. Kalabalık gruplar ve doğum günleri için önceden yazmanı öneririz."
+        "cevap": "WhatsApp'tan 0536 049 96 99 numarasına yazman yeterli. Doğum günü, ekip yemeği gibi kalabalık gruplar için önceden yazmanı öneririz."
       },
       {
         "soru": "Paket servisiniz var mı?",

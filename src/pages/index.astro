@@ -60,6 +60,27 @@ const h = ana.hero;
     </div>
   </section>
 
+  <section class="sec" style="padding-top:0" aria-labelledby="anlar-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label" {...cms('ana:anlar.ust')}>{ana.anlar.ust}</p>
+        <h2 id="anlar-title" {...cms('ana:anlar.baslik')}>{ana.anlar.baslik}</h2>
+        <p {...cms('ana:anlar.metin')}>{ana.anlar.metin}</p>
+      </div>
+      <div class="anlar" {...cmsListe('ana:anlar.kartlar')}>
+        {ana.anlar.kartlar.map((k, i) => (
+          <a class="an" href={k.link.url} data-cms-oge={i} data-cms-link={`ana:anlar.kartlar.${i}.link.url`} data-olay="kitle_karti_tikla" data-tur={k.ikon}>
+            <span class="an-ikon"><Ikon ad={k.ikon as any} /></span>
+            <span class="an-saat" {...cms(`ana:anlar.kartlar.${i}.saat`)}>{k.saat}</span>
+            <h3 {...cms(`ana:anlar.kartlar.${i}.baslik`)}>{k.baslik}</h3>
+            <p {...cms(`ana:anlar.kartlar.${i}.metin`)}>{k.metin}</p>
+            <span class="link-arrow" {...cms(`ana:anlar.kartlar.${i}.link.etiket`)}>{k.link.etiket}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="sec" style="padding-top:0" aria-labelledby="ritim-title">
     <div class="wrap">
       <div class="sec-head-row">
@@ -125,7 +146,7 @@ const h = ana.hero;
         <p class="label" {...cms('ana:grup.ust')}>{ana.grup.ust}</p>
         <h2 {...cms('ana:grup.baslik')}>{ana.grup.baslik}</h2>
         <p {...cms('ana:grup.metin')}>{ana.grup.metin}</p>
-        <div class="btns"><RezButon /></div>
+        <div class="btns"><RezButon tur="grup" mesaj="Merhaba, kalabalık bir grup için Müjgân'da yer ayırtmak istiyorum. Tarih: … Kişi sayısı: …" /><a class="link-arrow" href="/etkinlikler/#ozel" {...cms('ana:grup.link')}>{ana.grup.link}</a></div>
       </div>
     </div>
   </section>

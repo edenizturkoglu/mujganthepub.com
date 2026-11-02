@@ -21,7 +21,7 @@ export const telUluslararasi = (n: string) => '+' + waNumara(n);
 const WA_MESAJ = 'Merhaba, rezervasyon yapmak istiyorum.';
 
 /** Rezervasyon kanalı: WhatsApp girilene kadar Instagram mesajı. */
-export const rezervasyon = () =>
+export const rezervasyon = (mesaj = WA_MESAJ) =>
   isletme.whatsapp
-    ? { url: `https://wa.me/${waNumara(isletme.whatsapp)}?text=${encodeURIComponent(WA_MESAJ)}`, etiket: "WhatsApp'tan yaz", kanal: 'whatsapp' }
+    ? { url: `https://wa.me/${waNumara(isletme.whatsapp)}?text=${encodeURIComponent(mesaj)}`, etiket: "WhatsApp'tan yaz", kanal: 'whatsapp' }
     : { url: isletme.instagram.dm, etiket: "Instagram'dan yaz", kanal: 'instagram' };

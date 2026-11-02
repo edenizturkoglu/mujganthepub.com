@@ -30,6 +30,9 @@ Yanıt geldikçe işaretle ve yanına tarih + kaynak yaz.
 - [x] Logo ve fotoğraflar geldi (Drive)
 - [ ] Otopark ve AVM giriş/çıkış saatleri
 - [ ] Grup/özel organizasyon talepleri kime gidecek?
+- [ ] Özel günler (Etkinlikler → "Etkinliğini Müjgân'da yap", 2 Kasım): sitede vaat edilmeyen ama sorulacak konular — dışarıdan pasta/süsleme getirilebilir mi, grup menüsü / kişi başı fiyat, kapora, mekânın bir bölümünü kapatma, sahne/mikrofon/kendi müziği kullanımı, en az–en çok kişi sayısı
+- [ ] "Laptopla gelenler" kartı (ana sayfa): Wi-Fi ve priz var mı, gündüz müzik seviyesi uygun mu? Doğrulanınca karta eklenir; şimdilik yalnızca saat ve mutfak bilgisi yazıyor
+- [ ] "Spor çıkışı" kartı: "sağlıklı" denmedi (sağlık iddiası kuralı). Kalori/protein verisi gelirse eklenebilir
 - [ ] Öğle servisinde gel-al var mı?
 - [ ] Alerjen bilgilendirme metni (menü sayfası altı)
 - [ ] Taşınma hikâyesi taslağı onayı: korunanlar / yenilikler neler?

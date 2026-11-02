@@ -76,13 +76,38 @@ const tarihli = etkinlikler.map((x) => ({ x, i: e.etkinlikler.indexOf(x) }));
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="ozel-title">
+  <section class="sec ozel" id="ozel" aria-labelledby="ozel-title">
     <div class="wrap">
-      <div class="panel panel-kraft">
+      <div class="sec-head">
         <p class="label" {...cms('etkinlikler:ozel.ust')}>{e.ozel.ust}</p>
         <h2 id="ozel-title" {...cms('etkinlikler:ozel.baslik')}>{e.ozel.baslik}</h2>
         <p {...cms('etkinlikler:ozel.metin')}>{e.ozel.metin}</p>
-        <div class="btns"><RezButon sinif="btn-dark" /></div>
+      </div>
+      <dl class="olgular" {...cmsListe('etkinlikler:ozel.olgular')}>
+        {e.ozel.olgular.map((o, i) => (
+          <div data-cms-oge={i}><dt class="num" {...cms(`etkinlikler:ozel.olgular.${i}.deger`)}>{o.deger}</dt><dd {...cms(`etkinlikler:ozel.olgular.${i}.etiket`)}>{o.etiket}</dd></div>
+        ))}
+      </dl>
+      <div class="vesile" {...cmsListe('etkinlikler:ozel.turler')}>
+        {e.ozel.turler.map((t, i) => (
+          <article class="vesile-kart" id={t.id} data-cms-oge={i}>
+            <div class="vesile-img"><Gorsel g={t.gorsel} cms={`etkinlikler:ozel.turler.${i}.gorsel`} /></div>
+            <div class="vesile-body">
+              <h3 {...cms(`etkinlikler:ozel.turler.${i}.baslik`)}>{t.baslik}</h3>
+              <p {...cms(`etkinlikler:ozel.turler.${i}.metin`)}>{t.metin}</p>
+              <RezButon sinif="btn-line" etiket="Tarih sor" tur={t.id} mesaj={`Merhaba, ${t.baslik.toLocaleLowerCase('tr-TR')} için Müjgân'da yer ayırtmak istiyorum. Tarih: … Kişi sayısı: …`} />
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="panel panel-kraft adimlar">
+        <h2 {...cms('etkinlikler:ozel.adimlar.baslik')}>{e.ozel.adimlar.baslik}</h2>
+        <ol {...cmsListe('etkinlikler:ozel.adimlar.liste')}>
+          {e.ozel.adimlar.liste.map((a, i) => (
+            <li data-cms-oge={i}><b {...cms(`etkinlikler:ozel.adimlar.liste.${i}.baslik`)}>{a.baslik}</b><span {...cms(`etkinlikler:ozel.adimlar.liste.${i}.metin`)}>{a.metin}</span></li>
+          ))}
+        </ol>
+        <div class="btns"><RezButon sinif="btn-dark" etiket="WhatsApp'tan planla" tur="ozel-gun" mesaj="Merhaba, Müjgân'da özel bir gün için yer ayırtmak istiyorum. Ne kutluyoruz: … Tarih: … Kişi sayısı: …" /></div>
       </div>
     </div>
   </section>

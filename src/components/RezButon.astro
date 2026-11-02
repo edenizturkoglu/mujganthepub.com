@@ -3,9 +3,10 @@
 // değilse sitenin düğmesi (Instagram mesajına gider).
 import Ikon from './Ikon.astro';
 import { rezervasyon } from '../data/isletme';
-interface Props { etiket?: string; sinif?: string; ikonsuz?: boolean }
-const rez = rezervasyon();
+interface Props { etiket?: string; sinif?: string; ikonsuz?: boolean; mesaj?: string; tur?: string }
+const { mesaj, tur } = Astro.props;
+const rez = rezervasyon(mesaj);
 const wa = rez.kanal === 'whatsapp';
 const { etiket = rez.etiket, sinif = 'btn-gold', ikonsuz = false } = Astro.props;
 ---
-<a class:list={['btn', wa ? 'btn-wa' : sinif]} href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>{(wa || !ikonsuz) && <Ikon ad={wa ? 'wa' : 'chat'} />}{etiket}</a>
+<a class:list={['btn', wa ? 'btn-wa' : sinif]} href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal} data-tur={tur}>{(wa || !ikonsuz) && <Ikon ad={wa ? 'wa' : 'chat'} />}{etiket}</a>
