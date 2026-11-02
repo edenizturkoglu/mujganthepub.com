@@ -135,11 +135,11 @@
       "id": "pizzalar",
       "baslik": "Pizzalar",
       "foto": {
-        "src": "/img/hgp-6088.jpg",
+        "src": "/img/yukleme/hgp-5094-mvzdgtlh.jpg",
         "alt": "Masada pizza ve kokteyl",
-        "konum": "50% 70%",
-        "w": 733,
-        "h": 1100
+        "w": 1600,
+        "h": 1067,
+        "konum": "50% 70%"
       },
       "izgara": {
         "src": "/img/hgp-6110.jpg",
@@ -250,10 +250,10 @@
       "id": "ana-yemek",
       "baslik": "Ana Yemekler",
       "foto": {
-        "src": "/img/hgp-5369.jpg",
+        "src": "/img/yukleme/hgp-5437-mvzdh99t.jpg",
         "alt": "Köfte, közlenmiş biber ve soğanla servis tabağı",
-        "w": 1100,
-        "h": 733
+        "w": 1067,
+        "h": 1600
       },
       "izgara": {
         "src": "/img/hgp-5347.jpg",
