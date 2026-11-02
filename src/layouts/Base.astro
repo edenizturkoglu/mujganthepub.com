@@ -55,8 +55,8 @@ const haritaUrl = isletme.haritaLinki.deger!;
       <div class="wrap">
         <a class="brand" href="/" aria-label={`${isletme.tamAd} ana sayfa`}><Logo on="hd" /></a>
         <nav class="nav" aria-label="Ana menü">
-          <a href="/menu" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule">Menü</a>
-          <a href="/etkinlikler" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}>Etkinlikler</a>
+          <a href="/menu/" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule">Menü</a>
+          <a href="/etkinlikler/" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}>Etkinlikler</a>
           <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
         </nav>
@@ -70,8 +70,8 @@ const haritaUrl = isletme.haritaLinki.deger!;
       <div class="wrap">
         <a class="brand" href="/" aria-label={`${isletme.tamAd} ana sayfa`}><Logo on="ft" /></a>
         <nav aria-label="Alt menü">
-          <a href="/menu">Menü</a>
-          <a href="/etkinlikler">Etkinlikler</a>
+          <a href="/menu/">Menü</a>
+          <a href="/etkinlikler/">Etkinlikler</a>
           <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
           <a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">Instagram</a>
@@ -86,8 +86,8 @@ const haritaUrl = isletme.haritaLinki.deger!;
     </footer>
 
     <nav class="actionbar" aria-label="Hızlı erişim">
-      <a href="/menu" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule"><Ikon ad="menu" />Menü</a>
-      <a href="/etkinlikler" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}><Ikon ad="cal" />Etkinlikler</a>
+      <a href="/menu/" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule"><Ikon ad="menu" />Menü</a>
+      <a href="/etkinlikler/" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}><Ikon ad="cal" />Etkinlikler</a>
       <a href={haritaUrl} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
       <a class="ab-cta" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Rezervasyon</a>
     </nav>

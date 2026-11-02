@@ -38,7 +38,7 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
         <h1 id="hero-title"><span class="h1-eyebrow">{isletme.tamAd} · {isletme.adres.mekan}, {isletme.adres.il}</span>Müjgân biraz yer değiştirdi. <em>Keyfi hâlâ yerinde.</em></h1>
         <p class="lead">2015'ten beri Müjgân. Şimdi Çayyolu'da, Beysupark AVM'de, her gün {saat}: öğlen bowl ve ızgara, akşam kokteyl ve paylaşmalık, perşembe karaoke, hafta sonu sahnede canlı müzik.</p>
         <div class="btns">
-          <a class="btn btn-gold" href="/menu" data-olay="menu_goruntule"><Ikon ad="menu" />Menüye bak</a>
+          <a class="btn btn-gold" href="/menu/" data-olay="menu_goruntule"><Ikon ad="menu" />Menüye bak</a>
           <a class="btn btn-line" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
         </div>
       </div>
@@ -48,7 +48,7 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
         <span class="time num" data-t="time">Hafta içi 18.00'e kadar</span>
         <p data-t="text">Tüm içeceklerde %20 indirim.</p>
         <p class="open num">Açığız: {saat}</p>
-        <a class="link-arrow" href="/etkinlikler">Tüm etkinlikler →</a>
+        <a class="link-arrow" href="/etkinlikler/">Tüm etkinlikler →</a>
       </aside>
     </div>
   </section>
@@ -61,11 +61,11 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
     <div class="wrap">
       <div class="sec-head"><p class="label">Gündüz &amp; gece</p><h2 id="gun-title">Öğlen başka, akşam başka</h2></div>
       <div class="split">
-        <a class="tile" href="/menu#bowls">
+        <a class="tile" href="/menu/#bowls">
           <Gorsel src="/img/hgp-5477.jpg" alt="Tavuklu, edamameli ve domatesli bowl" />
           <div class="tile-body"><p class="label">Öğle</p><h3>Bowl, ızgara, <em>tost</em></h3><p>Spor çıkışı ya da iş arasında: doyurucu, hızlı, tek tabakta.</p></div>
         </a>
-        <a class="tile" href="/etkinlikler">
+        <a class="tile" href="/etkinlikler/">
           <Gorsel src="/img/dsc06657.jpg" alt="Müjgân sahnesinde şarkı söyleyen solist ve grup" konum="50% 30%" />
           <div class="tile-body"><p class="label">Akşam</p><h3>Kokteyl, sahne, <em>muhabbet</em></h3><p>Kırmızı perdenin önünde canlı müzik, masada paylaşmalıklar.</p></div>
         </a>
@@ -77,11 +77,11 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
     <div class="wrap">
       <div class="sec-head-row">
         <div class="sec-head"><p class="label">Haftanın ritmi</p><h2 id="ritim-title">Her akşamın bir bahanesi var</h2></div>
-        <a class="link-arrow" href="/etkinlikler">Tüm etkinlikler →</a>
+        <a class="link-arrow" href="/etkinlikler/">Tüm etkinlikler →</a>
       </div>
       <div class="posters">
         {geceler.map((g) => (
-          <a class="poster" href={`/etkinlikler#${g.id}`} data-dow={g.gun}>
+          <a class="poster" href={`/etkinlikler/#${g.id}`} data-dow={g.gun}>
             <div class="poster-img"><Gorsel src={g.afis} alt={`${g.baslik} afişi`} /></div>
             <div class="day"><b>{g.kisa}</b><span>{g.saat ?? ''}</span></div>
           </a>
@@ -94,11 +94,11 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
     <div class="wrap">
       <div class="sec-head-row">
         <div class="sec-head"><p class="label">Mutfak</p><h2 id="mutfak-title">Burgerden bowl'a, pizzadan ızgaraya</h2></div>
-        <a class="link-arrow" href="/menu" data-olay="menu_goruntule">Menünün tamamı →</a>
+        <a class="link-arrow" href="/menu/" data-olay="menu_goruntule">Menünün tamamı →</a>
       </div>
       <div class="bento">
         {izgara.map((k) => (
-          <a class={k.izgara?.sinif} href={`/menu#${k.id}`}>
+          <a class={k.izgara?.sinif} href={`/menu/#${k.id}`}>
             <Gorsel src={k.izgara!.src} alt={k.izgara!.alt} konum={k.izgara?.konum} />
             <span>{k.baslik}<small class="num">{fiyatYaz(enDusuk(k))}₺'den</small></span>
           </a>
@@ -113,7 +113,7 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
         <p class="label">Bar</p>
         <h2 id="bar-title">Bardan çıkan her şey <em class="it">bir hikâye</em></h2>
         <p>Çarkıfelekli sour'lar, fesleğenli ferahlar, dumanı üstünde servis edilenler. Bar ekibimiz her akşam tezgâhın başında.</p>
-        <div class="btns"><a class="btn btn-line" href="/etkinlikler#shake-brake">Çarşamba Shake Brake →</a></div>
+        <div class="btns"><a class="btn btn-line" href="/etkinlikler/#shake-brake">Çarşamba Shake Brake →</a></div>
       </div>
       <div class="glasses">
         <figure><Gorsel src="/img/hgp-5739.jpg" alt="Pipetle son dokunuşu yapılan yeşil kokteyl" /></figure>

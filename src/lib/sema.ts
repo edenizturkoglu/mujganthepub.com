@@ -18,7 +18,7 @@ export const isletmeSema = () => {
     description: "Çayyolu Beysupark AVM'de pub, kokteyl bar ve restoran: öğle ve akşam yemeği, paket servis, karaoke ve canlı müzik.",
     url: u(), image: [u('img/hgp-6015.jpg'), u('img/hgp-6041.jpg'), u('img/dsc06657.jpg')], logo: u('favicon.svg'),
     servesCuisine: ['Burger', 'Pizza', 'Bowl', 'Izgara', 'Kokteyl'], priceRange: '₺₺', currenciesAccepted: 'TRY',
-    acceptsReservations: true, hasMenu: u('menu'), foundingDate: isletme.kurulus,
+    acceptsReservations: true, hasMenu: u('menu/'), foundingDate: isletme.kurulus,
     sameAs: [isletme.instagram.url], areaServed: [...isletme.yakinSemtler, a.ilce],
   };
   if (a.sokak.dogrulandi) d.address = adres;
@@ -40,7 +40,7 @@ export const yolSema = (ad: string, yol: string) => ({ '@context': 'https://sche
   { '@type': 'ListItem', position: 1, name: isletme.tamAd, item: u() },
   { '@type': 'ListItem', position: 2, name: ad, item: u(yol) }] });
 
-export const menuSema = () => ({ '@context': 'https://schema.org', '@type': 'Menu', name: `${isletme.tamAd} Menü`, inLanguage: 'tr', url: u('menu'),
+export const menuSema = () => ({ '@context': 'https://schema.org', '@type': 'Menu', name: `${isletme.tamAd} Menü`, inLanguage: 'tr', url: u('menu/'),
   hasMenuSection: menu.map((k) => ({ '@type': 'MenuSection', name: k.baslik,
     hasMenuItem: k.kalemler.filter((x) => x.fiyat !== null).map((x) => ({ '@type': 'MenuItem', name: x.ad,
       offers: { '@type': 'Offer', price: String(x.fiyat), priceCurrency: 'TRY' } })) })) });
