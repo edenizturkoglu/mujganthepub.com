@@ -1,0 +1,13 @@
+---
+// Müjgân logosu (vektör, Tolga'nın gönderdiği müjgan 2027.pdf'ten). Renk: currentColor.
+// Aynı sayfada birden fazla kullanılınca SVG kimlikleri çakışmasın diye `on` öneki verilir.
+import ham from '../assets/logo.svg?raw';
+interface Props { on: string }
+const { on } = Astro.props;
+const svg = ham
+  .replace(/id="([^"]+)"/g, (_, i) => `id="${on}-${i}"`)
+  .replace(/(xlink:href|href)="#([^"]+)"/g, (_, a, i) => `${a}="#${on}-${i}"`)
+  .replace(/url\(#([^)]+)\)/g, (_, i) => `url(#${on}-${i})`)
+  .replace('<svg ', '<svg role="img" aria-label="Müjgân" ');
+---
+<Fragment set:html={svg} />

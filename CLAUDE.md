@@ -18,14 +18,17 @@ Tam iş bağlamı claude.ai'deki **"Müjgan"** projesinde `Mujgan-Claude-Devir.m
 |---|---|
 | Ad | **Müjgan** (karar). Classic ile ortaklık yok; Classic adı, yorumları, takipçileri, fotoğrafları sitede kullanılmaz. |
 | Eski yer | Ankara 100. Yıl — ODTÜ öğrencisi ağırlıklı pub (taşınma hikâyesinde geçebilir) |
-| Yeni yer | Beysupark AVM, Çayyolu. Kullanıcının verdiği adres: S. Saltoğlu Blv. No:209/36, 06810 Çankaya/Ankara. **Resmî adres, harita pini ve gerçek giriş henüz kesinleşmedi.** |
+| Yeni yer | Beysupark AVM, Çayyolu. Adres (Tolga, 28 Ekim 2026): Çayyolu Mah. S. Saltoğlu Blv. No: 209/16, 06810 Çankaya/Ankara. Google Haritalar'da "Müjgân Çayyolu". Giriş/otopark tarifi bekleniyor. |
 | Hizmet | Öğle ve akşam yemeği, küçük sahnede etkinlikler, paket servis (kendi kuryesi yok; platform henüz belli değil) |
-| Menü | ~30 yemek + 10 alkollü kokteyl; şarap menüsü, sıcak şarap, şarap tabağı, single malt. Öğlen spor salonu kitlesine sağlıklı seçenekler. Kalemler/fiyatlar **henüz yok**. |
+| Menü | 34 yemek, fiyatlı (Tolga, menü.xlsx, 31 Ekim 2026) → `src/data/menu.ts`. İçecek/kokteyl menüsü henüz yok. |
+| Saatler | Her gün 10.30–01.00; mutfak açık olduğu her saat (Deniz, 2 Kasım 2026) |
+| Rezervasyon | WhatsApp (numara bu hafta gelecek). O zamana kadar Instagram DM. |
+| Program | Hafta içi Social Hour (18.00'e kadar), salı Chill Day, çarşamba Shake Brake, perşembe Karaoke 20.00, hafta sonu canlı müzik 20.00 → `src/data/program.ts` |
 | Kapasite | Mekân ~300 kişi; küçük sahne 25–30 oturmalı / 50–60 ayakta |
 | Kitle | Çalışan genç ve orta yaş. Kesin yaş aralığı, brunch veya öğrencileri dışlama kararı **yok** — sitede bu yönde ifade kullanma. |
 | Fiyat konumu | Pinkel'in "bir tık altında" (görüşme notu; ürün fiyatı yok) |
 | Ulaşım | Arabalı müşteri bekleniyor; otopark sorunu olmadığı aktarıldı (doğrulanmadı). Polis çevirmesiyle ilgili görüşme notu **asla** içerikte kullanılmaz. |
-| Açılış | Ekim 2026 ikinci yarısı hedefleniyordu; kesin tarih doğrulanmadı. |
+| Açılış | 23 Ekim 2026 (Drive klasörü "23 Ekim Açılış") |
 | Instagram | @mujganthepub (ad korunuyor). Eski referans: @mujgan100yil. |
 
 ## Sitenin işi
@@ -36,7 +39,7 @@ Ayrıntılı brif: `docs/site-brifi.md`. Açık sorular: `docs/acik-sorular.md`.
 
 ## Kırmızı çizgiler
 
-- **Alkol:** Türkiye'de alkollü içki reklam/tanıtım mevzuatı var (TADAB). Kokteyl/şarap/viski ürün bilgisi menüde listelenebilir; ama ana sayfa kahramanında alkol öne çıkarma, indirim, "happy hour", promosyon, özendirici dil kullanma. Yayın öncesi güncel mevzuat kontrol edilecek.
+- **Alkol:** Türkiye'de alkollü içki reklam/tanıtım mevzuatı var (TADAB). Kokteyl/şarap/viski ürün bilgisi menüde listelenebilir; özendirici dil kullanma. **2 Kasım 2026 itibarıyla sitede ajansın kampanya afişleri ve indirim metinleri (Social Hour, Chill Day, Shake Brake) yayında — Deniz afişleri site için gönderdi; mevzuat onayı Tolga'dan bekleniyor (docs/acik-sorular.md).** Yeni alkol promosyonu ekleme.
 - **Sağlık iddiası yok:** "Sağlıklı" seçeneklerde kalori/protein gibi değerler yalnızca işletmenin doğruladığı veriyle yazılır.
 - **Sosyal kanıt:** Yalnızca Müjgan'ın kendi, izinli yorumları. Classic veya eski adres yorumları "yeni mekân yorumu" gibi sunulmaz.
 - **Kişisel veri (KVKK):** Rezervasyon/iletişim formu kişisel veri topluyorsa aydınlatma metni ve izinler hukuki kontrol olmadan canlıya alınmaz. Pazarlama izni rezervasyon izninden ayrı.
@@ -44,6 +47,11 @@ Ayrıntılı brif: `docs/site-brifi.md`. Açık sorular: `docs/acik-sorular.md`.
 
 ## Teknik
 
-- Yığın (stack) **henüz seçilmedi** — bkz. `docs/site-brifi.md` §6. Karar verilmeden iskelet kurma.
+- Yığın: **Astro 7, statik**. Sayfalar: `/` (ana), `/menu`, `/etkinlikler`, `/kvkk` (linksiz, noindex). Tüm içerik `src/data/` altında: `isletme.ts`, `menu.ts`, `program.ts`, `sss.ts`.
+- Tasarım: koyu şişe yeşili zemin, logo altını, krem "kâğıt" menü; yazı tipleri Young Serif + Figtree, `public/fonts/` altından (Google'a istek yok). Stil: `src/styles/global.css`.
+- Fotoğraflar `public/img/` (Drive: "23 Ekim Açılış/Fotolar" ve fotoğrafçı klasörü, 1100px'e küçültülmüş), afişler `public/posters/`. Boyutlar `src/data/gorseller.json` (yeni görsel eklenince güncelle).
+- Yayın: **GitHub Pages**, alan adı `mujganthepub.com` (GoDaddy DNS → GitHub Pages IP'leri). `main`'e push → `.github/workflows/yayin.yml` derleyip yayınlar; her pazartesi otomatik yeniden derlenir (etkinlik şeması tazelenir).
+- `isletme.yayinda = true`: yer tutucular (`Bekliyor`) canlıda görünmez, eksik alanlar gizlenir. Taslak bakmak için geçici olarak `false` yap.
+- SEO: sayfa başına başlık/açıklama/canonical, JSON-LD (`src/lib/sema.ts`: BarOrPub+Restaurant, WebSite, FAQPage, Menu, MusicEvent/Event, BreadcrumbList), `sitemap.xml`, `robots.txt`.
 - Hedefler: hızlı mobil yükleme, yerel SEO (Restaurant schema / JSON-LD, tutarlı ad-adres-telefon), Google İşletme Profili ve Instagram'dan tek tık erişim, QR menü bağlantısı, ölçüm (rezervasyon/arama/yol tarifi/sipariş tıklamaları ayrı olay olarak).
 - Tıklama ölçümü gerçekleşmiş ziyaret sayılmaz; raporlarda öyle yazılmaz.

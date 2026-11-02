@@ -1,45 +1,62 @@
 ---
-// QR menü sayfası: mobilde hızlı, kategori bazlı, fiyatlı.
 import Base from '../layouts/Base.astro';
+import Gorsel from '../components/Gorsel.astro';
+import Ikon from '../components/Ikon.astro';
 import Bekliyor from '../components/Bekliyor.astro';
-import { menu, fiyatYaz } from '../data/menu';
+import { isletme, rezervasyon } from '../data/isletme';
+import { menu, toplamKalem, fiyatYaz } from '../data/menu';
+import { menuSema, yolSema } from '../lib/sema';
+
+const rez = rezervasyon();
+const saat = isletme.saatler.acik.deger;
 ---
 <Base
-  baslik="Menü — Müjgan, Beysupark"
-  aciklama="Müjgan menüsü: başlangıçlar, ana yemekler, öğle seçenekleri, tatlılar ve içecekler."
-  sayfaOlayi="menu_goruntule"
+  baslik="Menü ve Fiyatlar · Müjgân Çayyolu (Beysupark AVM)"
+  aciklama="Müjgân Çayyolu menüsü ve güncel fiyatlar: burger, kore tost, basket, pizza, bowl ve ana yemekler. Beysupark AVM, Çayyolu / Ankara."
+  yol="menu" sayfa="menu" kapakGorseli="/img/hgp-6041.jpg" sayfaOlayi="menu_goruntule"
+  sema={[menuSema(), yolSema('Menü', 'menu')]}
 >
-  <section class="bolum menu-sayfa">
-    <div class="kap">
-      <p class="ust-baslik">Müjgan · Beysupark</p>
-      <h1>Menü</h1>
+  <section class="hero page-hero" aria-labelledby="menu-title">
+    <div class="hero-media"><Gorsel src="/img/hgp-6041.jpg" alt="Müjgân Çayyolu menüsünden bowl, tost, patates ve içeceklerle dolu masa" konum="50% 45%" oncelik /></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / Menü</p>
+        <h1 id="menu-title">Menü</h1>
+        <p class="lead">Burger, kore tost, basket, pizza, bowl ve ana yemekler: {toplamKalem()} tabak, güncel fiyatlarıyla. Mutfak her gün {saat} açık.</p>
+      </div>
+    </div>
+  </section>
 
-      <nav class="kategori-nav" aria-label="Menü kategorileri">
-        {menu.map((k) => <a href={`#${k.id}`}>{k.baslik}</a>)}
-      </nav>
+  <nav class="chipbar" aria-label="Menü başlıkları">
+    <div class="wrap">{menu.map((k) => <a href={`#${k.id}`}>{k.baslik}</a>)}</div>
+  </nav>
 
+  <section class="sec" aria-label="Menü listesi">
+    <div class="wrap">
       {menu.map((k) => (
-        <section class="kategori" id={k.id}>
-          <h2>{k.baslik}</h2>
-          {k.not && <p class="kucuk-not">{k.not}</p>}
-          {k.kalemler.length === 0
-            ? <p><Bekliyor ne={`${k.baslik.toLocaleLowerCase('tr')} kalemleri ve fiyatları`} /></p>
-            : <ul class="kalemler">
-                {k.kalemler.map((m) => (
-                  <li>
-                    <div class="kalem-ust">
-                      <span class="kalem-ad">{m.ad}{m.ogle && <span class="rozet">Öğle</span>}</span>
-                      <span class="fiyat">{m.fiyat === null ? <Bekliyor ne="fiyat" /> : fiyatYaz(m.fiyat)}</span>
-                    </div>
-                    {m.aciklama && <p>{m.aciklama}</p>}
-                    {m.icerik && <p class="kucuk-not">{m.icerik}</p>}
-                  </li>
-                ))}
-              </ul>}
-        </section>
+        <article class="mcat" id={k.id}>
+          <div class="mcat-photo"><Gorsel src={k.foto.src} alt={k.foto.alt} konum={k.foto.konum} /></div>
+          <div class="paper">
+            <div class="paper-head"><h2>{k.baslik}</h2>{k.alt && <span>{k.alt}</span>}</div>
+            <ul class="items">
+              {k.kalemler.map((x) => (
+                <li class="item">
+                  <span class="name">{x.ad}</span><span class="dots" aria-hidden="true"></span>
+                  <span class="price num">{x.fiyat !== null ? <>{fiyatYaz(x.fiyat)}<small>₺</small></> : <Bekliyor ne="fiyat" />}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
       ))}
 
-      <p class="kucuk-not">Alerjen bilgisi için lütfen servis ekibine sorun. <Bekliyor ne="alerjen bilgilendirme metni, işletme onayı" /></p>
+      <div class="menu-foot">
+        <p>Fiyatlar Türk lirasıdır. Alerjen ve içerik bilgisi için ekibimize sorabilirsin. <Bekliyor ne="içecek / kokteyl menüsü" /></p>
+        <div class="btns">
+          <a class="btn btn-gold" href="/#paket"><Ikon ad="bag" />Paket sipariş</a>
+          <a class="btn btn-line" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a>
+        </div>
+      </div>
     </div>
   </section>
 </Base>

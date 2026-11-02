@@ -1,86 +1,129 @@
 ---
 import '../styles/global.css';
-import { isletme } from '../data/isletme';
-import Bekliyor from '../components/Bekliyor.astro';
+import { isletme, rezervasyon } from '../data/isletme';
+import { hafta } from '../data/program';
+import Logo from '../components/Logo.astro';
+import Ikon from '../components/Ikon.astro';
 
-interface Props { baslik: string; aciklama: string; sayfaOlayi?: string }
-const { baslik, aciklama, sayfaOlayi } = Astro.props;
-
-// Restaurant JSON-LD: yalnızca doğrulanmış alanlar girer (CLAUDE.md, brif §5).
-const a = isletme.adres;
-const jsonLd: Record<string, unknown> = {
-  '@context': 'https://schema.org',
-  '@type': 'Restaurant',
-  name: isletme.ad,
-  sameAs: [isletme.instagram.url],
-  hasMenu: '/menu',
-};
-if (a.sokak.dogrulandi) {
-  jsonLd.address = {
-    '@type': 'PostalAddress',
-    streetAddress: `${a.sokak.deger}, ${a.mekan}`,
-    postalCode: a.postaKodu,
-    addressLocality: a.ilce,
-    addressRegion: a.il,
-    addressCountry: 'TR',
-  };
+interface Props {
+  baslik: string;
+  aciklama: string;
+  /** site köküne göre yol: '' | 'menu' | 'etkinlikler' */
+  yol: string;
+  sayfa: 'ana' | 'menu' | 'etkinlikler' | 'diger';
+  kapakGorseli: string;
+  sema?: object[];
+  sayfaOlayi?: string;
+  /** false: bu sayfa arama motorlarına kapalı */
+  indeksle?: boolean;
 }
-if (isletme.telefon.dogrulandi && isletme.telefon.deger) jsonLd.telephone = isletme.telefon.deger;
+const { baslik, aciklama, yol, sayfa, kapakGorseli, sema = [], sayfaOlayi, indeksle = true } = Astro.props;
+const kanonik = `${isletme.site}/${yol}`;
+const rez = rezervasyon();
+const haritaUrl = isletme.haritaLinki.deger!;
 ---
 <!doctype html>
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{baslik}</title>
     <meta name="description" content={aciklama} />
-    {!isletme.yayinda && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={kanonik} />
+    <meta name="robots" content={isletme.yayinda && indeksle ? 'index, follow, max-image-preview:large' : 'noindex, nofollow'} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content={isletme.tamAd} />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={baslik} />
     <meta property="og:description" content={aciklama} />
-    <meta property="og:locale" content="tr_TR" />
-    <meta name="theme-color" content="#0b3d2e" />
+    <meta property="og:url" content={kanonik} />
+    <meta property="og:image" content={`${isletme.site}${kapakGorseli}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="geo.region" content="TR-06" />
+    <meta name="geo.placename" content="Çayyolu, Çankaya, Ankara" />
+    <meta name="theme-color" content="#0A1A14" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" as="image" href={kapakGorseli} fetchpriority="high" />
+    {sema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body data-sayfa-olayi={sayfaOlayi}>
     <a class="atla" href="#icerik">İçeriğe geç</a>
-    <header class="ust">
-      <div class="kap ust-ic">
-        <a href="/" class="logo" aria-label="Müjgan ana sayfa">Müjgan</a>
-        <nav aria-label="Ana menü">
-          <a href="/menu" data-olay="menu_goruntule">Menü</a>
+    {!isletme.yayinda && <div class="draft-bar">Taslak · [DOLDURULACAK] alanlar işletmeden gelecek</div>}
+    <header class="top" id="top">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label={`${isletme.tamAd} ana sayfa`}><Logo on="hd" /></a>
+        <nav class="nav" aria-label="Ana menü">
+          <a href="/menu" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule">Menü</a>
+          <a href="/etkinlikler" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}>Etkinlikler</a>
+          <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
-          <a href="/#iletisim" class="dugme kucuk" data-olay="rezervasyon_tikla">Rezervasyon</a>
         </nav>
+        <a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>Rezervasyon</a>
       </div>
     </header>
 
     <main id="icerik"><slot /></main>
 
-    <footer class="alt">
-      <div class="kap alt-ic">
-        <div>
-          <p class="logo">Müjgan</p>
-          <p>{a.sokak.deger}, {a.mekan}<br />{a.postaKodu} {a.ilce}/{a.il}</p>
-          {!a.sokak.dogrulandi && <p><Bekliyor ne={a.sokak.bekleyen} /></p>}
-        </div>
-        <div>
-          <p class="etiket">İletişim</p>
-          <p>Telefon: {isletme.telefon.deger ?? <Bekliyor ne={isletme.telefon.bekleyen} />}</p>
-          <p><a href={isletme.instagram.url} rel="noopener" data-olay="instagram_tikla">@{isletme.instagram.kullanici}</a></p>
-        </div>
-        <div>
-          <p class="etiket">Saatler</p>
-          <p>Öğle: {isletme.saatler.ogle.deger ?? <Bekliyor ne={isletme.saatler.ogle.bekleyen} />}</p>
-          <p>Akşam: {isletme.saatler.aksam.deger ?? <Bekliyor ne={isletme.saatler.aksam.bekleyen} />}</p>
-        </div>
-      </div>
-      <div class="kap alt-son">
-        <a href="/kvkk">KVKK aydınlatma metni</a>
-        <span>© {new Date().getFullYear()} Müjgan</span>
+    <footer class="foot">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label={`${isletme.tamAd} ana sayfa`}><Logo on="ft" /></a>
+        <nav aria-label="Alt menü">
+          <a href="/menu">Menü</a>
+          <a href="/etkinlikler">Etkinlikler</a>
+          <a href="/#paket">Paket servis</a>
+          <a href="/#ulasim">Ulaşım</a>
+          <a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">Instagram</a>
+        </nav>
+        <address>
+          <b>{isletme.tamAd}</b><br />
+          {isletme.adres.sokak.deger}, {isletme.adres.mekan}<br />
+          {isletme.adres.postaKodu} {isletme.adres.ilce} / {isletme.adres.il} · Her gün {isletme.saatler.acik.deger}
+          {isletme.telefon.deger && <><br /><a href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a></>}
+        </address>
       </div>
     </footer>
 
+    <nav class="actionbar" aria-label="Hızlı erişim">
+      <a href="/menu" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule"><Ikon ad="menu" />Menü</a>
+      <a href="/etkinlikler" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}><Ikon ad="cal" />Etkinlikler</a>
+      <a href={haritaUrl} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
+      <a class="ab-cta" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Rezervasyon</a>
+    </nav>
+
+    <script is:inline define:vars={{ hafta }}>
+      (function () {
+        var top = document.getElementById('top');
+        function kaydir() { top.classList.toggle('solid', window.scrollY > 40); }
+        kaydir(); window.addEventListener('scroll', kaydir, { passive: true });
+        if (document.querySelector('.draft-bar')) document.body.classList.add('has-draft');
+
+        // Bugünün programı (getDay: 0 = pazar)
+        var gun = new Date().getDay();
+        var haftaIci = gun >= 1 && gun <= 5;
+        document.querySelectorAll('[data-dow="' + gun + '"]').forEach(function (el) { el.classList.add('is-today'); });
+        if (haftaIci) document.querySelectorAll('[data-dow="wk"]').forEach(function (el) { el.classList.add('is-today'); });
+        var t = document.getElementById('tonight');
+        if (t) {
+          var d = hafta[gun];
+          var yaz = function (k, v) { t.querySelector('[data-t=' + k + ']').textContent = v; };
+          yaz('day', d.ad);
+          if (d.baslik) { yaz('title', d.baslik); yaz('time', d.saat || ''); yaz('text', d.kisa || ''); }
+          else if (haftaIci) { yaz('title', 'Social Hour'); yaz('time', '18.00’e kadar'); yaz('text', 'Tüm içeceklerde %20 indirim.'); }
+          else { yaz('title', 'Pazar keyfi'); yaz('time', ''); yaz('text', 'Öğle ve akşam yemeği, gün boyu.'); }
+        }
+        // Tarihi geçen etkinlikleri gizle
+        var bugun = new Date(); bugun.setHours(0, 0, 0, 0);
+        var kalan = 0;
+        document.querySelectorAll('[data-date]').forEach(function (el) {
+          var dd = new Date(el.getAttribute('data-date') + 'T00:00:00');
+          if (dd < bugun) el.hidden = true; else kalan++;
+        });
+        var up = document.getElementById('upcoming');
+        if (up && !kalan) up.hidden = true;
+      })();
+    </script>
     <script>
       // Tıklama ölçümü: ölçüm aracı henüz seçilmedi, olaylar dataLayer'a yazılır.
       // Not: tıklama gerçekleşmiş ziyaret/rezervasyon sayılmaz.

@@ -1,151 +1,190 @@
 ---
 import Base from '../layouts/Base.astro';
+import Gorsel from '../components/Gorsel.astro';
+import Ikon from '../components/Ikon.astro';
 import Bekliyor from '../components/Bekliyor.astro';
-import Deger from '../components/Deger.astro';
-import Foto from '../components/Foto.astro';
-import { isletme, tamAdres } from '../data/isletme';
+import { isletme, rezervasyon } from '../data/isletme';
+import { menu, izgaraSirasi, enDusuk, fiyatYaz } from '../data/menu';
+import { geceler } from '../data/program';
+import { sss } from '../data/sss';
+import { isletmeSema, siteSema, sssSema } from '../lib/sema';
 
-const s = isletme.saatler;
-const siparisVar = isletme.siparisPlatformlari.length > 0;
+const rez = rezervasyon();
+// Paket servis paneli: platform linkleri gelene kadar canlıda gizli, taslakta yer tutucuyla görünür
+const paketVar = isletme.siparisPlatformlari.length > 0 || !isletme.yayinda;
+const harita = isletme.haritaLinki.deger!;
+const saat = isletme.saatler.acik.deger;
+const izgara = izgaraSirasi.map((id) => menu.find((k) => k.id === id)!);
+const sosyal = [
+  { src: '/img/hgp-6059.jpg', alt: 'Kokteylini kaldıran misafir', konum: '50% 30%' },
+  { src: '/img/dsc06717.jpg', alt: 'Gülümseyen misafir', konum: '50% 30%' },
+  { src: '/img/a3.jpg', alt: 'Kokteyl hazırlayan barmen', konum: '50% 40%' },
+  { src: '/img/hgp-6133.jpg', alt: 'Pembe kokteyl yudumlayan misafir', konum: '50% 40%' },
+  { src: '/img/hgp-6152.jpg', alt: 'Kremalı içeceğini koklayan misafir', konum: '50% 30%' },
+  { src: '/img/dsc06578.jpg', alt: 'Kokteylleriyle sohbet eden misafirler', konum: '50% 40%' },
+];
+const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', 'Canlı Caz', 'Bowl & Burger', 'Paket Servis'];
 ---
 <Base
-  baslik="Müjgan — Beysupark, Çayyolu"
-  aciklama="Müjgan artık Beysupark AVM'de, Çayyolu. Öğle ve akşam yemeği, küçük sahnede etkinlikler, paket servis."
+  baslik="Müjgân Çayyolu · Pub, Kokteyl Bar ve Restoran | Beysupark AVM, Ankara"
+  aciklama={`Müjgân artık Çayyolu'da, Beysupark AVM'de. Her gün ${saat}: öğle ve akşam yemeği, kokteyl, paket servis, perşembe karaoke ve hafta sonu canlı müzik.`}
+  yol="" sayfa="ana" kapakGorseli="/img/hgp-6015.jpg"
+  sema={[isletmeSema(), siteSema(), sssSema()]}
 >
-  <!-- 1. Kahraman: alkol öne çıkarılmaz (CLAUDE.md, kırmızı çizgiler) -->
-  <section class="kahraman">
-    <div class="kap kahraman-ic">
-      <p class="ust-baslik">Beysupark AVM · Çayyolu</p>
-      <h1>Müjgan</h1>
-      <p class="giris">Öğle ve akşam yemeği, küçük bir sahne, tanıdık bir masa. Müjgan'ın yeni adresi Beysupark.</p>
-      <div class="dugmeler">
-        <a href="#iletisim" class="dugme" data-olay="rezervasyon_tikla">Rezervasyon</a>
-        <a href="#ulasim" class="dugme ikincil" data-olay="yol_tarifi_tikla">Yol tarifi</a>
-        <a href="#siparis" class="dugme ikincil" data-olay="siparis_platform_tikla">Paket sipariş</a>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media"><Gorsel src="/img/hgp-6015.jpg" alt="Müjgân Çayyolu'da masada kadeh tokuşturan iki kişi" konum="30% 40%" oncelik /></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1 id="hero-title"><span class="h1-eyebrow">{isletme.tamAd} · {isletme.adres.mekan}, {isletme.adres.il}</span>Müjgân biraz yer değiştirdi. <em>Keyfi hâlâ yerinde.</em></h1>
+        <p class="lead">2015'ten beri Müjgân. Şimdi Çayyolu'da, Beysupark AVM'de, her gün {saat}: öğlen bowl ve ızgara, akşam kokteyl ve paylaşmalık, perşembe karaoke, hafta sonu sahnede canlı müzik.</p>
+        <div class="btns">
+          <a class="btn btn-gold" href="/menu" data-olay="menu_goruntule"><Ikon ad="menu" />Menüye bak</a>
+          <a class="btn btn-line" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
+        </div>
+      </div>
+      <aside class="tonight" id="tonight" aria-live="polite">
+        <p class="label"><span>Bugün</span><span data-t="day">Her gün</span></p>
+        <h3 data-t="title">Social Hour</h3>
+        <span class="time num" data-t="time">Hafta içi 18.00'e kadar</span>
+        <p data-t="text">Tüm içeceklerde %20 indirim.</p>
+        <p class="open num">Açığız: {saat}</p>
+        <a class="link-arrow" href="/etkinlikler">Tüm etkinlikler →</a>
+      </aside>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">{[...seritler, ...seritler].map((s) => <span>{s}</span>)}</div>
+  </div>
+
+  <section class="sec" aria-labelledby="gun-title">
+    <div class="wrap">
+      <div class="sec-head"><p class="label">Gündüz &amp; gece</p><h2 id="gun-title">Öğlen başka, akşam başka</h2></div>
+      <div class="split">
+        <a class="tile" href="/menu#bowls">
+          <Gorsel src="/img/hgp-5477.jpg" alt="Tavuklu, edamameli ve domatesli bowl" />
+          <div class="tile-body"><p class="label">Öğle</p><h3>Bowl, ızgara, <em>tost</em></h3><p>Spor çıkışı ya da iş arasında: doyurucu, hızlı, tek tabakta.</p></div>
+        </a>
+        <a class="tile" href="/etkinlikler">
+          <Gorsel src="/img/dsc06657.jpg" alt="Müjgân sahnesinde şarkı söyleyen solist ve grup" konum="50% 30%" />
+          <div class="tile-body"><p class="label">Akşam</p><h3>Kokteyl, sahne, <em>muhabbet</em></h3><p>Kırmızı perdenin önünde canlı müzik, masada paylaşmalıklar.</p></div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- 2. Taşındık — metin taslak, Deniz/Tolga onayı bekliyor -->
-  <section class="bolum" id="tasindik">
-    <div class="kap iki-kolon">
-      <div>
-        <p class="ust-baslik">Taşındık</p>
-        <h2>100. Yıl'dan Beysupark'a</h2>
-        <p>Müjgan, Ankara 100. Yıl'daki ilk yerinden Çayyolu'na, Beysupark AVM'ye taşındı. Yeni mekânda öğle ve akşam servisi, yaklaşık 30 yemeklik bir menü ve küçük bir sahne var.</p>
-        <p><Bekliyor ne="taşınma hikâyesi: korunanlar / yenilikler, Tolga onayı" /></p>
+  <section class="sec" style="padding-top:0" aria-labelledby="ritim-title">
+    <div class="wrap">
+      <div class="sec-head-row">
+        <div class="sec-head"><p class="label">Haftanın ritmi</p><h2 id="ritim-title">Her akşamın bir bahanesi var</h2></div>
+        <a class="link-arrow" href="/etkinlikler">Tüm etkinlikler →</a>
       </div>
-      <Foto ne="yeni mekân, iç alan" />
+      <div class="posters">
+        {geceler.map((g) => (
+          <a class="poster" href={`/etkinlikler#${g.id}`} data-dow={g.gun}>
+            <div class="poster-img"><Gorsel src={g.afis} alt={`${g.baslik} afişi`} /></div>
+            <div class="day"><b>{g.kisa}</b><span>{g.saat ?? ''}</span></div>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- 3. Öğle & akşam -->
-  <section class="bolum koyu" id="saatler">
-    <div class="kap">
-      <p class="ust-baslik">Öğle & akşam</p>
-      <h2>Günün iki hâli</h2>
-      <div class="kartlar">
-        <article class="kart">
-          <h3>Öğle</h3>
-          <p>Gün ortası için ayrı öğle tabakları.</p>
-          <p class="saat"><Deger alan={s.ogle} /></p>
-          <p><Bekliyor ne="gel-al var mı?" /></p>
-        </article>
-        <article class="kart">
-          <h3>Akşam</h3>
-          <p>Akşam yemeği, şarap menüsü ve bazı akşamlar küçük sahnede etkinlik.</p>
-          <p class="saat"><Deger alan={s.aksam} /></p>
-          <p>Mutfak kapanış: <Deger alan={s.mutfakKapanis} /></p>
-        </article>
+  <section class="sec" style="padding-top:0" aria-labelledby="mutfak-title">
+    <div class="wrap">
+      <div class="sec-head-row">
+        <div class="sec-head"><p class="label">Mutfak</p><h2 id="mutfak-title">Burgerden bowl'a, pizzadan ızgaraya</h2></div>
+        <a class="link-arrow" href="/menu" data-olay="menu_goruntule">Menünün tamamı →</a>
       </div>
-      <p class="kucuk-not">Kapalı gün: <Deger alan={s.kapaliGun} /></p>
+      <div class="bento">
+        {izgara.map((k) => (
+          <a class={k.izgara?.sinif} href={`/menu#${k.id}`}>
+            <Gorsel src={k.izgara!.src} alt={k.izgara!.alt} konum={k.izgara?.konum} />
+            <span>{k.baslik}<small class="num">{fiyatYaz(enDusuk(k))}₺'den</small></span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- 4. Menü -->
-  <section class="bolum" id="menu">
-    <div class="kap">
-      <p class="ust-baslik">Menü</p>
-      <h2>Yaklaşık 30 yemek, öğleye ayrı seçenekler</h2>
-      <p>Başlangıçlar, ana yemekler, öğle tabakları ve tatlılar. Tam menü ve fiyatlar menü sayfasında.</p>
-      <div class="foto-izgara">
-        <Foto ne="öne çıkan yemek 1" oran="1 / 1" />
-        <Foto ne="öne çıkan yemek 2" oran="1 / 1" />
-        <Foto ne="öne çıkan yemek 3" oran="1 / 1" />
+  <section class="sec bar-band" aria-labelledby="bar-title">
+    <div class="wrap bar-grid">
+      <div class="bar-copy">
+        <p class="label">Bar</p>
+        <h2 id="bar-title">Bardan çıkan her şey <em class="it">bir hikâye</em></h2>
+        <p>Çarkıfelekli sour'lar, fesleğenli ferahlar, dumanı üstünde servis edilenler. Bar ekibimiz her akşam tezgâhın başında.</p>
+        <div class="btns"><a class="btn btn-line" href="/etkinlikler#shake-brake">Çarşamba Shake Brake →</a></div>
       </div>
-      <a href="/menu" class="dugme" data-olay="menu_goruntule">Menüyü gör</a>
+      <div class="glasses">
+        <figure><Gorsel src="/img/hgp-5739.jpg" alt="Pipetle son dokunuşu yapılan yeşil kokteyl" /></figure>
+        <figure><Gorsel src="/img/hgp-6204.jpg" alt="Çarkıfelekli turuncu sour kokteyl" /></figure>
+        <figure><Gorsel src="/img/hgp-6250.jpg" alt="Dumanlı, havuç garnitürlü turuncu kokteyl" /></figure>
+      </div>
     </div>
   </section>
 
-  <!-- 5. Etkinlikler: program yoksa bölüm hiç gösterilmez (brif §3) -->
-  {isletme.etkinlikler.length > 0 && (
-    <section class="bolum koyu" id="etkinlikler">
-      <div class="kap">
-        <p class="ust-baslik">Etkinlikler</p>
-        <h2>Küçük sahnede</h2>
-        <ul class="etkinlik-liste">
-          {isletme.etkinlikler.map((e) => (
-            <li><span class="tarih">{e.tarih}</span><strong>{e.baslik}</strong>{e.aciklama && <span>{e.aciklama}</span>}</li>
+  <section class="sec" id="paket" aria-label="Paket servis ve grup rezervasyonu">
+    <div class={paketVar ? 'wrap duo' : 'wrap'}>
+      {paketVar && <div class="panel panel-kraft">
+        <p class="label">Paket servis</p>
+        <h2 id="paket-title">Müjgân eve de geliyor</h2>
+        <p>Paket servisimiz açıldı. Siparişini aşağıdaki uygulamalardan verebilirsin.</p>
+        <div class="btns">
+          {isletme.siparisPlatformlari.map((o) => (
+            <a class="btn btn-dark" href={o.url} target="_blank" rel="noopener" data-olay="siparis_platform_tikla" data-platform={o.ad}><Ikon ad="bag" />{o.ad}</a>
           ))}
-        </ul>
-      </div>
-    </section>
-  )}
-
-  <!-- 6. Grup & özel organizasyon — form yok (KVKK metni hukuki kontrolden geçmeden) -->
-  <section class="bolum" id="grup">
-    <div class="kap iki-kolon">
-      <Foto ne="sahne alanı" />
-      <div>
-        <p class="ust-baslik">Grup & özel organizasyon</p>
-        <h2>Kalabalık geliyorsanız</h2>
-        <p>Doğum günü, ekip yemeği ya da küçük bir kutlama için bize yazın. Sahne alanı yaklaşık 25–30 kişi oturmalı, 50–60 kişi ayakta ağırlar.</p>
-        <p>Talepler için: <Deger alan={isletme.grupIletisim} /></p>
+          {!isletme.siparisPlatformlari.length && <Bekliyor ne="paket servis platform linkleri" />}
+        </div>
+      </div>}
+      <div class="panel panel-line">
+        <p class="label">Grup ve kutlama</p>
+        <h2>Doğum günü, ekip yemeği, veda</h2>
+        <p>Kalabalık geliyorsanız önceden yazın; masanızı, sahne önünü ve menüyü birlikte ayarlayalım.</p>
+        <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
       </div>
     </div>
   </section>
 
-  <!-- 7. Ulaşım — harita pini kesinleşmedi, gömülü harita yok -->
-  <section class="bolum koyu" id="ulasim">
-    <div class="kap iki-kolon">
-      <div>
-        <p class="ust-baslik">Ulaşım</p>
-        <h2>Beysupark AVM, Çayyolu</h2>
-        <p class="adres">{tamAdres()}</p>
-        {!isletme.adres.sokak.dogrulandi && <p><Bekliyor ne="resmî adres, birim no ve harita pini" /></p>}
-        <p>AVM içinde giriş: <Deger alan={isletme.girisTarifi} /></p>
-        <p>Otopark: <Deger alan={isletme.otopark} /></p>
-        {isletme.haritaLinki.deger
-          ? <a href={isletme.haritaLinki.deger} class="dugme" rel="noopener" data-olay="yol_tarifi_tikla">Haritada aç</a>
-          : <p><Bekliyor ne={isletme.haritaLinki.bekleyen} /></p>}
+  <section class="sec" style="padding-top:0" aria-labelledby="ig-title">
+    <div class="wrap">
+      <div class="sec-head-row">
+        <div class="sec-head"><p class="label">@{isletme.instagram.kullanici}</p><h2 id="ig-title">Müjgân'da bir akşam</h2></div>
+        <a class="link-arrow" href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">Instagram'da takip et →</a>
       </div>
-      <div class="harita-yer" aria-hidden="true"><span>Harita<br /><small>pin kesinleşince eklenecek</small></span></div>
+      <div class="grid6">
+        {sosyal.map((g) => <a href={isletme.instagram.url} target="_blank" rel="noopener" aria-label="Instagram'da Müjgân" data-olay="instagram_tikla"><Gorsel {...g} /></a>)}
+      </div>
     </div>
   </section>
 
-  <!-- 8. Rezervasyon / iletişim & paket sipariş -->
-  <section class="bolum" id="iletisim">
-    <div class="kap kartlar">
-      <article class="kart acik">
-        <p class="ust-baslik">Rezervasyon</p>
-        <h2>Masanızı ayırın</h2>
-        <p><Deger alan={isletme.rezervasyon} /></p>
-        <p>Telefon: {isletme.telefon.deger
-          ? <a href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a>
-          : <Bekliyor ne={isletme.telefon.bekleyen} />}</p>
-        <p>WhatsApp: {isletme.whatsapp.deger
-          ? <a href={`https://wa.me/${isletme.whatsapp.deger.replace(/\D/g, '')}`} rel="noopener" data-olay="whatsapp_tikla">Mesaj gönder</a>
-          : <Bekliyor ne={isletme.whatsapp.bekleyen} />}</p>
-      </article>
-      <article class="kart acik" id="siparis">
-        <p class="ust-baslik">Paket sipariş</p>
-        <h2>Eve, ofise</h2>
-        {siparisVar
-          ? <div class="dugmeler">{isletme.siparisPlatformlari.map((p) => (
-              <a href={p.url} class="dugme ikincil" rel="noopener" data-olay="siparis_platform_tikla" data-platform={p.ad}>{p.ad}</a>
-            ))}</div>
-          : <p><Bekliyor ne="paket servis platformları ve saatleri" /></p>}
-      </article>
+  <section class="sec" style="padding-top:0" aria-labelledby="sss-title">
+    <div class="wrap">
+      <div class="sec-head"><p class="label">Sık sorulanlar</p><h2 id="sss-title">Gelmeden önce</h2></div>
+      <div class="faq">
+        {sss().map((q, i) => <details open={i === 0}><summary>{q.s}</summary><p>{q.c}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="ulasim" style="padding-top:0" aria-labelledby="ulasim-title">
+    <div class="wrap visit-grid">
+      <div class="visit-photo"><Gorsel src="/img/dsc06414.jpg" alt="Masa lambasının ışığında bira ve limonata" konum="50% 60%" /></div>
+      <div class="visit-copy">
+        <p class="label" id="ulasim-title">Nasıl gelinir</p>
+        <address>{isletme.adres.mekan}, No: 209/16<br />S. Saltoğlu Bulvarı, Çayyolu<br />{isletme.adres.ilce} / {isletme.adres.il}</address>
+        <p>Beysupark AVM'nin içindeyiz; Çayyolu, Ümitköy, Beysukent ve Alacaatlı'ya yakın. Google Haritalar'da “{isletme.haritaAdi}” olarak kayıtlıyız.</p>
+        {isletme.girisTarifi.deger ? <p>{isletme.girisTarifi.deger}</p> : <p><Bekliyor ne={isletme.girisTarifi.bekleyen} /></p>}
+        <div class="btns"><a class="btn btn-gold" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi al</a></div>
+        <div class="facts">
+          <div><span>Açık</span><strong class="num">Her gün {saat}</strong></div>
+          <div><span>Mutfak</span><strong>{isletme.saatler.mutfak}</strong></div>
+          {isletme.telefon.deger
+            ? <div><span>Telefon</span><a class="num" href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a></div>
+            : !isletme.yayinda && <div><span>Telefon</span><Bekliyor ne={isletme.telefon.bekleyen} /></div>}
+          <div><span>Rezervasyon</span><a href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>{rez.etiket}</a></div>
+          <div><span>Instagram</span><a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">@{isletme.instagram.kullanici}</a></div>
+        </div>
+      </div>
     </div>
   </section>
 </Base>

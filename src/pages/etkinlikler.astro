@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import Gorsel from '../components/Gorsel.astro';
+import Ikon from '../components/Ikon.astro';
+import Bekliyor from '../components/Bekliyor.astro';
+import { isletme, rezervasyon } from '../data/isletme';
+import { geceler, etkinlikler, tarihParcala } from '../data/program';
+import { etkinlikSema, yolSema } from '../lib/sema';
+
+const rez = rezervasyon();
+---
+<Base
+  baslik="Etkinlikler: Karaoke, Canlı Müzik · Müjgân Çayyolu"
+  aciklama="Çayyolu'da karaoke ve canlı müzik: her perşembe Karaoke Gecesi, hafta sonu sahnede gruplar, Social Hour, Chill Day ve Shake Brake. Müjgân, Beysupark AVM."
+  yol="etkinlikler" sayfa="etkinlikler" kapakGorseli="/img/dsc06634.jpg"
+  sema={[...etkinlikSema(), yolSema('Etkinlikler', 'etkinlikler')]}
+>
+  <section class="hero page-hero" aria-labelledby="prog-title">
+    <div class="hero-media"><Gorsel src="/img/dsc06634.jpg" alt="Müjgân Çayyolu sahnesinde gitar çalan müzisyen" konum="50% 30%" oncelik /></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / Etkinlikler</p>
+        <h1 id="prog-title">Etkinlikler</h1>
+        <p class="lead">Çayyolu'da karaoke, canlı müzik ve kampanya akşamları: hafta içi Social Hour, salı Chill Day, çarşamba Shake Brake, perşembe Karaoke Gecesi, hafta sonu sahnede canlı müzik.</p>
+      </div>
+    </div>
+  </section>
+
+  {etkinlikler.length > 0 && (
+    <section class="sec" id="upcoming" aria-labelledby="up-title">
+      <div class="wrap">
+        <div class="sec-head"><p class="label">Sahnede bu hafta</p><h2 id="up-title">Yaklaşan konserler</h2></div>
+        <div class="dates">
+          {etkinlikler.map((e) => {
+            const t = tarihParcala(e.tarih);
+            return (
+              <div class="date-card" data-date={e.tarih}>
+                <div class="d"><b class="num">{t.gun}</b><span>{t.ay}</span></div>
+                <div><h3>{e.baslik}</h3><p>{t.haftaGunu} · {e.saat.replace(':', '.')} · {e.tur}</p>{e.not && <p><Bekliyor ne={e.not} /></p>}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="sec" style="padding-top:0" aria-labelledby="nights-title">
+    <div class="wrap">
+      <div class="sec-head"><p class="label">Haftanın ritmi</p><h2 id="nights-title">Her hafta aynı gün, aynı keyif</h2></div>
+      <div class="nights">
+        {geceler.map((g) => (
+          <article class="night" id={g.id} data-dow={g.gun}>
+            <div class="night-poster"><Gorsel src={g.afis} alt={`${g.baslik} afişi`} /></div>
+            <div class="night-body">
+              <p class="label">{g.gunAdi}</p>
+              <h2>{g.baslik}</h2>
+              {g.saat && <p class="when num">{g.saat}</p>}
+              <p>{g.metin}</p>
+              {g.kampanya && <span class="deal">{g.kampanya}</span>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec live-band" aria-labelledby="live-title">
+    <div class="wrap live-grid">
+      <div class="bar-copy">
+        <p class="label">Cuma &amp; cumartesi · 20.00</p>
+        <h2 id="live-title">Kırmızı perdenin önünde <em class="it">canlı müzik</em></h2>
+        <p>Hafta sonları sahnede konuk gruplar var. Cumartesi akşamları ODTÜ Caz'dan tanıdık bir ekip çalıyor.</p>
+        <p><Bekliyor ne="cuma ve cumartesi her hafta kesin mi?" /></p>
+        <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Masanı ayırt</a></div>
+      </div>
+      <div class="live-photos">
+        <figure><Gorsel src="/img/dsc06657.jpg" alt="Sahnede solist ve grup" konum="50% 35%" /></figure>
+        <figure><Gorsel src="/img/dsc06696.jpg" alt="Kırmızı perde önünde mikrofonla şarkı söyleyen kadın" konum="50% 30%" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="ozel-title">
+    <div class="wrap">
+      <div class="panel panel-kraft">
+        <p class="label">Özel gün</p>
+        <h2 id="ozel-title">Etkinliğini Müjgân'da yap</h2>
+        <p>Doğum günü, ekip yemeği, mezuniyet buluşması. Sahne önünü ve menüyü grubuna göre ayarlayalım.</p>
+        <div class="btns"><a class="btn btn-dark" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
+      </div>
+    </div>
+  </section>
+</Base>

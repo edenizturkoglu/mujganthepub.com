@@ -1,0 +1,10 @@
+---
+// public/ altındaki fotoğraf: boyutu gorseller.json'dan (CLS olmasın), ilk ekrandakiler öncelikli yüklenir.
+import boyutlar from '../data/gorseller.json';
+interface Props { src: string; alt: string; konum?: string; oncelik?: boolean }
+const { src, alt, konum, oncelik = false } = Astro.props;
+const b = (boyutlar as Record<string, number[]>)[src];
+---
+<img src={src} alt={alt} width={b?.[0]} height={b?.[1]} decoding="async"
+  loading={oncelik ? undefined : 'lazy'} fetchpriority={oncelik ? 'high' : undefined}
+  style={konum ? `object-position:${konum}` : undefined} />

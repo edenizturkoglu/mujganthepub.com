@@ -1,6 +1,7 @@
 ---
-// Eksik bilgi yer tutucusu. Canlıya almadan önce sitede hiç kalmamalı.
+// Eksik bilgi yer tutucusu. Yalnızca taslakta (isletme.yayinda = false) görünür; canlıda hiçbir şey basmaz.
+import { isletme } from '../data/isletme';
 interface Props { ne: string }
 const { ne } = Astro.props;
 ---
-<span class="bekliyor">[DOLDURULACAK: {ne}]</span>
+{!isletme.yayinda && <span class="bekliyor">[DOLDURULACAK: {ne}]</span>}

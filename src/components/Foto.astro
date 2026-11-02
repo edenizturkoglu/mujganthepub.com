@@ -1,8 +1,0 @@
----
-// Fotoğraf yer tutucusu. Gerçek çekim gelene kadar stok fotoğraf kullanılmaz.
-interface Props { ne: string; oran?: string }
-const { ne, oran = '4 / 3' } = Astro.props;
----
-<div class="foto" style={`aspect-ratio: ${oran}`} role="img" aria-label={`Fotoğraf yer tutucusu: ${ne}`}>
-  <span>Fotoğraf: {ne}<br /><small>gerçek çekim gelecek</small></span>
-</div>
