@@ -1,0 +1,301 @@
+{
+  "sayfa": {
+    "baslik": "Menü",
+    "metin": "Burger, kore tost, basket, pizza, bowl ve ana yemekler, güncel fiyatlarıyla. Mutfak her gün 10.30 – 01.00 açık.",
+    "gorsel": {
+      "src": "/img/hgp-6041.jpg",
+      "alt": "Müjgân Çayyolu menüsünden bowl, tost, patates ve içeceklerle dolu masa",
+      "konum": "50% 45%",
+      "w": 2000,
+      "h": 1333
+    },
+    "altNot": "Fiyatlar Türk lirasıdır. Alerjen ve içerik bilgisi için ekibimize sorabilirsin."
+  },
+  "kategoriler": [
+    {
+      "id": "burgerler",
+      "baslik": "Burgerler",
+      "foto": {
+        "src": "/img/hgp-5542.jpg",
+        "alt": "Patates ve sosla servis edilen burger",
+        "konum": "50% 55%",
+        "w": 1100,
+        "h": 733
+      },
+      "izgara": {
+        "src": "/img/hgp-5593.jpg",
+        "alt": "Burger ve patates",
+        "w": 1100,
+        "h": 733,
+        "boyut": "genis"
+      },
+      "kalemler": [
+        {
+          "ad": "Smash Burger",
+          "fiyat": 650
+        },
+        {
+          "ad": "Oklahoma Onion",
+          "fiyat": 650
+        },
+        {
+          "ad": "Hot Honey Smash",
+          "fiyat": 675
+        },
+        {
+          "ad": "Truffle Mushroom",
+          "fiyat": 675
+        },
+        {
+          "ad": "BBQ Smoke Burger",
+          "fiyat": 675
+        }
+      ]
+    },
+    {
+      "id": "tost-sandvic",
+      "baslik": "Kore Tost / Sandviçler",
+      "foto": {
+        "src": "/img/hgp-5645.jpg",
+        "alt": "Müjgân kutusunda tost ve patates",
+        "konum": "50% 40%",
+        "w": 733,
+        "h": 1100
+      },
+      "izgara": {
+        "src": "/img/hgp-5645.jpg",
+        "alt": "Müjgân kutusunda tost",
+        "konum": "50% 35%",
+        "w": 733,
+        "h": 1100,
+        "boyut": "genis"
+      },
+      "kalemler": [
+        {
+          "ad": "Crispy Chicken Club",
+          "fiyat": 600
+        },
+        {
+          "ad": "Hot Honey Chicken Parmesan",
+          "fiyat": 600
+        },
+        {
+          "ad": "Korean BBQ Chicken Toast",
+          "fiyat": 625
+        },
+        {
+          "ad": "Pulled Beef Melt",
+          "fiyat": 725
+        }
+      ]
+    },
+    {
+      "id": "baskets",
+      "baslik": "Baskets",
+      "alt": "Sepette",
+      "foto": {
+        "src": "/img/hgp-5259.jpg",
+        "alt": "Soslu çıtır tavuk",
+        "konum": "50% 60%",
+        "w": 733,
+        "h": 1100
+      },
+      "izgara": {
+        "src": "/img/hgp-5259.jpg",
+        "alt": "Soslu çıtır tavuk",
+        "konum": "50% 60%",
+        "w": 733,
+        "h": 1100,
+        "boyut": "uzun"
+      },
+      "kalemler": [
+        {
+          "ad": "Crispy Chicken",
+          "fiyat": 550
+        },
+        {
+          "ad": "Red Hot Chili Chicken",
+          "fiyat": 575
+        },
+        {
+          "ad": "Korean Chicken",
+          "fiyat": 575
+        },
+        {
+          "ad": "Hot Honey Halloumi",
+          "fiyat": 550
+        },
+        {
+          "ad": "Mac & Cheese Bites",
+          "fiyat": 450
+        }
+      ]
+    },
+    {
+      "id": "pizzalar",
+      "baslik": "Pizzalar",
+      "foto": {
+        "src": "/img/hgp-6088.jpg",
+        "alt": "Masada pizza ve kokteyl",
+        "konum": "50% 70%",
+        "w": 733,
+        "h": 1100
+      },
+      "izgara": {
+        "src": "/img/hgp-6110.jpg",
+        "alt": "Masada pizza",
+        "konum": "50% 70%",
+        "w": 733,
+        "h": 1100
+      },
+      "kalemler": [
+        {
+          "ad": "Margherita",
+          "fiyat": 625
+        },
+        {
+          "ad": "Truffle Mushroom",
+          "fiyat": 695
+        },
+        {
+          "ad": "Hot Honey Pepperoni",
+          "fiyat": 695
+        },
+        {
+          "ad": "Four Cheese",
+          "fiyat": 695
+        },
+        {
+          "ad": "Pulled Beef",
+          "fiyat": 775
+        }
+      ]
+    },
+    {
+      "id": "paylasmalik",
+      "baslik": "Paylaşmalık",
+      "alt": "Small / Share",
+      "foto": {
+        "src": "/img/hgp-5680.jpg",
+        "alt": "Ahşap tahtada peynir, ceviz ve elma tabağı",
+        "w": 1100,
+        "h": 733
+      },
+      "izgara": {
+        "src": "/img/hgp-5680.jpg",
+        "alt": "Peynir tabağı",
+        "w": 1100,
+        "h": 733,
+        "boyut": "genis"
+      },
+      "kalemler": [
+        {
+          "ad": "Patates Kızartması",
+          "fiyat": 325
+        },
+        {
+          "ad": "Truffle Parmesan Fries",
+          "fiyat": 395
+        },
+        {
+          "ad": "Çıtır Zeytin",
+          "fiyat": 250
+        },
+        {
+          "ad": "Wine Plate",
+          "fiyat": 650
+        }
+      ]
+    },
+    {
+      "id": "bowls",
+      "baslik": "Bowls",
+      "foto": {
+        "src": "/img/hgp-5477.jpg",
+        "alt": "Tavuklu, edamameli bowl",
+        "w": 733,
+        "h": 1100
+      },
+      "izgara": {
+        "src": "/img/hgp-5493.jpg",
+        "alt": "Etli bowl",
+        "w": 733,
+        "h": 1100,
+        "boyut": "uzun"
+      },
+      "kalemler": [
+        {
+          "ad": "Korean BBQ Chicken Bowl",
+          "fiyat": 650
+        },
+        {
+          "ad": "Hot Honey Chicken Bowl",
+          "fiyat": 650
+        },
+        {
+          "ad": "Pulled Beef Bowl",
+          "fiyat": 775
+        },
+        {
+          "ad": "Grilled Halloumi Bowl",
+          "fiyat": 650
+        },
+        {
+          "ad": "Cesar Protein Plate",
+          "fiyat": 650
+        }
+      ]
+    },
+    {
+      "id": "ana-yemek",
+      "baslik": "Ana Yemekler",
+      "foto": {
+        "src": "/img/hgp-5369.jpg",
+        "alt": "Köfte, közlenmiş biber ve soğanla servis tabağı",
+        "w": 1100,
+        "h": 733
+      },
+      "izgara": {
+        "src": "/img/hgp-5347.jpg",
+        "alt": "Somon ızgara",
+        "w": 1100,
+        "h": 733
+      },
+      "kalemler": [
+        {
+          "ad": "Falafel Köfte",
+          "fiyat": 550
+        },
+        {
+          "ad": "Izgara Tavuk",
+          "fiyat": 575
+        },
+        {
+          "ad": "Cheesy Chicken",
+          "fiyat": 600
+        },
+        {
+          "ad": "Creamy Mushroom Chicken",
+          "fiyat": 600
+        },
+        {
+          "ad": "Balkan Köfte",
+          "fiyat": 600
+        },
+        {
+          "ad": "Somon Izgara",
+          "fiyat": 700
+        }
+      ]
+    }
+  ],
+  "izgaraSirasi": [
+    "burgerler",
+    "baskets",
+    "bowls",
+    "pizzalar",
+    "paylasmalik",
+    "ana-yemek",
+    "tost-sandvic"
+  ]
+}

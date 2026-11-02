@@ -20,10 +20,10 @@ Tam iş bağlamı claude.ai'deki **"Müjgan"** projesinde `Mujgan-Claude-Devir.m
 | Eski yer | Ankara 100. Yıl — ODTÜ öğrencisi ağırlıklı pub (taşınma hikâyesinde geçebilir) |
 | Yeni yer | Beysupark AVM, Çayyolu. Adres (Tolga, 28 Ekim 2026): Çayyolu Mah. S. Saltoğlu Blv. No: 209/16, 06810 Çankaya/Ankara. Google Haritalar'da "Müjgân Çayyolu". Giriş/otopark tarifi bekleniyor. |
 | Hizmet | Öğle ve akşam yemeği, küçük sahnede etkinlikler, paket servis (kendi kuryesi yok; platform henüz belli değil) |
-| Menü | 34 yemek, fiyatlı (Tolga, menü.xlsx, 31 Ekim 2026) → `src/data/menu.ts`. İçecek/kokteyl menüsü henüz yok. |
+| Menü | 34 yemek, fiyatlı (Tolga, menü.xlsx, 31 Ekim 2026) → `src/icerik/menu.json`. İçecek/kokteyl menüsü henüz yok. |
 | Saatler | Her gün 10.30–01.00; mutfak açık olduğu her saat (Deniz, 2 Kasım 2026) |
 | Rezervasyon | WhatsApp (numara bu hafta gelecek). O zamana kadar Instagram DM. |
-| Program | Hafta içi Social Hour (18.00'e kadar), salı Chill Day, çarşamba Shake Brake, perşembe Karaoke 20.00, hafta sonu canlı müzik 20.00 → `src/data/program.ts` |
+| Program | Hafta içi Social Hour (18.00'e kadar), salı Chill Day, çarşamba Shake Brake, perşembe Karaoke 20.00, hafta sonu canlı müzik 20.00 → `src/icerik/etkinlikler.json` |
 | Kapasite | Mekân ~300 kişi; küçük sahne 25–30 oturmalı / 50–60 ayakta |
 | Kitle | Çalışan genç ve orta yaş. Kesin yaş aralığı, brunch veya öğrencileri dışlama kararı **yok** — sitede bu yönde ifade kullanma. |
 | Fiyat konumu | Pinkel'in "bir tık altında" (görüşme notu; ürün fiyatı yok) |
@@ -47,9 +47,12 @@ Ayrıntılı brif: `docs/site-brifi.md`. Açık sorular: `docs/acik-sorular.md`.
 
 ## Teknik
 
-- Yığın: **Astro 7, statik**. Sayfalar: `/` (ana), `/menu`, `/etkinlikler`, `/kvkk` (linksiz, noindex). Tüm içerik `src/data/` altında: `isletme.ts`, `menu.ts`, `program.ts`, `sss.ts`.
+- Yığın: **Astro 7, statik**. Sayfalar: `/` (ana), `/menu/`, `/etkinlikler/`, `/kvkk/` (linksiz, noindex), `/<slug>/` (CMS'ten oluşturulan sayfalar), `/admin/` (CMS).
+- **İçerik `src/icerik/*.json` dosyalarındadır** (metinler, görseller, menü, etkinlikler, SEO, işletme bilgileri, özel sayfalar `sayfalar/*.json`). Şablonlar yalnızca buradan okur (`src/lib/icerik.ts`; `src/data/*.ts` bu dosyaları sarar). Metin/görsel eklerken şablonda `cms('dosya:json.yolu')` özniteliği ver ki CMS'te tıklanıp düzenlenebilsin.
+- **CMS (`/admin/`, kod `src/admin/`)**: şifreli giriş (GitHub erişim anahtarı `public/admin/kasa.json` içinde PBKDF2+AES-GCM ile şifreli). Önizlemede öğeye tıkla-düzenle; Menü, Etkinlikler, SEO, Sayfalar, İşletme panelleri. "Yayınla" → GitHub API ile tek commit → Actions yayınlar.
+- **CMS doğrudan `main`'e commit atar.** Bu klasörde çalışmaya başlamadan önce mutlaka `git pull` yap; içerik değişikliği için JSON dosyalarını düzenle, şablonlara metin gömme.
 - Tasarım: koyu şişe yeşili zemin, logo altını, krem "kâğıt" menü; yazı tipleri Young Serif + Figtree, `public/fonts/` altından (Google'a istek yok). Stil: `src/styles/global.css`.
-- Fotoğraflar `public/img/` (Drive: "23 Ekim Açılış/Fotolar" ve fotoğrafçı klasörü, 1100px'e küçültülmüş), afişler `public/posters/`. Boyutlar `src/data/gorseller.json` (yeni görsel eklenince güncelle).
+- Fotoğraflar `public/img/` (Drive: "23 Ekim Açılış/Fotolar" ve fotoğrafçı klasörü, 1100px'e küçültülmüş), afişler `public/posters/`, CMS yüklemeleri `public/img/yukleme/` (1600px, JPEG). Boyutlar görsel nesnesindeki `w`/`h` ya da `src/data/gorseller.json`.
 - Yayın: **GitHub Pages**, alan adı `mujganthepub.com` (GoDaddy DNS → GitHub Pages IP'leri). `main`'e push → `.github/workflows/yayin.yml` derleyip yayınlar; her pazartesi otomatik yeniden derlenir (etkinlik şeması tazelenir).
 - `isletme.yayinda = true`: yer tutucular (`Bekliyor`) canlıda görünmez, eksik alanlar gizlenir. Taslak bakmak için geçici olarak `false` yap.
 - SEO: sayfa başına başlık/açıklama/canonical, JSON-LD (`src/lib/sema.ts`: BarOrPub+Restaurant, WebSite, FAQPage, Menu, MusicEvent/Event, BreadcrumbList), `sitemap.xml`, `robots.txt`.

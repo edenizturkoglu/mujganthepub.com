@@ -6,69 +6,55 @@ import Bekliyor from '../components/Bekliyor.astro';
 import { isletme, rezervasyon } from '../data/isletme';
 import { menu, izgaraSirasi, enDusuk, fiyatYaz } from '../data/menu';
 import { geceler } from '../data/program';
-import { sss } from '../data/sss';
+import { ana, cms, cmsListe } from '../lib/icerik';
 import { isletmeSema, siteSema, sssSema } from '../lib/sema';
 
 const rez = rezervasyon();
-// Paket servis paneli: platform linkleri gelene kadar canlıda gizli, taslakta yer tutucuyla görünür
+const harita = isletme.haritaLinki;
+const izgara = izgaraSirasi.map((id) => [menu.findIndex((k) => k.id === id), menu.find((k) => k.id === id)] as const).filter(([, k]) => k);
 const paketVar = isletme.siparisPlatformlari.length > 0 || !isletme.yayinda;
-const harita = isletme.haritaLinki.deger!;
-const saat = isletme.saatler.acik.deger;
-const izgara = izgaraSirasi.map((id) => menu.find((k) => k.id === id)!);
-const sosyal = [
-  { src: '/img/hgp-6059.jpg', alt: 'Kokteylini kaldıran misafir', konum: '50% 30%' },
-  { src: '/img/dsc06717.jpg', alt: 'Gülümseyen misafir', konum: '50% 30%' },
-  { src: '/img/a3.jpg', alt: 'Kokteyl hazırlayan barmen', konum: '50% 40%' },
-  { src: '/img/hgp-6133.jpg', alt: 'Pembe kokteyl yudumlayan misafir', konum: '50% 40%' },
-  { src: '/img/hgp-6152.jpg', alt: 'Kremalı içeceğini koklayan misafir', konum: '50% 30%' },
-  { src: '/img/dsc06578.jpg', alt: 'Kokteylleriyle sohbet eden misafirler', konum: '50% 40%' },
-];
-const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', 'Canlı Caz', 'Bowl & Burger', 'Paket Servis'];
+const h = ana.hero;
 ---
-<Base
-  baslik="Müjgân Çayyolu · Pub, Kokteyl Bar ve Restoran | Beysupark AVM, Ankara"
-  aciklama={`Müjgân artık Çayyolu'da, Beysupark AVM'de. Her gün ${saat}: öğle ve akşam yemeği, kokteyl, paket servis, perşembe karaoke ve hafta sonu canlı müzik.`}
-  yol="" sayfa="ana" kapakGorseli="/img/hgp-6015.jpg"
-  sema={[isletmeSema(), siteSema(), sssSema()]}
->
+<Base yol="/" sayfa="ana" onYukle={h.gorsel.src} sema={[isletmeSema(), siteSema(), sssSema()]}>
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-media"><Gorsel src="/img/hgp-6015.jpg" alt="Müjgân Çayyolu'da masada kadeh tokuşturan iki kişi" konum="30% 40%" oncelik /></div>
+    <div class="hero-media"><Gorsel g={h.gorsel} cms="ana:hero.gorsel" oncelik /></div>
     <div class="wrap">
       <div class="hero-copy">
-        <h1 id="hero-title"><span class="h1-eyebrow">{isletme.tamAd} · {isletme.adres.mekan}, {isletme.adres.il}</span>Müjgân biraz yer değiştirdi. <em>Keyfi hâlâ yerinde.</em></h1>
-        <p class="lead">2015'ten beri Müjgân. Şimdi Çayyolu'da, Beysupark AVM'de, her gün {saat}: öğlen bowl ve ızgara, akşam kokteyl ve paylaşmalık, perşembe karaoke, hafta sonu sahnede canlı müzik.</p>
+        <h1 id="hero-title"><span class="h1-eyebrow" {...cms('ana:hero.ust')}>{h.ust}</span><span {...cms('ana:hero.baslik')}>{h.baslik}</span> <em {...cms('ana:hero.vurgu')}>{h.vurgu}</em></h1>
+        <p class="lead" {...cms('ana:hero.metin')}>{h.metin}</p>
         <div class="btns">
-          <a class="btn btn-gold" href="/menu/" data-olay="menu_goruntule"><Ikon ad="menu" />Menüye bak</a>
-          <a class="btn btn-line" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
+          <a class="btn btn-gold" href="/menu/" data-olay="menu_goruntule"><Ikon ad="menu" /><span {...cms('ana:hero.buton1')}>{h.buton1}</span></a>
+          <a class="btn btn-line" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" /><span {...cms('ana:hero.buton2')}>{h.buton2}</span></a>
         </div>
       </div>
-      <aside class="tonight" id="tonight" aria-live="polite">
+      <aside class="tonight" id="tonight" aria-live="polite" data-cms-panel="etkinlikler">
         <p class="label"><span>Bugün</span><span data-t="day">Her gün</span></p>
         <h3 data-t="title">Social Hour</h3>
         <span class="time num" data-t="time">Hafta içi 18.00'e kadar</span>
         <p data-t="text">Tüm içeceklerde %20 indirim.</p>
-        <p class="open num">Açığız: {saat}</p>
+        <p class="open num">Açığız: {isletme.saatler.acik}</p>
         <a class="link-arrow" href="/etkinlikler/">Tüm etkinlikler →</a>
       </aside>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">{[...seritler, ...seritler].map((s) => <span>{s}</span>)}</div>
+  <div class="marquee" aria-hidden="true" {...cmsListe('ana:serit')}>
+    <div class="marquee-track">{[...ana.serit, ...ana.serit].map((s, i) => <span {...(i < ana.serit.length ? { ...cms(`ana:serit.${i}`), 'data-cms-oge': i } : {})}>{s}</span>)}</div>
   </div>
 
   <section class="sec" aria-labelledby="gun-title">
     <div class="wrap">
-      <div class="sec-head"><p class="label">Gündüz &amp; gece</p><h2 id="gun-title">Öğlen başka, akşam başka</h2></div>
+      <div class="sec-head"><p class="label" {...cms('ana:gun.ust')}>{ana.gun.ust}</p><h2 id="gun-title" {...cms('ana:gun.baslik')}>{ana.gun.baslik}</h2></div>
       <div class="split">
-        <a class="tile" href="/menu/#bowls">
-          <Gorsel src="/img/hgp-5477.jpg" alt="Tavuklu, edamameli ve domatesli bowl" />
-          <div class="tile-body"><p class="label">Öğle</p><h3>Bowl, ızgara, <em>tost</em></h3><p>Spor çıkışı ya da iş arasında: doyurucu, hızlı, tek tabakta.</p></div>
-        </a>
-        <a class="tile" href="/etkinlikler/">
-          <Gorsel src="/img/dsc06657.jpg" alt="Müjgân sahnesinde şarkı söyleyen solist ve grup" konum="50% 30%" />
-          <div class="tile-body"><p class="label">Akşam</p><h3>Kokteyl, sahne, <em>muhabbet</em></h3><p>Kırmızı perdenin önünde canlı müzik, masada paylaşmalıklar.</p></div>
-        </a>
+        {(['ogle', 'aksam'] as const).map((k) => {
+          const t = ana.gun[k];
+          return (
+            <a class="tile" href={t.link} data-cms-link={`ana:gun.${k}.link`}>
+              <Gorsel g={t.gorsel} cms={`ana:gun.${k}.gorsel`} />
+              <div class="tile-body"><p class="label" {...cms(`ana:gun.${k}.ust`)}>{t.ust}</p><h3 {...cms(`ana:gun.${k}.baslik`, 'html')} set:html={t.baslik} /><p {...cms(`ana:gun.${k}.metin`)}>{t.metin}</p></div>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -76,14 +62,14 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
   <section class="sec" style="padding-top:0" aria-labelledby="ritim-title">
     <div class="wrap">
       <div class="sec-head-row">
-        <div class="sec-head"><p class="label">Haftanın ritmi</p><h2 id="ritim-title">Her akşamın bir bahanesi var</h2></div>
-        <a class="link-arrow" href="/etkinlikler/">Tüm etkinlikler →</a>
+        <div class="sec-head"><p class="label" {...cms('ana:ritim.ust')}>{ana.ritim.ust}</p><h2 id="ritim-title" {...cms('ana:ritim.baslik')}>{ana.ritim.baslik}</h2></div>
+        <a class="link-arrow" href="/etkinlikler/" {...cms('ana:ritim.link')}>{ana.ritim.link}</a>
       </div>
-      <div class="posters">
-        {geceler.map((g) => (
+      <div class="posters" data-cms-panel="etkinlikler">
+        {geceler.map((g, i) => (
           <a class="poster" href={`/etkinlikler/#${g.id}`} data-dow={g.gun}>
-            <div class="poster-img"><Gorsel src={g.afis} alt={`${g.baslik} afişi`} /></div>
-            <div class="day"><b>{g.kisa}</b><span>{g.saat ?? ''}</span></div>
+            <div class="poster-img"><Gorsel g={g.afis} cms={`etkinlikler:geceler.${i}.afis`} /></div>
+            <div class="day"><b>{g.kisa}</b><span>{g.saat}</span></div>
           </a>
         ))}
       </div>
@@ -93,14 +79,14 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
   <section class="sec" style="padding-top:0" aria-labelledby="mutfak-title">
     <div class="wrap">
       <div class="sec-head-row">
-        <div class="sec-head"><p class="label">Mutfak</p><h2 id="mutfak-title">Burgerden bowl'a, pizzadan ızgaraya</h2></div>
-        <a class="link-arrow" href="/menu/" data-olay="menu_goruntule">Menünün tamamı →</a>
+        <div class="sec-head"><p class="label" {...cms('ana:mutfak.ust')}>{ana.mutfak.ust}</p><h2 id="mutfak-title" {...cms('ana:mutfak.baslik')}>{ana.mutfak.baslik}</h2></div>
+        <a class="link-arrow" href="/menu/" data-olay="menu_goruntule" {...cms('ana:mutfak.link')}>{ana.mutfak.link}</a>
       </div>
-      <div class="bento">
-        {izgara.map((k) => (
-          <a class={k.izgara?.sinif} href={`/menu/#${k.id}`}>
-            <Gorsel src={k.izgara!.src} alt={k.izgara!.alt} konum={k.izgara?.konum} />
-            <span>{k.baslik}<small class="num">{fiyatYaz(enDusuk(k))}₺'den</small></span>
+      <div class="bento" data-cms-panel="menu">
+        {izgara.map(([i, k]) => (
+          <a class={k!.izgara.boyut === 'genis' ? 'b-wide' : k!.izgara.boyut === 'uzun' ? 'b-tall' : undefined} href={`/menu/#${k!.id}`}>
+            <Gorsel g={k!.izgara} cms={`menu:kategoriler.${i}.izgara`} />
+            <span>{k!.baslik}<small class="num">{fiyatYaz(enDusuk(k!))}₺'den</small></span>
           </a>
         ))}
       </div>
@@ -110,15 +96,13 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
   <section class="sec bar-band" aria-labelledby="bar-title">
     <div class="wrap bar-grid">
       <div class="bar-copy">
-        <p class="label">Bar</p>
-        <h2 id="bar-title">Bardan çıkan her şey <em class="it">bir hikâye</em></h2>
-        <p>Çarkıfelekli sour'lar, fesleğenli ferahlar, dumanı üstünde servis edilenler. Bar ekibimiz her akşam tezgâhın başında.</p>
-        <div class="btns"><a class="btn btn-line" href="/etkinlikler/#shake-brake">Çarşamba Shake Brake →</a></div>
+        <p class="label" {...cms('ana:bar.ust')}>{ana.bar.ust}</p>
+        <h2 id="bar-title" {...cms('ana:bar.baslik', 'html')} set:html={ana.bar.baslik} />
+        <p {...cms('ana:bar.metin')}>{ana.bar.metin}</p>
+        <div class="btns"><a class="btn btn-line" href={ana.bar.buton.link} {...cms('ana:bar.buton', 'link')}>{ana.bar.buton.metin}</a></div>
       </div>
       <div class="glasses">
-        <figure><Gorsel src="/img/hgp-5739.jpg" alt="Pipetle son dokunuşu yapılan yeşil kokteyl" /></figure>
-        <figure><Gorsel src="/img/hgp-6204.jpg" alt="Çarkıfelekli turuncu sour kokteyl" /></figure>
-        <figure><Gorsel src="/img/hgp-6250.jpg" alt="Dumanlı, havuç garnitürlü turuncu kokteyl" /></figure>
+        {ana.bar.gorseller.map((g, i) => <figure><Gorsel g={g} cms={`ana:bar.gorseller.${i}`} /></figure>)}
       </div>
     </div>
   </section>
@@ -126,9 +110,9 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
   <section class="sec" id="paket" aria-label="Paket servis ve grup rezervasyonu">
     <div class={paketVar ? 'wrap duo' : 'wrap'}>
       {paketVar && <div class="panel panel-kraft">
-        <p class="label">Paket servis</p>
-        <h2 id="paket-title">Müjgân eve de geliyor</h2>
-        <p>Paket servisimiz açıldı. Siparişini aşağıdaki uygulamalardan verebilirsin.</p>
+        <p class="label" {...cms('ana:paket.ust')}>{ana.paket.ust}</p>
+        <h2 {...cms('ana:paket.baslik')}>{ana.paket.baslik}</h2>
+        <p {...cms('ana:paket.metin')}>{ana.paket.metin}</p>
         <div class="btns">
           {isletme.siparisPlatformlari.map((o) => (
             <a class="btn btn-dark" href={o.url} target="_blank" rel="noopener" data-olay="siparis_platform_tikla" data-platform={o.ad}><Ikon ad="bag" />{o.ad}</a>
@@ -137,9 +121,9 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
         </div>
       </div>}
       <div class="panel panel-line">
-        <p class="label">Grup ve kutlama</p>
-        <h2>Doğum günü, ekip yemeği, veda</h2>
-        <p>Kalabalık geliyorsanız önceden yazın; masanızı, sahne önünü ve menüyü birlikte ayarlayalım.</p>
+        <p class="label" {...cms('ana:grup.ust')}>{ana.grup.ust}</p>
+        <h2 {...cms('ana:grup.baslik')}>{ana.grup.baslik}</h2>
+        <p {...cms('ana:grup.metin')}>{ana.grup.metin}</p>
         <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
       </div>
     </div>
@@ -148,39 +132,39 @@ const seritler = ['Social Hour', 'Chill Day', 'Shake Brake', 'Karaoke Gecesi', '
   <section class="sec" style="padding-top:0" aria-labelledby="ig-title">
     <div class="wrap">
       <div class="sec-head-row">
-        <div class="sec-head"><p class="label">@{isletme.instagram.kullanici}</p><h2 id="ig-title">Müjgân'da bir akşam</h2></div>
-        <a class="link-arrow" href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">Instagram'da takip et →</a>
+        <div class="sec-head"><p class="label">@{isletme.instagram.kullanici}</p><h2 id="ig-title" {...cms('ana:instagram.baslik')}>{ana.instagram.baslik}</h2></div>
+        <a class="link-arrow" href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla" {...cms('ana:instagram.link')}>{ana.instagram.link}</a>
       </div>
       <div class="grid6">
-        {sosyal.map((g) => <a href={isletme.instagram.url} target="_blank" rel="noopener" aria-label="Instagram'da Müjgân" data-olay="instagram_tikla"><Gorsel {...g} /></a>)}
+        {ana.instagram.gorseller.map((g, i) => <a href={isletme.instagram.url} target="_blank" rel="noopener" aria-label="Instagram'da Müjgân" data-olay="instagram_tikla"><Gorsel g={g} cms={`ana:instagram.gorseller.${i}`} /></a>)}
       </div>
     </div>
   </section>
 
   <section class="sec" style="padding-top:0" aria-labelledby="sss-title">
     <div class="wrap">
-      <div class="sec-head"><p class="label">Sık sorulanlar</p><h2 id="sss-title">Gelmeden önce</h2></div>
-      <div class="faq">
-        {sss().map((q, i) => <details open={i === 0}><summary>{q.s}</summary><p>{q.c}</p></details>)}
+      <div class="sec-head"><p class="label" {...cms('ana:sss.ust')}>{ana.sss.ust}</p><h2 id="sss-title" {...cms('ana:sss.baslik')}>{ana.sss.baslik}</h2></div>
+      <div class="faq" {...cmsListe('ana:sss.sorular')}>
+        {ana.sss.sorular.map((q, i) => (
+          <details open={i === 0} data-cms-oge={i}><summary {...cms(`ana:sss.sorular.${i}.soru`)}>{q.soru}</summary><p {...cms(`ana:sss.sorular.${i}.cevap`)}>{q.cevap}</p></details>
+        ))}
       </div>
     </div>
   </section>
 
   <section class="sec" id="ulasim" style="padding-top:0" aria-labelledby="ulasim-title">
     <div class="wrap visit-grid">
-      <div class="visit-photo"><Gorsel src="/img/dsc06414.jpg" alt="Masa lambasının ışığında bira ve limonata" konum="50% 60%" /></div>
-      <div class="visit-copy">
-        <p class="label" id="ulasim-title">Nasıl gelinir</p>
-        <address>{isletme.adres.mekan}, No: 209/16<br />S. Saltoğlu Bulvarı, Çayyolu<br />{isletme.adres.ilce} / {isletme.adres.il}</address>
-        <p>Beysupark AVM'nin içindeyiz; Çayyolu, Ümitköy, Beysukent ve Alacaatlı'ya yakın. Google Haritalar'da “{isletme.haritaAdi}” olarak kayıtlıyız.</p>
-        {isletme.girisTarifi.deger ? <p>{isletme.girisTarifi.deger}</p> : <p><Bekliyor ne={isletme.girisTarifi.bekleyen} /></p>}
-        <div class="btns"><a class="btn btn-gold" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi al</a></div>
+      <div class="visit-photo"><Gorsel g={ana.ulasim.gorsel} cms="ana:ulasim.gorsel" /></div>
+      <div class="visit-copy" data-cms-panel="isletme">
+        <p class="label" id="ulasim-title" {...cms('ana:ulasim.ust')}>{ana.ulasim.ust}</p>
+        <address>{isletme.adres.satirlar.map((s, i) => <>{i > 0 && <br />}<span {...cms(`isletme:adres.satirlar.${i}`)}>{s}</span></>)}</address>
+        <p {...cms('ana:ulasim.metin')}>{ana.ulasim.metin}</p>
+        {isletme.girisTarifi ? <p {...cms('isletme:girisTarifi')}>{isletme.girisTarifi}</p> : <p><Bekliyor ne="AVM içinde giriş tarifi" /></p>}
+        <div class="btns"><a class="btn btn-gold" href={harita} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" /><span {...cms('ana:ulasim.buton')}>{ana.ulasim.buton}</span></a></div>
         <div class="facts">
-          <div><span>Açık</span><strong class="num">Her gün {saat}</strong></div>
-          <div><span>Mutfak</span><strong>{isletme.saatler.mutfak}</strong></div>
-          {isletme.telefon.deger
-            ? <div><span>Telefon</span><a class="num" href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a></div>
-            : !isletme.yayinda && <div><span>Telefon</span><Bekliyor ne={isletme.telefon.bekleyen} /></div>}
+          <div><span>Açık</span><strong class="num">Her gün <span {...cms('isletme:saatler.acik')}>{isletme.saatler.acik}</span></strong></div>
+          <div><span>Mutfak</span><strong {...cms('isletme:saatler.mutfak')}>{isletme.saatler.mutfak}</strong></div>
+          {isletme.telefon && <div><span>Telefon</span><a class="num" href={`tel:${isletme.telefon.replace(/\s/g, '')}`} data-olay="telefon_tikla" {...cms('isletme:telefon')}>{isletme.telefon}</a></div>}
           <div><span>Rezervasyon</span><a href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>{rez.etiket}</a></div>
           <div><span>Instagram</span><a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">@{isletme.instagram.kullanici}</a></div>
         </div>

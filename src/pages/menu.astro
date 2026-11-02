@@ -4,25 +4,21 @@ import Gorsel from '../components/Gorsel.astro';
 import Ikon from '../components/Ikon.astro';
 import Bekliyor from '../components/Bekliyor.astro';
 import { isletme, rezervasyon } from '../data/isletme';
-import { menu, toplamKalem, fiyatYaz } from '../data/menu';
+import { menu, fiyatYaz } from '../data/menu';
+import { menuIcerik, cms, cmsListe } from '../lib/icerik';
 import { menuSema, yolSema } from '../lib/sema';
 
 const rez = rezervasyon();
-const saat = isletme.saatler.acik.deger;
+const s = menuIcerik.sayfa;
 ---
-<Base
-  baslik="Menü ve Fiyatlar · Müjgân Çayyolu (Beysupark AVM)"
-  aciklama="Müjgân Çayyolu menüsü ve güncel fiyatlar: burger, kore tost, basket, pizza, bowl ve ana yemekler. Beysupark AVM, Çayyolu / Ankara."
-  yol="menu/" sayfa="menu" kapakGorseli="/img/hgp-6041.jpg" sayfaOlayi="menu_goruntule"
-  sema={[menuSema(), yolSema('Menü', 'menu/')]}
->
+<Base yol="/menu/" sayfa="menu" onYukle={s.gorsel.src} sayfaOlayi="menu_goruntule" sema={[menuSema(), yolSema('Menü', 'menu/')]}>
   <section class="hero page-hero" aria-labelledby="menu-title">
-    <div class="hero-media"><Gorsel src="/img/hgp-6041.jpg" alt="Müjgân Çayyolu menüsünden bowl, tost, patates ve içeceklerle dolu masa" konum="50% 45%" oncelik /></div>
+    <div class="hero-media"><Gorsel g={s.gorsel} cms="menu:sayfa.gorsel" oncelik /></div>
     <div class="wrap">
       <div class="hero-copy">
-        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / Menü</p>
-        <h1 id="menu-title">Menü</h1>
-        <p class="lead">Burger, kore tost, basket, pizza, bowl ve ana yemekler: {toplamKalem()} tabak, güncel fiyatlarıyla. Mutfak her gün {saat} açık.</p>
+        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / {s.baslik}</p>
+        <h1 id="menu-title" {...cms('menu:sayfa.baslik')}>{s.baslik}</h1>
+        <p class="lead" {...cms('menu:sayfa.metin')}>{s.metin}</p>
       </div>
     </div>
   </section>
@@ -32,17 +28,19 @@ const saat = isletme.saatler.acik.deger;
   </nav>
 
   <section class="sec" aria-label="Menü listesi">
-    <div class="wrap">
-      {menu.map((k) => (
-        <article class="mcat" id={k.id}>
-          <div class="mcat-photo"><Gorsel src={k.foto.src} alt={k.foto.alt} konum={k.foto.konum} /></div>
+    <div class="wrap" {...cmsListe('menu:kategoriler')}>
+      {menu.map((k, ki) => (
+        <article class="mcat" id={k.id} data-cms-oge={ki}>
+          <div class="mcat-photo"><Gorsel g={k.foto} cms={`menu:kategoriler.${ki}.foto`} /></div>
           <div class="paper">
-            <div class="paper-head"><h2>{k.baslik}</h2>{k.alt && <span>{k.alt}</span>}</div>
-            <ul class="items">
-              {k.kalemler.map((x) => (
-                <li class="item">
-                  <span class="name">{x.ad}</span><span class="dots" aria-hidden="true"></span>
-                  <span class="price num">{x.fiyat !== null ? <>{fiyatYaz(x.fiyat)}<small>₺</small></> : <Bekliyor ne="fiyat" />}</span>
+            <div class="paper-head"><h2 {...cms(`menu:kategoriler.${ki}.baslik`)}>{k.baslik}</h2>{k.alt && <span {...cms(`menu:kategoriler.${ki}.alt`)}>{k.alt}</span>}</div>
+            <ul class="items" {...cmsListe(`menu:kategoriler.${ki}.kalemler`)}>
+              {k.kalemler.map((x, xi) => (
+                <li class="item" data-cms-oge={xi}>
+                  <span class="name" {...cms(`menu:kategoriler.${ki}.kalemler.${xi}.ad`)}>{x.ad}</span><span class="dots" aria-hidden="true"></span>
+                  <span class="price num">{typeof x.fiyat === 'number'
+                    ? <><span {...cms(`menu:kategoriler.${ki}.kalemler.${xi}.fiyat`, 'number')}>{fiyatYaz(x.fiyat)}</span><small>₺</small></>
+                    : <Bekliyor ne="fiyat" />}</span>
                 </li>
               ))}
             </ul>
@@ -51,7 +49,7 @@ const saat = isletme.saatler.acik.deger;
       ))}
 
       <div class="menu-foot">
-        <p>Fiyatlar Türk lirasıdır. Alerjen ve içerik bilgisi için ekibimize sorabilirsin. <Bekliyor ne="içecek / kokteyl menüsü" /></p>
+        <p><span {...cms('menu:sayfa.altNot')}>{s.altNot}</span> <Bekliyor ne="içecek / kokteyl menüsü" /></p>
         <div class="btns">
           <a class="btn btn-gold" href="/#paket"><Ikon ad="bag" />Paket sipariş</a>
           <a class="btn btn-line" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a>

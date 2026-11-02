@@ -2,12 +2,12 @@
 import { isletme } from '../data/isletme';
 import { menu } from '../data/menu';
 import { etkinlikler } from '../data/program';
-import { sss } from '../data/sss';
+import { ana } from './icerik';
 
 const u = (yol = '') => `${isletme.site}/${yol.replace(/^\//, '')}`;
 const a = isletme.adres;
 export const adres = {
-  '@type': 'PostalAddress', streetAddress: `${a.sokak.deger}, ${a.mekan}`, addressLocality: a.ilce,
+  '@type': 'PostalAddress', streetAddress: `${a.sokak}, ${a.mekan}`, addressLocality: a.ilce,
   addressRegion: a.il, postalCode: a.postaKodu, addressCountry: 'TR',
 };
 
@@ -21,20 +21,20 @@ export const isletmeSema = () => {
     acceptsReservations: true, hasMenu: u('menu/'), foundingDate: isletme.kurulus,
     sameAs: [isletme.instagram.url], areaServed: [...isletme.yakinSemtler, a.ilce],
   };
-  if (a.sokak.dogrulandi) d.address = adres;
-  if (isletme.haritaLinki.dogrulandi) d.hasMap = isletme.haritaLinki.deger;
-  if (isletme.saatler.acik.dogrulandi) d.openingHoursSpecification = [{
+  if (a.sokak) d.address = adres;
+  if (isletme.haritaLinki) d.hasMap = isletme.haritaLinki;
+  if (isletme.saatler.acilis && isletme.saatler.kapanis) d.openingHoursSpecification = [{
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     opens: isletme.saatler.acilis, closes: isletme.saatler.kapanis }];
-  if (isletme.telefon.dogrulandi && isletme.telefon.deger) d.telephone = isletme.telefon.deger;
+  if (isletme.telefon) d.telephone = isletme.telefon;
   return d;
 };
 
 export const siteSema = () => ({ '@context': 'https://schema.org', '@type': 'WebSite', name: isletme.tamAd, url: u(), inLanguage: 'tr-TR' });
 
 export const sssSema = () => ({ '@context': 'https://schema.org', '@type': 'FAQPage',
-  mainEntity: sss().map((q) => ({ '@type': 'Question', name: q.s, acceptedAnswer: { '@type': 'Answer', text: q.c } })) });
+  mainEntity: ana.sss.sorular.map((q) => ({ '@type': 'Question', name: q.soru, acceptedAnswer: { '@type': 'Answer', text: q.cevap } })) });
 
 export const yolSema = (ad: string, yol: string) => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: isletme.tamAd, item: u() },
@@ -42,7 +42,7 @@ export const yolSema = (ad: string, yol: string) => ({ '@context': 'https://sche
 
 export const menuSema = () => ({ '@context': 'https://schema.org', '@type': 'Menu', name: `${isletme.tamAd} Menü`, inLanguage: 'tr', url: u('menu/'),
   hasMenuSection: menu.map((k) => ({ '@type': 'MenuSection', name: k.baslik,
-    hasMenuItem: k.kalemler.filter((x) => x.fiyat !== null).map((x) => ({ '@type': 'MenuItem', name: x.ad,
+    hasMenuItem: k.kalemler.filter((x) => typeof x.fiyat === 'number').map((x) => ({ '@type': 'MenuItem', name: x.ad,
       offers: { '@type': 'Offer', price: String(x.fiyat), priceCurrency: 'TRY' } })) })) });
 
 export const etkinlikSema = (bugun = new Date()) => {

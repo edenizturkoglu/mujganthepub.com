@@ -1,0 +1,47 @@
+{
+  "yayinda": true,
+  "site": "https://mujganthepub.com",
+  "ad": "Müjgân",
+  "tamAd": "Müjgân Çayyolu",
+  "digerAdlar": [
+    "Müjgân Çayyolu",
+    "Müjgân The Pub"
+  ],
+  "kurulus": "2015",
+  "adres": {
+    "sokak": "Çayyolu Mah. S. Saltoğlu Blv. No: 209/16",
+    "mekan": "Beysupark AVM",
+    "postaKodu": "06810",
+    "ilce": "Çankaya",
+    "il": "Ankara",
+    "satirlar": [
+      "Beysupark AVM, No: 209/16",
+      "S. Saltoğlu Bulvarı, Çayyolu",
+      "Çankaya / Ankara"
+    ]
+  },
+  "yakinSemtler": [
+    "Çayyolu",
+    "Ümitköy",
+    "Beysukent",
+    "Alacaatlı"
+  ],
+  "telefon": "",
+  "whatsapp": "",
+  "haritaLinki": "https://share.google/ZRj28q9zPogFmpwk9",
+  "haritaAdi": "Müjgân Çayyolu",
+  "girisTarifi": "",
+  "otopark": "",
+  "saatler": {
+    "acik": "10.30 – 01.00",
+    "acilis": "10:30",
+    "kapanis": "01:00",
+    "mutfak": "Açık olduğumuz her saat"
+  },
+  "siparisPlatformlari": [],
+  "instagram": {
+    "kullanici": "mujganthepub",
+    "url": "https://www.instagram.com/mujganthepub/",
+    "dm": "https://ig.me/m/mujganthepub"
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "hero": {
+    "ust": "Müjgân Çayyolu · Beysupark AVM, Ankara",
+    "baslik": "Müjgân biraz yer değiştirdi.",
+    "vurgu": "Keyfi hâlâ yerinde.",
+    "metin": "2015'ten beri Müjgân. Şimdi Çayyolu'da, Beysupark AVM'de, her gün 10.30 – 01.00: öğlen bowl ve ızgara, akşam kokteyl ve paylaşmalık, perşembe karaoke, hafta sonu sahnede canlı müzik.",
+    "gorsel": {
+      "src": "/img/hgp-6015.jpg",
+      "alt": "Müjgân Çayyolu'da masada kadeh tokuşturan iki kişi",
+      "konum": "30% 40%",
+      "w": 2000,
+      "h": 1333
+    },
+    "buton1": "Menüye bak",
+    "buton2": "Yol tarifi"
+  },
+  "serit": [
+    "Social Hour",
+    "Chill Day",
+    "Shake Brake",
+    "Karaoke Gecesi",
+    "Canlı Caz",
+    "Bowl & Burger",
+    "Paket Servis"
+  ],
+  "gun": {
+    "ust": "Gündüz & gece",
+    "baslik": "Öğlen başka, akşam başka",
+    "ogle": {
+      "ust": "Öğle",
+      "baslik": "Bowl, ızgara, <em>tost</em>",
+      "metin": "Spor çıkışı ya da iş arasında: doyurucu, hızlı, tek tabakta.",
+      "gorsel": {
+        "src": "/img/hgp-5477.jpg",
+        "alt": "Tavuklu, edamameli ve domatesli bowl",
+        "w": 733,
+        "h": 1100
+      },
+      "link": "/menu/#bowls"
+    },
+    "aksam": {
+      "ust": "Akşam",
+      "baslik": "Kokteyl, sahne, <em>muhabbet</em>",
+      "metin": "Kırmızı perdenin önünde canlı müzik, masada paylaşmalıklar.",
+      "gorsel": {
+        "src": "/img/dsc06657.jpg",
+        "alt": "Müjgân sahnesinde şarkı söyleyen solist ve grup",
+        "konum": "50% 30%",
+        "w": 1067,
+        "h": 1600
+      },
+      "link": "/etkinlikler/"
+    }
+  },
+  "ritim": {
+    "ust": "Haftanın ritmi",
+    "baslik": "Her akşamın bir bahanesi var",
+    "link": "Tüm etkinlikler →"
+  },
+  "mutfak": {
+    "ust": "Mutfak",
+    "baslik": "Burgerden bowl'a, pizzadan ızgaraya",
+    "link": "Menünün tamamı →"
+  },
+  "bar": {
+    "ust": "Bar",
+    "baslik": "Bardan çıkan her şey <em>bir hikâye</em>",
+    "metin": "Çarkıfelekli sour'lar, fesleğenli ferahlar, dumanı üstünde servis edilenler. Bar ekibimiz her akşam tezgâhın başında.",
+    "buton": {
+      "metin": "Çarşamba Shake Brake →",
+      "link": "/etkinlikler/#shake-brake"
+    },
+    "gorseller": [
+      {
+        "src": "/img/hgp-5739.jpg",
+        "alt": "Pipetle son dokunuşu yapılan yeşil kokteyl",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/hgp-6204.jpg",
+        "alt": "Çarkıfelekli turuncu sour kokteyl",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/hgp-6250.jpg",
+        "alt": "Dumanlı, havuç garnitürlü turuncu kokteyl",
+        "w": 733,
+        "h": 1100
+      }
+    ]
+  },
+  "paket": {
+    "ust": "Paket servis",
+    "baslik": "Müjgân eve de geliyor",
+    "metin": "Paket servisimiz açıldı. Siparişini aşağıdaki uygulamalardan verebilirsin."
+  },
+  "grup": {
+    "ust": "Grup ve kutlama",
+    "baslik": "Doğum günü, ekip yemeği, veda",
+    "metin": "Kalabalık geliyorsanız önceden yazın; masanızı, sahne önünü ve menüyü birlikte ayarlayalım."
+  },
+  "instagram": {
+    "baslik": "Müjgân'da bir akşam",
+    "link": "Instagram'da takip et →",
+    "gorseller": [
+      {
+        "src": "/img/hgp-6059.jpg",
+        "alt": "Kokteylini kaldıran misafir",
+        "konum": "50% 30%",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/dsc06717.jpg",
+        "alt": "Gülümseyen misafir",
+        "konum": "50% 30%",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/a3.jpg",
+        "alt": "Kokteyl hazırlayan barmen",
+        "konum": "50% 40%",
+        "w": 825,
+        "h": 1100
+      },
+      {
+        "src": "/img/hgp-6133.jpg",
+        "alt": "Pembe kokteyl yudumlayan misafir",
+        "konum": "50% 40%",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/hgp-6152.jpg",
+        "alt": "Kremalı içeceğini koklayan misafir",
+        "konum": "50% 30%",
+        "w": 733,
+        "h": 1100
+      },
+      {
+        "src": "/img/dsc06578.jpg",
+        "alt": "Kokteylleriyle sohbet eden misafirler",
+        "konum": "50% 40%",
+        "w": 733,
+        "h": 1100
+      }
+    ]
+  },
+  "sss": {
+    "ust": "Sık sorulanlar",
+    "baslik": "Gelmeden önce",
+    "sorular": [
+      {
+        "soru": "Müjgân Çayyolu nerede?",
+        "cevap": "Ankara Çayyolu'da, Beysupark AVM'nin içindeyiz: Çayyolu Mah. S. Saltoğlu Blv. No: 209/16, Çankaya. Google Haritalar'da “Müjgân Çayyolu” olarak arayabilirsin."
+      },
+      {
+        "soru": "Saat kaçta açıksınız?",
+        "cevap": "Haftanın her günü 10.30 – 01.00 arası açığız. Mutfak açık olduğumuz her saat servis yapıyor."
+      },
+      {
+        "soru": "Nasıl rezervasyon yapabilirim?",
+        "cevap": "Instagram'dan @mujganthepub hesabımıza mesaj atman yeterli. Kalabalık gruplar ve doğum günleri için önceden yazmanı öneririz."
+      },
+      {
+        "soru": "Paket servisiniz var mı?",
+        "cevap": "Evet, paket servisimiz var."
+      },
+      {
+        "soru": "Karaoke ve canlı müzik ne zaman?",
+        "cevap": "Her perşembe 20.00'de Karaoke Gecesi var. Hafta sonu akşamları 20.00'de sahnede canlı müzik oluyor; güncel program Etkinlikler sayfasında."
+      },
+      {
+        "soru": "Social Hour nedir?",
+        "cevap": "Hafta içi her gün 18.00'e kadar tüm içeceklerde %20 indirim."
+      }
+    ]
+  },
+  "ulasim": {
+    "ust": "Nasıl gelinir",
+    "metin": "Beysupark AVM'nin içindeyiz; Çayyolu, Ümitköy, Beysukent ve Alacaatlı'ya yakın. Google Haritalar'da “Müjgân Çayyolu” olarak kayıtlıyız.",
+    "gorsel": {
+      "src": "/img/dsc06414.jpg",
+      "alt": "Masa lambasının ışığında bira ve limonata",
+      "konum": "50% 60%",
+      "w": 733,
+      "h": 1100
+    },
+    "buton": "Yol tarifi al"
+  }
+}

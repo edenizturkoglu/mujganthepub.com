@@ -2,25 +2,31 @@
 import '../styles/global.css';
 import { isletme, rezervasyon } from '../data/isletme';
 import { hafta } from '../data/program';
+import { seo as seoTum, ozelSayfalar, type Seo } from '../lib/icerik';
 import Logo from '../components/Logo.astro';
 import Ikon from '../components/Ikon.astro';
 
 interface Props {
-  baslik: string;
-  aciklama: string;
-  /** site köküne göre yol: '' | 'menu' | 'etkinlikler' */
+  /** site kökünden yol, sonu "/" ile: '/', '/menu/', '/etkinlikler/', '/<slug>/' */
   yol: string;
   sayfa: 'ana' | 'menu' | 'etkinlikler' | 'diger';
-  kapakGorseli: string;
+  /** Verilmezse src/icerik/seo.json'daki kayıt kullanılır */
+  seo?: Seo;
   sema?: object[];
   sayfaOlayi?: string;
-  /** false: bu sayfa arama motorlarına kapalı */
-  indeksle?: boolean;
+  /** İlk ekrandaki kapak görseli (önceden yüklenir) */
+  onYukle?: string;
 }
-const { baslik, aciklama, yol, sayfa, kapakGorseli, sema = [], sayfaOlayi, indeksle = true } = Astro.props;
-const kanonik = `${isletme.site}/${yol}`;
+const { yol, sayfa, sema = [], sayfaOlayi } = Astro.props;
+const s: Seo = Astro.props.seo ?? seoTum[yol] ?? seoTum['/'];
+const baslik = s.baslik;
+const aciklama = s.aciklama;
+const kapakGorseli = s.kapak || '/img/hgp-6015.jpg';
+const indeksle = s.indeksle !== false;
+const kanonik = `${isletme.site}${yol}`;
 const rez = rezervasyon();
-const haritaUrl = isletme.haritaLinki.deger!;
+const haritaUrl = isletme.haritaLinki;
+const ekMenu = ozelSayfalar.filter((p) => p.menudeGoster);
 ---
 <!doctype html>
 <html lang="tr">
@@ -45,7 +51,7 @@ const haritaUrl = isletme.haritaLinki.deger!;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" as="image" href={kapakGorseli} fetchpriority="high" />
+    <link rel="preload" as="image" href={Astro.props.onYukle ?? kapakGorseli} fetchpriority="high" />
     {sema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body data-sayfa-olayi={sayfaOlayi}>
@@ -57,6 +63,7 @@ const haritaUrl = isletme.haritaLinki.deger!;
         <nav class="nav" aria-label="Ana menü">
           <a href="/menu/" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule">Menü</a>
           <a href="/etkinlikler/" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}>Etkinlikler</a>
+          {ekMenu.map((p) => <a href={`/${p.slug}/`} aria-current={yol === `/${p.slug}/` ? 'page' : undefined}>{p.baslik}</a>)}
           <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
         </nav>
@@ -72,15 +79,16 @@ const haritaUrl = isletme.haritaLinki.deger!;
         <nav aria-label="Alt menü">
           <a href="/menu/">Menü</a>
           <a href="/etkinlikler/">Etkinlikler</a>
+          {ekMenu.map((p) => <a href={`/${p.slug}/`}>{p.baslik}</a>)}
           <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
           <a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">Instagram</a>
         </nav>
         <address>
           <b>{isletme.tamAd}</b><br />
-          {isletme.adres.sokak.deger}, {isletme.adres.mekan}<br />
-          {isletme.adres.postaKodu} {isletme.adres.ilce} / {isletme.adres.il} · Her gün {isletme.saatler.acik.deger}
-          {isletme.telefon.deger && <><br /><a href={`tel:${isletme.telefon.deger}`} data-olay="telefon_tikla">{isletme.telefon.deger}</a></>}
+          {isletme.adres.sokak}, {isletme.adres.mekan}<br />
+          {isletme.adres.postaKodu} {isletme.adres.ilce} / {isletme.adres.il} · Her gün {isletme.saatler.acik}
+          {isletme.telefon && <><br /><a href={`tel:${isletme.telefon.replace(/\s/g, '')}`} data-olay="telefon_tikla">{isletme.telefon}</a></>}
         </address>
       </div>
     </footer>

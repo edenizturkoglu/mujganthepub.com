@@ -1,0 +1,26 @@
+{
+  "/": {
+    "baslik": "Müjgân Çayyolu · Pub, Kokteyl Bar ve Restoran | Beysupark AVM, Ankara",
+    "aciklama": "Müjgân artık Çayyolu'da, Beysupark AVM'de. Her gün 10.30–01.00: öğle ve akşam yemeği, kokteyl, paket servis, perşembe karaoke ve hafta sonu canlı müzik.",
+    "kapak": "/img/hgp-6015.jpg",
+    "indeksle": true
+  },
+  "/menu/": {
+    "baslik": "Menü ve Fiyatlar · Müjgân Çayyolu (Beysupark AVM)",
+    "aciklama": "Müjgân Çayyolu menüsü ve güncel fiyatlar: burger, kore tost, basket, pizza, bowl ve ana yemekler. Beysupark AVM, Çayyolu / Ankara.",
+    "kapak": "/img/hgp-6041.jpg",
+    "indeksle": true
+  },
+  "/etkinlikler/": {
+    "baslik": "Etkinlikler: Karaoke, Canlı Müzik · Müjgân Çayyolu",
+    "aciklama": "Çayyolu'da karaoke ve canlı müzik: her perşembe Karaoke Gecesi, hafta sonu sahnede gruplar, Social Hour, Chill Day ve Shake Brake. Müjgân, Beysupark AVM.",
+    "kapak": "/img/dsc06634.jpg",
+    "indeksle": true
+  },
+  "/kvkk/": {
+    "baslik": "KVKK Aydınlatma Metni · Müjgân Çayyolu",
+    "aciklama": "Müjgân Çayyolu kişisel verilerin korunması aydınlatma metni.",
+    "kapak": "/img/hgp-6015.jpg",
+    "indeksle": false
+  }
+}

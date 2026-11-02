@@ -1,0 +1,69 @@
+---
+// CMS'ten oluşturulan sayfalar: src/icerik/sayfalar/<slug>.json → /<slug>/
+import Base from '../layouts/Base.astro';
+import Gorsel from '../components/Gorsel.astro';
+import { isletme } from '../data/isletme';
+import { ozelSayfalar, cms, cmsListe, type OzelSayfa } from '../lib/icerik';
+import { yolSema } from '../lib/sema';
+
+export function getStaticPaths() {
+  return ozelSayfalar.map((p) => ({ params: { slug: p.slug }, props: { sayfa: p } }));
+}
+const { sayfa } = Astro.props as { sayfa: OzelSayfa & { slug: string } };
+const d = `sayfalar/${sayfa.slug}`;
+const ilkKapak = sayfa.bloklar.find((b) => b.tur === 'kapak');
+// Açıklama boşsa ilk bloğun metninden üret (Google için)
+const ilkMetin = sayfa.bloklar.map((b) => ('metin' in b ? b.metin : '') || '').find(Boolean)?.replace(/<[^>]+>/g, '').trim() ?? '';
+const seo = { ...sayfa.seo, aciklama: sayfa.seo.aciklama || ilkMetin.slice(0, 155) };
+---
+<Base yol={`/${sayfa.slug}/`} sayfa="diger" seo={seo} onYukle={ilkKapak && 'gorsel' in ilkKapak ? ilkKapak.gorsel.src : undefined}
+  sema={[yolSema(sayfa.baslik, `${sayfa.slug}/`)]}>
+  {!ilkKapak && <div style="height:150px"></div>}
+  <div {...cmsListe(`${d}:bloklar`)}>
+    {sayfa.bloklar.map((b, i) => {
+      const y = `${d}:bloklar.${i}`;
+      if (b.tur === 'kapak') return (
+        <section class="hero page-hero" data-cms-oge={i} data-blok="kapak">
+          <div class="hero-media"><Gorsel g={b.gorsel} cms={`${y}.gorsel`} oncelik={i === 0} /></div>
+          <div class="wrap"><div class="hero-copy">
+            <p class="crumbs"><a href="/">{isletme.tamAd}</a> / {sayfa.baslik}</p>
+            {i === 0 ? <h1 {...cms(`${y}.baslik`)}>{b.baslik}</h1> : <h2 {...cms(`${y}.baslik`)}>{b.baslik}</h2>}
+            {b.metin && <p class="lead" {...cms(`${y}.metin`)}>{b.metin}</p>}
+          </div></div>
+        </section>
+      );
+      if (b.tur === 'metin') return (
+        <section class="sec blok-metin" data-cms-oge={i} data-blok="metin"><div class="wrap dar">
+          {b.ust && <p class="label" {...cms(`${y}.ust`)}>{b.ust}</p>}
+          {b.baslik && <h2 {...cms(`${y}.baslik`)}>{b.baslik}</h2>}
+          <div class="blok-govde" {...cms(`${y}.metin`, 'html')} set:html={b.metin} />
+        </div></section>
+      );
+      if (b.tur === 'gorsel-metin') return (
+        <section class="sec" data-cms-oge={i} data-blok="gorsel-metin"><div class={`wrap blok-gm${b.ters ? ' ters' : ''}`}>
+          <figure class="blok-gm-foto"><Gorsel g={b.gorsel} cms={`${y}.gorsel`} /></figure>
+          <div class="bar-copy">
+            {b.ust && <p class="label" {...cms(`${y}.ust`)}>{b.ust}</p>}
+            <h2 {...cms(`${y}.baslik`)}>{b.baslik}</h2>
+            <div class="blok-govde" {...cms(`${y}.metin`, 'html')} set:html={b.metin} />
+          </div>
+        </div></section>
+      );
+      if (b.tur === 'galeri') return (
+        <section class="sec" data-cms-oge={i} data-blok="galeri"><div class="wrap">
+          {b.baslik && <div class="sec-head"><h2 {...cms(`${y}.baslik`)}>{b.baslik}</h2></div>}
+          <div class="blok-galeri" {...cmsListe(`${y}.gorseller`)}>
+            {b.gorseller.map((g, gi) => <figure data-cms-oge={gi}><Gorsel g={g} cms={`${y}.gorseller.${gi}`} /></figure>)}
+          </div>
+        </div></section>
+      );
+      if (b.tur === 'cagri') return (
+        <section class="sec" data-cms-oge={i} data-blok="cagri"><div class="wrap"><div class="panel panel-kraft">
+          <h2 {...cms(`${y}.baslik`)}>{b.baslik}</h2>
+          {b.metin && <p {...cms(`${y}.metin`)}>{b.metin}</p>}
+          <div class="btns"><a class="btn btn-dark" href={b.buton.link} {...cms(`${y}.buton`, 'link')}>{b.buton.metin}</a></div>
+        </div></div></section>
+      );
+    })}
+  </div>
+</Base>

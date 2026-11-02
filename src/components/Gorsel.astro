@@ -1,10 +1,12 @@
 ---
-// public/ altındaki fotoğraf: boyutu gorseller.json'dan (CLS olmasın), ilk ekrandakiler öncelikli yüklenir.
+// Fotoğraf: boyut JSON'daki w/h'den ya da gorseller.json'dan (CLS olmasın). `cms` verilirse tıkla-düzenle ile değiştirilebilir.
 import boyutlar from '../data/gorseller.json';
-interface Props { src: string; alt: string; konum?: string; oncelik?: boolean }
-const { src, alt, konum, oncelik = false } = Astro.props;
-const b = (boyutlar as Record<string, number[]>)[src];
+import type { Gorsel } from '../lib/icerik';
+interface Props { g: Gorsel; cms?: string; oncelik?: boolean }
+const { g, cms, oncelik = false } = Astro.props;
+const b = g.w && g.h ? [g.w, g.h] : (boyutlar as Record<string, number[]>)[g.src];
 ---
-<img src={src} alt={alt} width={b?.[0]} height={b?.[1]} decoding="async"
+<img src={g.src} alt={g.alt} width={b?.[0]} height={b?.[1]} decoding="async"
   loading={oncelik ? undefined : 'lazy'} fetchpriority={oncelik ? 'high' : undefined}
-  style={konum ? `object-position:${konum}` : undefined} />
+  style={g.konum ? `object-position:${g.konum}` : undefined}
+  data-cms={cms} data-cms-tur={cms ? 'image' : undefined} />

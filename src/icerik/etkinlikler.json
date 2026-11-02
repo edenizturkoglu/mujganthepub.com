@@ -1,0 +1,160 @@
+{
+  "sayfa": {
+    "baslik": "Etkinlikler",
+    "metin": "Çayyolu'da karaoke, canlı müzik ve kampanya akşamları: hafta içi Social Hour, salı Chill Day, çarşamba Shake Brake, perşembe Karaoke Gecesi, hafta sonu sahnede canlı müzik.",
+    "gorsel": {
+      "src": "/img/dsc06634.jpg",
+      "alt": "Müjgân Çayyolu sahnesinde gitar çalan müzisyen",
+      "konum": "50% 30%",
+      "w": 733,
+      "h": 1100
+    }
+  },
+  "yaklasan": {
+    "ust": "Sahnede bu hafta",
+    "baslik": "Yaklaşan konserler"
+  },
+  "etkinlikler": [
+    {
+      "tarih": "2026-11-06",
+      "saat": "20:00",
+      "baslik": "Flying Fox",
+      "tur": "Canlı müzik"
+    },
+    {
+      "tarih": "2026-11-07",
+      "saat": "20:00",
+      "baslik": "Gizem Selçuk Quartet",
+      "tur": "Caz"
+    }
+  ],
+  "ritim": {
+    "ust": "Haftanın ritmi",
+    "baslik": "Her hafta aynı gün, aynı keyif"
+  },
+  "geceler": [
+    {
+      "id": "social-hour",
+      "gun": "wk",
+      "gunAdi": "Hafta içi her gün",
+      "kisa": "Hafta içi",
+      "baslik": "Social Hour",
+      "saat": "18.00'e kadar",
+      "metin": "Gün bitmeden masaya otur. İş çıkışının ilk turu Social Hour'da.",
+      "kampanya": "Tüm içeceklerde %20 indirim",
+      "afis": {
+        "src": "/posters/social-hour.jpg",
+        "alt": "Social Hour afişi",
+        "w": 720,
+        "h": 1280
+      }
+    },
+    {
+      "id": "chill-day",
+      "gun": "2",
+      "gunAdi": "Her salı",
+      "kisa": "Salı",
+      "baslik": "Chill Day",
+      "saat": "",
+      "metin": "Haftanın sakin akşamı: şarap, paylaşmalık tabaklar, uzun muhabbet.",
+      "kampanya": "Tüm şişe şaraplarda %20 indirim",
+      "afis": {
+        "src": "/posters/chill-day.jpg",
+        "alt": "Chill Day afişi",
+        "w": 720,
+        "h": 1280
+      }
+    },
+    {
+      "id": "shake-brake",
+      "gun": "3",
+      "gunAdi": "Her çarşamba",
+      "kisa": "Çarşamba",
+      "baslik": "Shake Brake",
+      "saat": "",
+      "metin": "Bar ekibinin günü: sour'lar, ferahlar, imza kokteyller.",
+      "kampanya": "Tüm kokteyllerde %20 indirim",
+      "afis": {
+        "src": "/posters/shake-brake.jpg",
+        "alt": "Shake Brake afişi",
+        "w": 720,
+        "h": 1280
+      }
+    },
+    {
+      "id": "karaoke",
+      "gun": "4",
+      "gunAdi": "Her perşembe",
+      "kisa": "Perşembe",
+      "baslik": "Karaoke Gecesi",
+      "saat": "20.00'de başlıyor",
+      "metin": "Ekibini topla, şarkını seç, birlikte söyle. Sahne senin.",
+      "kampanya": "",
+      "afis": {
+        "src": "/posters/karaoke.jpg",
+        "alt": "Karaoke Gecesi afişi",
+        "w": 720,
+        "h": 1280
+      }
+    }
+  ],
+  "bugun": [
+    {
+      "ad": "Pazar"
+    },
+    {
+      "ad": "Pazartesi"
+    },
+    {
+      "ad": "Salı",
+      "baslik": "Chill Day",
+      "kisa": "Tüm şişe şaraplarda %20 indirim."
+    },
+    {
+      "ad": "Çarşamba",
+      "baslik": "Shake Brake",
+      "kisa": "Tüm kokteyllerde %20 indirim."
+    },
+    {
+      "ad": "Perşembe",
+      "baslik": "Karaoke Gecesi",
+      "saat": "20.00",
+      "kisa": "Ekibini topla, şarkını seç."
+    },
+    {
+      "ad": "Cuma"
+    },
+    {
+      "ad": "Cumartesi",
+      "baslik": "Canlı caz",
+      "saat": "20.00",
+      "kisa": "ODTÜ Caz'dan tanıdık bir ekip sahnede."
+    }
+  ],
+  "canli": {
+    "ust": "Cuma & cumartesi · 20.00",
+    "baslik": "Kırmızı perdenin önünde <em>canlı müzik</em>",
+    "metin": "Hafta sonları sahnede konuk gruplar var. Cumartesi akşamları ODTÜ Caz'dan tanıdık bir ekip çalıyor.",
+    "gorseller": [
+      {
+        "src": "/img/dsc06657.jpg",
+        "alt": "Sahnede solist ve grup",
+        "konum": "50% 35%",
+        "w": 1067,
+        "h": 1600
+      },
+      {
+        "src": "/img/dsc06696.jpg",
+        "alt": "Kırmızı perde önünde mikrofonla şarkı söyleyen kadın",
+        "konum": "50% 30%",
+        "w": 733,
+        "h": 1100
+      }
+    ]
+  },
+  "ozel": {
+    "ust": "Özel gün",
+    "baslik": "Etkinliğini Müjgân'da yap",
+    "metin": "Doğum günü, ekip yemeği, mezuniyet buluşması. Sahne önünü ve menüyü grubuna göre ayarlayalım."
+  }
+}

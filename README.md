@@ -18,8 +18,17 @@ export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"
 
 `main` dalına push edince GitHub Actions siteyi derler ve GitHub Pages'e yayınlar (`.github/workflows/yayin.yml`). Alan adı `public/CNAME`.
 
-## Sık güncellenenler
+## İçerik ve CMS
 
-- `src/data/isletme.ts` — telefon, WhatsApp (gelince `whatsapp.deger`), paket servis linkleri (`siparisPlatformlari`), giriş tarifi.
-- `src/data/program.ts` — tarihli etkinlikler (her hafta) ve haftalık geceler.
-- `src/data/menu.ts` — menü ve fiyatlar.
+- Tüm içerik `src/icerik/*.json` dosyalarında. Günlük güncellemeler için **https://mujganthepub.com/admin/** kullanılır (şifreli).
+- CMS'te: önizlemede bir yazıya/görsele tıkla → düzenle; Menü, Etkinlikler, SEO, Sayfalar (yeni sayfa), İşletme (WhatsApp, saatler, paket servis) panelleri; **Yayınla** → 1–2 dk içinde sitede.
+- CMS `main` dalına commit atar: yerelde çalışmadan önce `git pull`.
+
+### CMS ilk kurulum (bir kez)
+
+1. GitHub → Settings → Developer settings → Fine-grained tokens → Generate new token.
+   - Repository access: *Only select repositories* → `mujganthepub.com`
+   - Permissions: **Contents: Read and write**, **Actions: Read** (Metadata otomatik)
+   - Süre: 1 yıl (dolunca CMS Ayarlar'dan yenisi girilir)
+2. https://mujganthepub.com/admin/ → anahtarı yapıştır, en az 12 karakterlik bir şifre belirle.
+3. Şifreli anahtar `public/admin/kasa.json` olarak depoya yazılır; sonraki girişlerde yalnızca şifre sorulur.

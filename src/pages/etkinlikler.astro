@@ -2,41 +2,38 @@
 import Base from '../layouts/Base.astro';
 import Gorsel from '../components/Gorsel.astro';
 import Ikon from '../components/Ikon.astro';
-import Bekliyor from '../components/Bekliyor.astro';
 import { isletme, rezervasyon } from '../data/isletme';
 import { geceler, etkinlikler, tarihParcala } from '../data/program';
+import { etkinlikIcerik as e, cms, cmsListe } from '../lib/icerik';
 import { etkinlikSema, yolSema } from '../lib/sema';
 
 const rez = rezervasyon();
+// JSON'daki sıra (CMS yolu için) korunur; görüntüleme tarihe göre sıralı
+const tarihli = etkinlikler.map((x) => ({ x, i: e.etkinlikler.indexOf(x) }));
 ---
-<Base
-  baslik="Etkinlikler: Karaoke, Canlı Müzik · Müjgân Çayyolu"
-  aciklama="Çayyolu'da karaoke ve canlı müzik: her perşembe Karaoke Gecesi, hafta sonu sahnede gruplar, Social Hour, Chill Day ve Shake Brake. Müjgân, Beysupark AVM."
-  yol="etkinlikler/" sayfa="etkinlikler" kapakGorseli="/img/dsc06634.jpg"
-  sema={[...etkinlikSema(), yolSema('Etkinlikler', 'etkinlikler/')]}
->
+<Base yol="/etkinlikler/" sayfa="etkinlikler" onYukle={e.sayfa.gorsel.src} sema={[...etkinlikSema(), yolSema('Etkinlikler', 'etkinlikler/')]}>
   <section class="hero page-hero" aria-labelledby="prog-title">
-    <div class="hero-media"><Gorsel src="/img/dsc06634.jpg" alt="Müjgân Çayyolu sahnesinde gitar çalan müzisyen" konum="50% 30%" oncelik /></div>
+    <div class="hero-media"><Gorsel g={e.sayfa.gorsel} cms="etkinlikler:sayfa.gorsel" oncelik /></div>
     <div class="wrap">
       <div class="hero-copy">
-        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / Etkinlikler</p>
-        <h1 id="prog-title">Etkinlikler</h1>
-        <p class="lead">Çayyolu'da karaoke, canlı müzik ve kampanya akşamları: hafta içi Social Hour, salı Chill Day, çarşamba Shake Brake, perşembe Karaoke Gecesi, hafta sonu sahnede canlı müzik.</p>
+        <p class="crumbs"><a href="/">{isletme.tamAd}</a> / {e.sayfa.baslik}</p>
+        <h1 id="prog-title" {...cms('etkinlikler:sayfa.baslik')}>{e.sayfa.baslik}</h1>
+        <p class="lead" {...cms('etkinlikler:sayfa.metin')}>{e.sayfa.metin}</p>
       </div>
     </div>
   </section>
 
-  {etkinlikler.length > 0 && (
+  {tarihli.length > 0 && (
     <section class="sec" id="upcoming" aria-labelledby="up-title">
       <div class="wrap">
-        <div class="sec-head"><p class="label">Sahnede bu hafta</p><h2 id="up-title">Yaklaşan konserler</h2></div>
-        <div class="dates">
-          {etkinlikler.map((e) => {
-            const t = tarihParcala(e.tarih);
+        <div class="sec-head"><p class="label" {...cms('etkinlikler:yaklasan.ust')}>{e.yaklasan.ust}</p><h2 id="up-title" {...cms('etkinlikler:yaklasan.baslik')}>{e.yaklasan.baslik}</h2></div>
+        <div class="dates" {...cmsListe('etkinlikler:etkinlikler')} data-cms-panel="etkinlikler">
+          {tarihli.map(({ x, i }) => {
+            const t = tarihParcala(x.tarih);
             return (
-              <div class="date-card" data-date={e.tarih}>
+              <div class="date-card" data-date={x.tarih} data-cms-oge={i}>
                 <div class="d"><b class="num">{t.gun}</b><span>{t.ay}</span></div>
-                <div><h3>{e.baslik}</h3><p>{t.haftaGunu} · {e.saat.replace(':', '.')} · {e.tur}</p>{e.not && <p><Bekliyor ne={e.not} /></p>}</div>
+                <div><h3 {...cms(`etkinlikler:etkinlikler.${i}.baslik`)}>{x.baslik}</h3><p>{t.haftaGunu} · {x.saat.replace(':', '.')} · <span {...cms(`etkinlikler:etkinlikler.${i}.tur`)}>{x.tur}</span></p></div>
               </div>
             );
           })}
@@ -47,17 +44,17 @@ const rez = rezervasyon();
 
   <section class="sec" style="padding-top:0" aria-labelledby="nights-title">
     <div class="wrap">
-      <div class="sec-head"><p class="label">Haftanın ritmi</p><h2 id="nights-title">Her hafta aynı gün, aynı keyif</h2></div>
-      <div class="nights">
-        {geceler.map((g) => (
-          <article class="night" id={g.id} data-dow={g.gun}>
-            <div class="night-poster"><Gorsel src={g.afis} alt={`${g.baslik} afişi`} /></div>
+      <div class="sec-head"><p class="label" {...cms('etkinlikler:ritim.ust')}>{e.ritim.ust}</p><h2 id="nights-title" {...cms('etkinlikler:ritim.baslik')}>{e.ritim.baslik}</h2></div>
+      <div class="nights" {...cmsListe('etkinlikler:geceler')}>
+        {geceler.map((g, i) => (
+          <article class="night" id={g.id} data-dow={g.gun} data-cms-oge={i}>
+            <div class="night-poster"><Gorsel g={g.afis} cms={`etkinlikler:geceler.${i}.afis`} /></div>
             <div class="night-body">
-              <p class="label">{g.gunAdi}</p>
-              <h2>{g.baslik}</h2>
-              {g.saat && <p class="when num">{g.saat}</p>}
-              <p>{g.metin}</p>
-              {g.kampanya && <span class="deal">{g.kampanya}</span>}
+              <p class="label" {...cms(`etkinlikler:geceler.${i}.gunAdi`)}>{g.gunAdi}</p>
+              <h2 {...cms(`etkinlikler:geceler.${i}.baslik`)}>{g.baslik}</h2>
+              {g.saat && <p class="when num" {...cms(`etkinlikler:geceler.${i}.saat`)}>{g.saat}</p>}
+              <p {...cms(`etkinlikler:geceler.${i}.metin`)}>{g.metin}</p>
+              {g.kampanya && <span class="deal" {...cms(`etkinlikler:geceler.${i}.kampanya`)}>{g.kampanya}</span>}
             </div>
           </article>
         ))}
@@ -68,15 +65,13 @@ const rez = rezervasyon();
   <section class="sec live-band" aria-labelledby="live-title">
     <div class="wrap live-grid">
       <div class="bar-copy">
-        <p class="label">Cuma &amp; cumartesi · 20.00</p>
-        <h2 id="live-title">Kırmızı perdenin önünde <em class="it">canlı müzik</em></h2>
-        <p>Hafta sonları sahnede konuk gruplar var. Cumartesi akşamları ODTÜ Caz'dan tanıdık bir ekip çalıyor.</p>
-        <p><Bekliyor ne="cuma ve cumartesi her hafta kesin mi?" /></p>
+        <p class="label" {...cms('etkinlikler:canli.ust')}>{e.canli.ust}</p>
+        <h2 id="live-title" {...cms('etkinlikler:canli.baslik', 'html')} set:html={e.canli.baslik} />
+        <p {...cms('etkinlikler:canli.metin')}>{e.canli.metin}</p>
         <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Masanı ayırt</a></div>
       </div>
       <div class="live-photos">
-        <figure><Gorsel src="/img/dsc06657.jpg" alt="Sahnede solist ve grup" konum="50% 35%" /></figure>
-        <figure><Gorsel src="/img/dsc06696.jpg" alt="Kırmızı perde önünde mikrofonla şarkı söyleyen kadın" konum="50% 30%" /></figure>
+        {e.canli.gorseller.map((g, i) => <figure><Gorsel g={g} cms={`etkinlikler:canli.gorseller.${i}`} /></figure>)}
       </div>
     </div>
   </section>
@@ -84,9 +79,9 @@ const rez = rezervasyon();
   <section class="sec" aria-labelledby="ozel-title">
     <div class="wrap">
       <div class="panel panel-kraft">
-        <p class="label">Özel gün</p>
-        <h2 id="ozel-title">Etkinliğini Müjgân'da yap</h2>
-        <p>Doğum günü, ekip yemeği, mezuniyet buluşması. Sahne önünü ve menüyü grubuna göre ayarlayalım.</p>
+        <p class="label" {...cms('etkinlikler:ozel.ust')}>{e.ozel.ust}</p>
+        <h2 id="ozel-title" {...cms('etkinlikler:ozel.baslik')}>{e.ozel.baslik}</h2>
+        <p {...cms('etkinlikler:ozel.metin')}>{e.ozel.metin}</p>
         <div class="btns"><a class="btn btn-dark" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
       </div>
     </div>
