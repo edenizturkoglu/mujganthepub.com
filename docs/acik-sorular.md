@@ -15,7 +15,8 @@ Yanıt geldikçe işaretle ve yanına tarih + kaynak yaz.
 - [x] Açılış: 23 Ekim 2026
 - [x] Adres: Çayyolu Mah. S. Saltoğlu Blv. No: 209/16, Beysupark AVM (Tolga, 28 Ekim) — Google'daki kayıtla birebir aynı mı kontrol et
 - [ ] Müşterinin kullanacağı giriş (AVM içi tarif)
-- [ ] Telefon / WhatsApp numarası — WhatsApp bu hafta gelecek (Deniz, 2 Kasım)
+- [x] WhatsApp: 0536 049 96 99 (Deniz, 2 Kasım) — rezervasyon düğmeleri WhatsApp'a gidiyor
+- [ ] Aranacak telefon numarası (sitede "Telefon" satırı ve Google yapısal verisi için) — WhatsApp numarasıyla aynı mı?
 - [x] Saatler: her gün 10.30–01.00, mutfak hep açık (Deniz, 2 Kasım) — pazar dahil mi teyit
 - [x] Menü kalemleri ve fiyatlar (menü.xlsx, 31 Ekim)
 - [ ] İçecek / kokteyl menüsü sitede olacak mı?

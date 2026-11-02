@@ -2,13 +2,13 @@
 import Base from '../layouts/Base.astro';
 import Gorsel from '../components/Gorsel.astro';
 import Ikon from '../components/Ikon.astro';
+import RezButon from '../components/RezButon.astro';
 import Bekliyor from '../components/Bekliyor.astro';
-import { isletme, rezervasyon } from '../data/isletme';
+import { isletme } from '../data/isletme';
 import { menu, fiyatYaz } from '../data/menu';
 import { menuIcerik, cms, cmsListe } from '../lib/icerik';
 import { menuSema, yolSema } from '../lib/sema';
 
-const rez = rezervasyon();
 const s = menuIcerik.sayfa;
 ---
 <Base yol="/menu/" sayfa="menu" onYukle={s.gorsel.src} sayfaOlayi="menu_goruntule" sema={[menuSema(), yolSema('Menü', 'menu/')]}>
@@ -52,7 +52,7 @@ const s = menuIcerik.sayfa;
         <p><span {...cms('menu:sayfa.altNot')}>{s.altNot}</span> <Bekliyor ne="içecek / kokteyl menüsü" /></p>
         <div class="btns">
           <a class="btn btn-gold" href="/#paket"><Ikon ad="bag" />Paket sipariş</a>
-          <a class="btn btn-line" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a>
+          <RezButon sinif="btn-line" />
         </div>
       </div>
     </div>

@@ -374,7 +374,7 @@ export function isletmePaneli() {
   return h('div', {},
     baslik('İşletme bilgileri', 'Adres, telefon, saatler, rezervasyon ve paket servis. Google için yapısal veri bu bilgilerden üretilir.'),
     kutu(h('span', { class: 'alan-ad' }, 'İletişim ve rezervasyon'),
-      alan('WhatsApp numarası (rezervasyon)', i.whatsapp, k('whatsapp', 'WhatsApp'), { tur: 'tel', yer: '905321234567', ipucu: 'Ülke koduyla, boşluksuz: 905… Girilince tüm "Rezervasyon" düğmeleri WhatsApp\'a döner.' }),
+      alan('WhatsApp numarası (rezervasyon)', i.whatsapp, k('whatsapp', 'WhatsApp'), { tur: 'tel', yer: '0536 123 45 67', ipucu: 'Sitede bu yazıldığı gibi görünür (0536 … ya da +90 536 … olabilir). Doluysa tüm "Rezervasyon" düğmeleri WhatsApp düğmesine döner; boşsa Instagram mesajına gider.' }),
       alan('Telefon (sitede görünür)', i.telefon, k('telefon', 'Telefon'), { tur: 'tel', yer: '0312 123 45 67' }),
       alan('Instagram kullanıcı adı', i.instagram.kullanici, (v) => { const u = v.replace(/^@/, ''); durum.ayarla('isletme', 'instagram', { kullanici: u, url: `https://www.instagram.com/${u}/`, dm: `https://ig.me/m/${u}` }, 'İşletme › Instagram'); })),
     kutu(h('span', { class: 'alan-ad' }, 'Saatler'),

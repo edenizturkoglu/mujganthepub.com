@@ -22,7 +22,7 @@ Tam iş bağlamı claude.ai'deki **"Müjgan"** projesinde `Mujgan-Claude-Devir.m
 | Hizmet | Öğle ve akşam yemeği, küçük sahnede etkinlikler, paket servis (kendi kuryesi yok; platform henüz belli değil) |
 | Menü | 34 yemek, fiyatlı (Tolga, menü.xlsx, 31 Ekim 2026) → `src/icerik/menu.json`. İçecek/kokteyl menüsü henüz yok. |
 | Saatler | Her gün 10.30–01.00; mutfak açık olduğu her saat (Deniz, 2 Kasım 2026) |
-| Rezervasyon | WhatsApp (numara bu hafta gelecek). O zamana kadar Instagram DM. |
+| Rezervasyon | WhatsApp 0536 049 96 99 (Deniz, 2 Kasım 2026). Düğmeler WhatsApp yeşili + resmî glif (`src/components/RezButon.astro`). Aranacak telefon ayrıca belli değil. |
 | Program | Hafta içi Social Hour (18.00'e kadar), salı Chill Day, çarşamba Shake Brake, perşembe Karaoke 20.00, hafta sonu canlı müzik 20.00 → `src/icerik/etkinlikler.json` |
 | Kapasite | Mekân ~300 kişi; küçük sahne 25–30 oturmalı / 50–60 ayakta |
 | Kitle | Çalışan genç ve orta yaş. Kesin yaş aralığı, brunch veya öğrencileri dışlama kararı **yok** — sitede bu yönde ifade kullanma. |

@@ -8,8 +8,18 @@ export const tamAdres = () => {
   return `${a.sokak}, ${a.mekan}, ${a.postaKodu} ${a.ilce}/${a.il}`;
 };
 
+/** WhatsApp numarasını wa.me biçimine çevirir: "0536 049 96 99" / "+90 536…" / "536…" → "905360499699". */
+export const waNumara = (n: string) => {
+  let d = (n || '').replace(/\D/g, '');
+  if (d.startsWith('00')) d = d.slice(2);
+  if (d.length === 11 && d.startsWith('0')) d = '9' + d;          // 05xx… → 905xx…
+  else if (d.length === 10 && d.startsWith('5')) d = '90' + d;    // 5xx… → 905xx…
+  return d;
+};
+const WA_MESAJ = 'Merhaba, rezervasyon yapmak istiyorum.';
+
 /** Rezervasyon kanalı: WhatsApp girilene kadar Instagram mesajı. */
 export const rezervasyon = () =>
   isletme.whatsapp
-    ? { url: `https://wa.me/${isletme.whatsapp.replace(/\D/g, '')}`, etiket: "WhatsApp'tan yaz", kanal: 'whatsapp' }
+    ? { url: `https://wa.me/${waNumara(isletme.whatsapp)}?text=${encodeURIComponent(WA_MESAJ)}`, etiket: "WhatsApp'tan yaz", kanal: 'whatsapp' }
     : { url: isletme.instagram.dm, etiket: "Instagram'dan yaz", kanal: 'instagram' };

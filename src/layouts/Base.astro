@@ -5,6 +5,7 @@ import { hafta } from '../data/program';
 import { seo as seoTum, ozelSayfalar, type Seo } from '../lib/icerik';
 import Logo from '../components/Logo.astro';
 import Ikon from '../components/Ikon.astro';
+import RezButon from '../components/RezButon.astro';
 
 interface Props {
   /** site kökünden yol, sonu "/" ile: '/', '/menu/', '/etkinlikler/', '/<slug>/' */
@@ -67,7 +68,7 @@ const ekMenu = ozelSayfalar.filter((p) => p.menudeGoster);
           <a href="/#paket">Paket servis</a>
           <a href="/#ulasim">Ulaşım</a>
         </nav>
-        <a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>Rezervasyon</a>
+        <RezButon etiket="Rezervasyon" ikonsuz />
       </div>
     </header>
 
@@ -97,7 +98,7 @@ const ekMenu = ozelSayfalar.filter((p) => p.menudeGoster);
       <a href="/menu/" aria-current={sayfa === 'menu' ? 'page' : undefined} data-olay="menu_goruntule"><Ikon ad="menu" />Menü</a>
       <a href="/etkinlikler/" aria-current={sayfa === 'etkinlikler' ? 'page' : undefined}><Ikon ad="cal" />Etkinlikler</a>
       <a href={haritaUrl} target="_blank" rel="noopener" data-olay="yol_tarifi_tikla"><Ikon ad="pin" />Yol tarifi</a>
-      <a class="ab-cta" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Rezervasyon</a>
+      <a class:list={["ab-cta", rez.kanal === "whatsapp" && "ab-wa"]} href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad={rez.kanal === "whatsapp" ? "wa" : "chat"} />Rezervasyon</a>
     </nav>
 
     <script is:inline define:vars={{ hafta }}>

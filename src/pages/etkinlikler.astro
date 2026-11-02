@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 import Gorsel from '../components/Gorsel.astro';
 import Ikon from '../components/Ikon.astro';
-import { isletme, rezervasyon } from '../data/isletme';
+import RezButon from '../components/RezButon.astro';
+import { isletme } from '../data/isletme';
 import { geceler, etkinlikler, tarihParcala } from '../data/program';
 import { etkinlikIcerik as e, cms, cmsListe } from '../lib/icerik';
 import { etkinlikSema, yolSema } from '../lib/sema';
 
-const rez = rezervasyon();
 // JSON'daki sıra (CMS yolu için) korunur; görüntüleme tarihe göre sıralı
 const tarihli = etkinlikler.map((x) => ({ x, i: e.etkinlikler.indexOf(x) }));
 ---
@@ -68,7 +68,7 @@ const tarihli = etkinlikler.map((x) => ({ x, i: e.etkinlikler.indexOf(x) }));
         <p class="label" {...cms('etkinlikler:canli.ust')}>{e.canli.ust}</p>
         <h2 id="live-title" {...cms('etkinlikler:canli.baslik', 'html')} set:html={e.canli.baslik} />
         <p {...cms('etkinlikler:canli.metin')}>{e.canli.metin}</p>
-        <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />Masanı ayırt</a></div>
+        <div class="btns"><RezButon etiket="Masanı ayırt" /></div>
       </div>
       <div class="live-photos">
         {e.canli.gorseller.map((g, i) => <figure><Gorsel g={g} cms={`etkinlikler:canli.gorseller.${i}`} /></figure>)}
@@ -82,7 +82,7 @@ const tarihli = etkinlikler.map((x) => ({ x, i: e.etkinlikler.indexOf(x) }));
         <p class="label" {...cms('etkinlikler:ozel.ust')}>{e.ozel.ust}</p>
         <h2 id="ozel-title" {...cms('etkinlikler:ozel.baslik')}>{e.ozel.baslik}</h2>
         <p {...cms('etkinlikler:ozel.metin')}>{e.ozel.metin}</p>
-        <div class="btns"><a class="btn btn-dark" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
+        <div class="btns"><RezButon sinif="btn-dark" /></div>
       </div>
     </div>
   </section>

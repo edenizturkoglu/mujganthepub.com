@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Gorsel from '../components/Gorsel.astro';
 import Ikon from '../components/Ikon.astro';
+import RezButon from '../components/RezButon.astro';
 import Bekliyor from '../components/Bekliyor.astro';
 import { isletme, rezervasyon } from '../data/isletme';
 import { menu, izgaraSirasi, enDusuk, fiyatYaz } from '../data/menu';
@@ -124,7 +125,7 @@ const h = ana.hero;
         <p class="label" {...cms('ana:grup.ust')}>{ana.grup.ust}</p>
         <h2 {...cms('ana:grup.baslik')}>{ana.grup.baslik}</h2>
         <p {...cms('ana:grup.metin')}>{ana.grup.metin}</p>
-        <div class="btns"><a class="btn btn-gold" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}><Ikon ad="chat" />{rez.etiket}</a></div>
+        <div class="btns"><RezButon /></div>
       </div>
     </div>
   </section>
@@ -165,7 +166,7 @@ const h = ana.hero;
           <div><span>Açık</span><strong class="num">Her gün <span {...cms('isletme:saatler.acik')}>{isletme.saatler.acik}</span></strong></div>
           <div><span>Mutfak</span><strong {...cms('isletme:saatler.mutfak')}>{isletme.saatler.mutfak}</strong></div>
           {isletme.telefon && <div><span>Telefon</span><a class="num" href={`tel:${isletme.telefon.replace(/\s/g, '')}`} data-olay="telefon_tikla" {...cms('isletme:telefon')}>{isletme.telefon}</a></div>}
-          <div><span>Rezervasyon</span><a href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>{rez.etiket}</a></div>
+          <div><span>Rezervasyon</span><a class="num" href={rez.url} target="_blank" rel="noopener" data-olay="rezervasyon_tikla" data-platform={rez.kanal}>{isletme.whatsapp ? <><Ikon ad="wa" />{isletme.whatsapp}</> : rez.etiket}</a></div>
           <div><span>Instagram</span><a href={isletme.instagram.url} target="_blank" rel="noopener" data-olay="instagram_tikla">@{isletme.instagram.kullanici}</a></div>
         </div>
       </div>
