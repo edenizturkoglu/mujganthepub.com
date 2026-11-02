@@ -1,105 +1,99 @@
-// /admin — giriş, kurulum ve düzenleyici kabuğu.
-import { ac, kilitle, type Kasa } from './kasa';
-import { GitHub, GitHubHata, DEPO } from './github';
+// /admin — e-postayla sihirli bağlantı girişi ve düzenleyici kabuğu.
+import { GitHub, GitHubHata, sunucu } from './github';
+import { SUNUCU } from './ayar';
 import { durum } from './durum';
-import { h, bildirim, alan, dugme } from './ui';
+import { h, bildirim } from './ui';
 import * as secici from './secici';
 import * as P from './paneller';
 
 const SITE = 'https://mujganthepub.com';
 const OTURUM = 'mj-cms-oturum';
-const KASA_YOLU = 'public/admin/kasa.json';
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
 
 let gh: GitHub;
-let token = '';
+let eposta = '';
 let sekme = 'oge';
 let sonSecim: secici.Secim | null = null;
 let iframe: HTMLIFrameElement;
 
 // ---------------- Oturum ----------------
-function oturumAl(): string | null {
+type Oturum = { oturum: string; eposta: string; son: number };
+function oturumAl(): Oturum | null {
   try {
-    const o = JSON.parse(sessionStorage.getItem(OTURUM) || 'null');
-    if (o && o.son > Date.now()) return o.t;
+    const o = JSON.parse(localStorage.getItem(OTURUM) || 'null');
+    if (o && o.son > Date.now() + 60e3) return o;
   } catch { /* yok */ }
   return null;
 }
-function oturumKaydet(t: string) { try { sessionStorage.setItem(OTURUM, JSON.stringify({ t, son: Date.now() + 12 * 3600e3 })); } catch { /* yok */ } }
-function cikis() { try { sessionStorage.removeItem(OTURUM); } catch { /* yok */ } location.reload(); }
-
-async function kasaGetir(): Promise<Kasa | null> {
-  const r = await fetch(`/admin/kasa.json?v=${Date.now()}`, { cache: 'no-store' });
-  if (!r.ok) return null;
-  try { return await r.json(); } catch { return null; }
-}
+function oturumKaydet(o: Oturum) { try { localStorage.setItem(OTURUM, JSON.stringify(o)); } catch { /* yok */ } }
+function oturumSil() { try { localStorage.removeItem(OTURUM); } catch { /* yok */ } }
+function cikis() { oturumSil(); location.replace('/admin/'); }
 
 function ekran(ad: 'giris' | 'kurulum' | 'yukleniyor' | 'uygulama') {
   for (const e of ['giris', 'kurulum', 'yukleniyor', 'uygulama']) $(`#${e}`).hidden = e !== ad;
 }
 
 async function basla() {
-  const t = oturumAl();
-  if (t) { token = t; return uygulamayiAc(); }
-  const kasa = await kasaGetir();
-  if (!kasa) { ekran('kurulum'); kurulumFormu(); return; }
-  ekran('giris');
-  const form = $<HTMLFormElement>('#giris form');
-  const sifre = $<HTMLInputElement>('#sifre');
-  const hata = $('#giris-hata');
-  sifre.focus();
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    hata.textContent = ''; form.classList.add('bekliyor');
+  if (!SUNUCU) { ekran('kurulum'); return; }
+  // E-postadaki bağlantıdan gelindi mi?
+  const kod = location.hash.match(/giris=([0-9a-f]{64})/)?.[1];
+  if (kod) {
+    history.replaceState(null, '', location.pathname);
+    ekran('yukleniyor');
+    $('#yukleniyor p').textContent = 'Giriş doğrulanıyor…';
     try {
-      token = await ac(kasa, sifre.value);
-      oturumKaydet(token);
-      await uygulamayiAc();
-    } catch {
-      await new Promise((r) => setTimeout(r, 800));
-      hata.textContent = 'Şifre yanlış.';
-      sifre.select();
-    } finally { form.classList.remove('bekliyor'); }
-  };
+      const r = await sunucu<{ oturum?: string; eposta?: string; son?: number }>('dogrula', { kod });
+      if (r.durum !== 200 || !r.oturum) throw new Error(r.hata || 'Bağlantı geçersiz.');
+      oturumKaydet({ oturum: r.oturum, eposta: r.eposta!, son: r.son! });
+    } catch (e) {
+      girisFormu((e as Error).message);
+      return;
+    }
+  }
+  const o = oturumAl();
+  if (o) return uygulamayiAc(o);
+  girisFormu();
 }
 
-function kurulumFormu() {
-  const form = $<HTMLFormElement>('#kurulum form');
-  const hata = $('#kurulum-hata');
+function girisFormu(hataMetni = '') {
+  ekran('giris');
+  const form = $<HTMLFormElement>('#giris form');
+  const girdi = $<HTMLInputElement>('#eposta');
+  const hata = $('#giris-hata');
+  const gonderildi = $('#giris-gonderildi');
+  hata.textContent = hataMetni;
+  try { girdi.value = localStorage.getItem('mj-cms-son-eposta') || ''; } catch { /* yok */ }
+  girdi.focus();
   form.onsubmit = async (e) => {
     e.preventDefault();
-    const t = $<HTMLInputElement>('#k-token').value.trim();
-    const s1 = $<HTMLInputElement>('#k-sifre').value, s2 = $<HTMLInputElement>('#k-sifre2').value;
-    hata.textContent = '';
-    if (s1.length < 12) { hata.textContent = 'Şifre en az 12 karakter olmalı.'; return; }
-    if (s1 !== s2) { hata.textContent = 'Şifreler aynı değil.'; return; }
-    form.classList.add('bekliyor');
+    const adres = girdi.value.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(adres)) { hata.textContent = 'Geçerli bir e-posta adresi yaz.'; return; }
+    hata.textContent = ''; form.classList.add('bekliyor');
     try {
-      const g = new GitHub(t);
-      const d = await g.depo();
-      if (!d.permissions?.push) throw new Error('Bu anahtarın depoya yazma izni yok (Contents: Read and write).');
-      const kasa = await kilitle(t, s1);
-      await g.commit('CMS: giriş kasası oluşturuldu', [{ yol: KASA_YOLU, metin: JSON.stringify(kasa, null, 2) + '\n' }]);
-      token = t; oturumKaydet(t);
-      bildirim('Kurulum tamam. Şifren artık bu panelin anahtarı.', 'ok');
-      await uygulamayiAc();
+      const r = await sunucu('link', { eposta: adres });
+      if (r.durum !== 200) throw new Error(r.hata || 'Gönderilemedi.');
+      try { localStorage.setItem('mj-cms-son-eposta', adres); } catch { /* yok */ }
+      form.hidden = true;
+      gonderildi.hidden = false;
+      $('#gonderilen-adres').textContent = adres;
     } catch (err) {
-      hata.textContent = err instanceof GitHubHata && err.durum === 401 ? 'Anahtar geçersiz.' : (err as Error).message;
+      hata.textContent = (err as Error).message;
     } finally { form.classList.remove('bekliyor'); }
   };
+  $('#yeniden').onclick = () => { gonderildi.hidden = true; form.hidden = false; girdi.focus(); };
 }
 
 // ---------------- Düzenleyici ----------------
-async function uygulamayiAc() {
+async function uygulamayiAc(o: Oturum) {
   ekran('yukleniyor');
-  gh = new GitHub(token);
+  $('#yukleniyor p').textContent = 'İçerik yükleniyor…';
+  eposta = o.eposta;
+  gh = new GitHub(o.oturum);
   try {
     await durum.yukle(gh);
   } catch (e) {
-    if (e instanceof GitHubHata && e.durum === 401) { bildirim('Erişim anahtarının süresi dolmuş ya da iptal edilmiş. Ayarlar\'dan yenile.', 'hata'); }
-    else bildirim(`İçerik yüklenemedi: ${(e as Error).message}`, 'hata');
-    try { sessionStorage.removeItem(OTURUM); } catch { /* yok */ }
-    ekran('giris');
+    if (e instanceof GitHubHata && e.durum === 401) { oturumSil(); girisFormu('Oturumun süresi dolmuş. Yeni giriş bağlantısı iste.'); return; }
+    girisFormu(`İçerik yüklenemedi: ${(e as Error).message}`);
     return;
   }
   ekran('uygulama');
@@ -185,7 +179,7 @@ function ustCubuk() {
   $('#bekleyen').onclick = () => sekmeAc('degisiklikler');
   $('#yayinla').onclick = () => sekmeAc('degisiklikler');
   $('#cikis').onclick = () => { if (!durum.bekleyenSayisi || confirm('Yayınlanmamış değişiklikler bu tarayıcıda saklı kalacak. Çıkılsın mı?')) cikis(); };
-  $('#ayarlar').onclick = ayarlar;
+  $('#kim').textContent = eposta;
 }
 
 // ---------------- Yayın ----------------
@@ -229,39 +223,11 @@ async function yayinla(mesaj: string) {
     durumYaz('Yayın uzun sürüyor', 'uyari');
   } catch (e) {
     durumYaz('Hata', 'hata');
+    if (e instanceof GitHubHata && e.durum === 401) { bildirim('Oturumun süresi doldu. Değişikliklerin bu tarayıcıda saklı; yeniden giriş yapınca yayınlayabilirsin.', 'hata'); setTimeout(cikis, 2500); return; }
     bildirim(`Yayınlanamadı: ${(e as Error).message}`, 'hata');
   } finally { yayinda = false; }
 }
 
-// ---------------- Ayarlar ----------------
-function ayarlar() {
-  const v = { yeniToken: '', s1: '', s2: '' };
-  const hata = h('p', { class: 'hata', role: 'alert' });
-  const kapat = () => m.remove();
-  const m = h('div', { class: 'modal', on: { click: (e: Event) => { if (e.target === m) kapat(); } } },
-    h('div', { class: 'modal-ic dar' },
-      h('div', { class: 'modal-bas' }, h('b', {}, 'Ayarlar'), dugme('Kapat', kapat)),
-      h('p', { class: 'not' }, 'Şifreyi değiştirince eski şifre bir sonraki yayından sonra çalışmaz. Yeni erişim anahtarı (GitHub) girmek isteğe bağlı.'),
-      alan('Yeni şifre (en az 12 karakter)', '', (x) => (v.s1 = x), { tur: 'text' }),
-      alan('Yeni şifre (tekrar)', '', (x) => (v.s2 = x), { tur: 'text' }),
-      alan('Yeni GitHub erişim anahtarı (isteğe bağlı)', '', (x) => (v.yeniToken = x.trim()), { tur: 'text', ipucu: 'Anahtarın süresi dolduysa yenisini buraya yapıştır.' }),
-      hata,
-      dugme('Kaydet', async () => {
-        hata.textContent = '';
-        if (v.s1.length < 12) { hata.textContent = 'Şifre en az 12 karakter olmalı.'; return; }
-        if (v.s1 !== v.s2) { hata.textContent = 'Şifreler aynı değil.'; return; }
-        try {
-          const t = v.yeniToken || token;
-          if (v.yeniToken) { const d = await new GitHub(t).depo(); if (!d.permissions?.push) throw new Error('Anahtarın yazma izni yok.'); }
-          const kasa = await kilitle(t, v.s1);
-          await new GitHub(t).commit('CMS: giriş şifresi güncellendi', [{ yol: KASA_YOLU, metin: JSON.stringify(kasa, null, 2) + '\n' }]);
-          token = t; gh = new GitHub(t); durum.gh = gh; oturumKaydet(t);
-          bildirim('Şifre güncellendi.', 'ok'); kapat();
-        } catch (e) { hata.textContent = (e as Error).message; }
-      }, 'ana'),
-      h('p', { class: 'not' }, `Depo: ${DEPO.sahip}/${DEPO.ad}`)));
-  m.querySelectorAll('input').forEach((i) => { if (i.closest('label')?.textContent?.includes('şifre')) i.type = 'password'; });
-  document.body.append(m);
-}
-
-basla().catch((e) => { ekran('giris'); bildirim((e as Error).message, 'hata'); });
+// Bağlantı, panel açıkken aynı sekmede açılırsa da girişi yap
+window.addEventListener('hashchange', () => { if (/giris=/.test(location.hash)) location.reload(); });
+basla().catch((e) => girisFormu((e as Error).message));

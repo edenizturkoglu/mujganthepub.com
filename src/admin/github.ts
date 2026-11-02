@@ -1,28 +1,35 @@
-// GitHub REST API: içerik dosyalarını okuma, tek commit'te çok dosya yazma, yayın (Actions) durumu.
+// GitHub işlemleri CMS sunucusu (Apps Script) üzerinden yapılır; GitHub anahtarı tarayıcıya hiç gelmez.
+import { SUNUCU } from './ayar';
+
 export const DEPO = { sahip: 'edenizturkoglu', ad: 'mujganthepub.com', dal: 'main' };
-const API = `https://api.github.com/repos/${DEPO.sahip}/${DEPO.ad}`;
 
 export class GitHubHata extends Error { constructor(public durum: number, m: string) { super(m); } }
 
-export class GitHub {
-  constructor(private token: string) {}
-
-  async istek<T = any>(yol: string, secenek: RequestInit = {}): Promise<T> {
-    const r = await fetch(yol.startsWith('http') ? yol : API + yol, {
-      ...secenek,
-      cache: 'no-store',
-      headers: { Authorization: `Bearer ${this.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28',
-        ...(secenek.body ? { 'Content-Type': 'application/json' } : {}) },
-    });
-    if (!r.ok) {
-      let m = r.statusText;
-      try { m = (await r.json()).message || m; } catch { /* boş */ }
-      throw new GitHubHata(r.status, m);
-    }
-    return r.status === 204 ? (undefined as T) : r.json();
+/** Sunucuya istek: Apps Script basit (text/plain) POST kabul eder, yanıtı { durum, ... } biçimindedir */
+export async function sunucu<T = any>(islem: string, veri: Record<string, unknown> = {}): Promise<T & { durum: number; hata?: string }> {
+  if (!SUNUCU) throw new GitHubHata(503, 'CMS sunucusu henüz kurulmadı.');
+  let r: Response;
+  try {
+    r = await fetch(SUNUCU, { method: 'POST', body: JSON.stringify({ islem, ...veri }), redirect: 'follow' });
+  } catch {
+    throw new GitHubHata(0, 'Sunucuya ulaşılamadı. İnternet bağlantını kontrol et.');
   }
+  const j = await r.json().catch(() => null);
+  if (!j) throw new GitHubHata(r.status || 500, 'Sunucudan anlaşılır yanıt gelmedi.');
+  return j;
+}
 
-  depo() { return this.istek<{ permissions?: { push?: boolean }; full_name: string }>(''); }
+export class GitHub {
+  constructor(private oturum: string) {}
+
+  async istek<T = any>(yol: string, secenek: { method?: string; body?: string } = {}): Promise<T> {
+    const j = await sunucu<{ gdurum?: number; veri?: any }>('github', {
+      oturum: this.oturum, yontem: secenek.method ?? 'GET', yol, govde: secenek.body ? JSON.parse(secenek.body) : undefined,
+    });
+    if (j.durum !== 200) throw new GitHubHata(j.durum, j.hata ?? 'Sunucu hatası');
+    if ((j.gdurum ?? 500) >= 300) throw new GitHubHata(j.gdurum ?? 500, j.veri?.message ?? 'GitHub hatası');
+    return j.veri as T;
+  }
 
   async sonCommit() {
     const ref = await this.istek<{ object: { sha: string } }>(`/git/ref/heads/${DEPO.dal}`);
@@ -41,10 +48,9 @@ export class GitHub {
     return new TextDecoder().decode(bayt);
   }
 
-  /** Dosyaları tek commit'te yazar. icerik null → dosyayı siler. Dal başka yerden ilerlediyse `beklenen` ile yakalanır. */
-  async commit(mesaj: string, dosyalar: { yol: string; metin?: string; base64?: string; sil?: boolean }[], beklenen?: string) {
+  /** Dosyaları tek commit'te yazar (sil: true → dosyayı kaldırır). Commit, giriş yapan kişinin e-postasıyla imzalanır. */
+  async commit(mesaj: string, dosyalar: { yol: string; metin?: string; base64?: string; sil?: boolean }[]) {
     const son = await this.sonCommit();
-    if (beklenen && son.commit !== beklenen) throw new GitHubHata(409, 'Dal değişti');
     const agac = [] as { path: string; mode: '100644'; type: 'blob'; sha: string | null }[];
     for (const d of dosyalar) {
       if (d.sil) { agac.push({ path: d.yol, mode: '100644', type: 'blob', sha: null }); continue; }

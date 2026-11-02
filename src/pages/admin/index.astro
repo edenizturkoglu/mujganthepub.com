@@ -1,5 +1,5 @@
 ---
-// Müjgân CMS — /admin. Şifreli giriş; içerik GitHub üzerinden düzenlenir (src/admin/*).
+// Müjgân CMS — /admin. E-postayla sihirli bağlantı girişi (sunucu: docs/cms-sunucu/Kod.gs); içerik GitHub'a sunucu üzerinden yazılır.
 ---
 <!doctype html>
 <html lang="tr">
@@ -14,31 +14,32 @@
   <div id="bildirimler" aria-live="polite"></div>
 
   <main id="giris" class="kapi" hidden>
-    <form>
+    <div class="kart">
       <img src="/favicon.svg" alt="Müjgân" width="96" height="96" />
       <h1>Yönetim paneli</h1>
-      <label for="sifre">Şifre</label>
-      <input id="sifre" type="password" autocomplete="current-password" required />
-      <p id="giris-hata" class="hata" role="alert"></p>
-      <button type="submit" class="d ana buyuk">Giriş yap</button>
-    </form>
+      <form>
+        <label for="eposta">E-posta adresin</label>
+        <input id="eposta" type="email" autocomplete="email" inputmode="email" required placeholder="ad@gmail.com" />
+        <p id="giris-hata" class="hata" role="alert"></p>
+        <button type="submit" class="d ana buyuk">Giriş bağlantısı gönder</button>
+        <p class="not">Şifre yok. Yetkili adresine tek kullanımlık bir giriş bağlantısı gönderiyoruz.</p>
+      </form>
+      <div id="giris-gonderildi" class="gonderildi" hidden>
+        <p class="buyuk-ikon" aria-hidden="true">✉</p>
+        <p><b>E-postanı kontrol et.</b></p>
+        <p><span id="gonderilen-adres"></span> adresine giriş bağlantısı gönderdik. Bağlantı 15 dakika geçerli.</p>
+        <p class="not">Gelmediyse gereksiz (spam) klasörüne bak. Adres yetkili listede değilse e-posta gönderilmez.</p>
+        <button id="yeniden" type="button" class="d">Başka adres / yeniden gönder</button>
+      </div>
+    </div>
   </main>
 
   <main id="kurulum" class="kapi" hidden>
-    <form>
+    <div class="kart">
       <img src="/favicon.svg" alt="Müjgân" width="80" height="80" />
-      <h1>İlk kurulum</h1>
-      <p class="not">Panel, içerik değişikliklerini GitHub'daki site deposuna kaydeder. Bunun için bir kez GitHub erişim anahtarı gir ve bir şifre belirle. Anahtar bu şifreyle şifrelenip saklanır; sonraki girişlerde yalnızca şifre sorulur.</p>
-      <label for="k-token">GitHub erişim anahtarı (fine-grained token)</label>
-      <input id="k-token" type="password" autocomplete="off" required placeholder="github_pat_…" />
-      <small>Yalnızca bu depo, izinler: Contents → Read and write, Actions → Read.</small>
-      <label for="k-sifre">Panel şifresi (en az 12 karakter)</label>
-      <input id="k-sifre" type="password" autocomplete="new-password" minlength="12" required />
-      <label for="k-sifre2">Şifre (tekrar)</label>
-      <input id="k-sifre2" type="password" autocomplete="new-password" minlength="12" required />
-      <p id="kurulum-hata" class="hata" role="alert"></p>
-      <button type="submit" class="d ana buyuk">Kur ve giriş yap</button>
-    </form>
+      <h1>Kurulum bekleniyor</h1>
+      <p class="not">Panelin giriş sunucusu henüz bağlanmadı. Kurulum adımları: <code>docs/cms-sunucu/KURULUM.md</code></p>
+    </div>
   </main>
 
   <main id="yukleniyor" class="kapi" hidden><p class="yukleniyor">İçerik yükleniyor…</p></main>
@@ -58,7 +59,7 @@
       <div class="grup sag">
         <button id="bekleyen" type="button" class="d hafif">Değişiklik yok</button>
         <button id="yayinla" type="button" class="d ana" disabled>Yayınla</button>
-        <button id="ayarlar" type="button" class="d hafif" title="Şifre ve erişim">⚙</button>
+        <span id="kim" class="kim" title="Giriş yapan"></span>
         <button id="cikis" type="button" class="d hafif">Çıkış</button>
       </div>
     </header>
@@ -109,13 +110,18 @@
 
   /* giriş / kurulum */
   .kapi { min-height: 100%; display: grid; place-items: center; padding: 24px; }
-  .kapi form { width: min(420px, 100%); display: grid; gap: 10px; background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: 16px; padding: 28px; }
+  .kapi .kart { width: min(420px, 100%); display: grid; gap: 10px; background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: 16px; padding: 28px; }
+  .kapi form, .gonderildi { display: grid; gap: 10px; }
+  .gonderildi p { margin: 0; }
+  .buyuk-ikon { font-size: 40px; text-align: center; color: var(--altin); }
+  .kim { color: var(--soluk); font-size: 13px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .kapi img { justify-self: center; }
   .kapi h1 { margin: 0 0 6px; text-align: center; font-size: 22px; }
   .kapi label { font-weight: 700; margin-top: 6px; }
   .kapi input { padding: 11px 12px; border-radius: 8px; border: 1px solid var(--cizgi); background: var(--zemin); }
   .kapi small, .not { color: var(--soluk); font-size: 13px; }
   .kapi form.bekliyor { opacity: .6; pointer-events: none; }
+  .kapi code { color: var(--altin); }
   .hata { color: var(--kirmizi); min-height: 1em; margin: 0; }
   .yukleniyor { color: var(--soluk); font-size: 16px; }
 

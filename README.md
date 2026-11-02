@@ -20,15 +20,11 @@ export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"
 
 ## İçerik ve CMS
 
-- Tüm içerik `src/icerik/*.json` dosyalarında. Günlük güncellemeler için **https://mujganthepub.com/admin/** kullanılır (şifreli).
+- Tüm içerik `src/icerik/*.json` dosyalarında. Günlük güncellemeler için **https://mujganthepub.com/admin/** kullanılır.
+- Giriş: e-posta ile sihirli bağlantı. Yalnızca yetkili adresler (Apps Script'teki `YETKILILER`) girer; kullanıcı GitHub görmez.
 - CMS'te: önizlemede bir yazıya/görsele tıkla → düzenle; Menü, Etkinlikler, SEO, Sayfalar (yeni sayfa), İşletme (WhatsApp, saatler, paket servis) panelleri; **Yayınla** → 1–2 dk içinde sitede.
-- CMS `main` dalına commit atar: yerelde çalışmadan önce `git pull`.
+- CMS `main` dalına commit atar (yazar: giriş yapan e-posta): yerelde çalışmadan önce `git pull`.
 
-### CMS ilk kurulum (bir kez)
+### CMS sunucusu (bir kez)
 
-1. GitHub → Settings → Developer settings → Fine-grained tokens → Generate new token.
-   - Repository access: *Only select repositories* → `mujganthepub.com`
-   - Permissions: **Contents: Read and write**, **Actions: Read** (Metadata otomatik)
-   - Süre: 1 yıl (dolunca CMS Ayarlar'dan yenisi girilir)
-2. https://mujganthepub.com/admin/ → anahtarı yapıştır, en az 12 karakterlik bir şifre belirle.
-3. Şifreli anahtar `public/admin/kasa.json` olarak depoya yazılır; sonraki girişlerde yalnızca şifre sorulur.
+Giriş e-postası ve GitHub erişimi Deniz'in Google hesabındaki küçük bir Apps Script uygulamasından geçer (`docs/cms-sunucu/Kod.gs`). GitHub anahtarı ve yetkili listesi yalnızca orada durur. Adım adım: **`docs/cms-sunucu/KURULUM.md`**. Çıkan `/exec` adresi `src/admin/ayar.ts` içindeki `VARSAYILAN`'a yazılır.
