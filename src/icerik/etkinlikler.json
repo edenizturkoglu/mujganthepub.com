@@ -26,6 +26,18 @@
       "saat": "20:00",
       "baslik": "Gizem Selçuk Quartet",
       "tur": "Caz"
+    },
+    {
+      "tarih": "2026-11-13",
+      "saat": "20:00",
+      "baslik": "Orta Şeker Band",
+      "tur": "Canlı müzik"
+    },
+    {
+      "tarih": "2026-11-14",
+      "saat": "20:00",
+      "baslik": "Rewind",
+      "tur": "Canlı müzik"
     }
   ],
   "ritim": {
@@ -122,11 +134,12 @@
       "kisa": "Ekibini topla, şarkını seç."
     },
     {
-      "ad": "Cuma"
+      "ad": "Cuma",
+      "baslik": "Canlı Müzik Rock"
     },
     {
       "ad": "Cumartesi",
-      "baslik": "Canlı caz",
+      "baslik": "Canlı Müzik Pop Caz",
       "saat": "20.00",
       "kisa": "ODTÜ Caz'dan tanıdık bir ekip sahnede."
     }

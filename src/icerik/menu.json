@@ -32,23 +32,23 @@
       "kalemler": [
         {
           "ad": "Smash Burger",
-          "fiyat": 650
+          "fiyat": 675
         },
         {
           "ad": "Oklahoma Onion",
-          "fiyat": 650
+          "fiyat": 675
         },
         {
           "ad": "Hot Honey Smash",
-          "fiyat": 675
+          "fiyat": 695
         },
         {
           "ad": "Truffle Mushroom",
-          "fiyat": 675
+          "fiyat": 695
         },
         {
           "ad": "BBQ Smoke Burger",
-          "fiyat": 675
+          "fiyat": 695
         }
       ]
     },
@@ -73,19 +73,19 @@
       "kalemler": [
         {
           "ad": "Crispy Chicken Club",
-          "fiyat": 600
-        },
-        {
-          "ad": "Hot Honey Chicken Parmesan",
-          "fiyat": 600
-        },
-        {
-          "ad": "Korean BBQ Chicken Toast",
           "fiyat": 625
         },
         {
+          "ad": "Hot Honey Chicken Parmesan",
+          "fiyat": 625
+        },
+        {
+          "ad": "Korean BBQ Chicken Toast",
+          "fiyat": 650
+        },
+        {
           "ad": "Pulled Beef Melt",
-          "fiyat": 725
+          "fiyat": 750
         }
       ]
     },
@@ -111,23 +111,23 @@
       "kalemler": [
         {
           "ad": "Crispy Chicken",
-          "fiyat": 550
+          "fiyat": 575
         },
         {
           "ad": "Red Hot Chili Chicken",
-          "fiyat": 575
+          "fiyat": 595
         },
         {
           "ad": "Korean Chicken",
-          "fiyat": 575
+          "fiyat": 595
         },
         {
           "ad": "Hot Honey Halloumi",
-          "fiyat": 550
+          "fiyat": 575
         },
         {
           "ad": "Mac & Cheese Bites",
-          "fiyat": 450
+          "fiyat": 475
         }
       ]
     },
@@ -151,23 +151,23 @@
       "kalemler": [
         {
           "ad": "Margherita",
-          "fiyat": 625
+          "fiyat": 650
         },
         {
           "ad": "Truffle Mushroom",
-          "fiyat": 695
+          "fiyat": 725
         },
         {
           "ad": "Hot Honey Pepperoni",
-          "fiyat": 695
+          "fiyat": 725
         },
         {
           "ad": "Four Cheese",
-          "fiyat": 695
+          "fiyat": 725
         },
         {
           "ad": "Pulled Beef",
-          "fiyat": 775
+          "fiyat": 825
         }
       ]
     },
@@ -191,19 +191,15 @@
       "kalemler": [
         {
           "ad": "Patates Kızartması",
-          "fiyat": 325
+          "fiyat": 350
         },
         {
           "ad": "Truffle Parmesan Fries",
-          "fiyat": 395
-        },
-        {
-          "ad": "Çıtır Zeytin",
-          "fiyat": 250
+          "fiyat": 425
         },
         {
           "ad": "Wine Plate",
-          "fiyat": 650
+          "fiyat": 750
         }
       ]
     },
@@ -226,15 +222,15 @@
       "kalemler": [
         {
           "ad": "Korean BBQ Chicken Bowl",
-          "fiyat": 650
+          "fiyat": 675
         },
         {
           "ad": "Hot Honey Chicken Bowl",
-          "fiyat": 650
+          "fiyat": 675
         },
         {
           "ad": "Pulled Beef Bowl",
-          "fiyat": 775
+          "fiyat": 795
         },
         {
           "ad": "Grilled Halloumi Bowl",
@@ -264,27 +260,27 @@
       "kalemler": [
         {
           "ad": "Falafel Köfte",
-          "fiyat": 550
-        },
-        {
-          "ad": "Izgara Tavuk",
           "fiyat": 575
         },
         {
-          "ad": "Cheesy Chicken",
+          "ad": "Izgara Tavuk",
           "fiyat": 600
+        },
+        {
+          "ad": "Cheesy Chicken",
+          "fiyat": 625
         },
         {
           "ad": "Creamy Mushroom Chicken",
-          "fiyat": 600
+          "fiyat": 625
         },
         {
           "ad": "Balkan Köfte",
-          "fiyat": 600
+          "fiyat": 650
         },
         {
           "ad": "Somon Izgara",
-          "fiyat": 700
+          "fiyat": 725
         }
       ]
     }
